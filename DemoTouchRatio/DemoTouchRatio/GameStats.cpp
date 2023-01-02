@@ -65,7 +65,7 @@ void GameStats::OnDemo(CarWrapper carWrapper, void* args, std::string eventName)
 		return;
 
 	// We only register demos from the player
-	int demoKey = bumpData.RegisterEvent();
+	int demoKey = demoData.RegisterEvent();
 	demoData.Bump(demoKey);
 
 	DEBUGLOG("CAR DEMO ({})!", demoData.Count());
@@ -79,7 +79,7 @@ void GameStats::OnBallHit(CarWrapper carWrapper, void* args, std::string eventNa
 
 	// We care about ball hits from everyone, when A player touches a ball it seems like a global
 	// timer is used to delay 2000 continious balltouches.
-	int ballHitKey = bumpData.RegisterEvent();
+	int ballHitKey = ballHitData.RegisterEvent();
 
 	if (!Util::IsLocalPlayer(carWrapper))
 		return;
