@@ -1,49 +1,75 @@
 #include "pch.h"
 #include "DemoTouchRatio.h"
+#include "Constants.h"
 
+struct ACar_TA_execEventDemolished_Params
+{
+	uintptr_t Attacker; // ACar_TA
+	uintptr_t Victim; // ARBActor_TA
+	uintptr_t VictimData; // ACar_TA
+	Vector AttackerVelocityData;
+	Vector VictimVelocityData;
+};
 
-BAKKESMOD_PLUGIN(DemoTouchRatio, "Keeps track of your ratio between balltouches, car bumps, and demos.", plugin_version, 0)
+BAKKESMOD_PLUGIN(DemoTouchRatio, "Demo Touch Ratio Plugin", plugin_version, 0)
 
 std::shared_ptr<CVarManagerWrapper> _globalCvarManager;
 
+//#define CVAR_NAME_DISPLAY "cl_session_plugin_display"
+
+#define HOOK_CAR_BUMPED "Function TAGame.Car_TA.EventBumpedCar"
+#define HOOK_CAR_Q_DEMO "Function TAGame.Car_TA.QueueDemolish"
+#define HOOK_CAR_DEMO "Function TAGame.Car_TA.EventDemolished"
+
 void DemoTouchRatio::onLoad()
 {
+	bumpCounter = 0;
+	demoCounter = 0;
+	ballHitCounter = 0;
+
 	_globalCvarManager = cvarManager;
-	//LOG("Plugin loaded!");
-	// !! Enable debug logging by setting DEBUG_LOG = true in logging.h !!
-	//DEBUGLOG("DemoTouchRatio debug mode enabled");
 
-	// LOG and DEBUGLOG use fmt format strings https://fmt.dev/latest/index.html
-	//DEBUGLOG("1 = {}, 2 = {}, pi = {}, false != {}", "one", 2, 3.14, true);
+	DEBUGLOG("INITIALIZED PLUGIN!");
 
-	//cvarManager->registerNotifier("my_aweseome_notifier", [&](std::vector<std::string> args) {
-	//	LOG("Hello notifier!");
-	//}, "", 0);
+	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_CAR_BUMPED, [this](CarWrapper carWrapper, void* args, std::string eventName) {
+		if (!carWrapper.IsPlayerOwned())
+			return;
 
-	//auto cvar = cvarManager->registerCvar("template_cvar", "hello-cvar", "just a example of a cvar");
-	//auto cvar2 = cvarManager->registerCvar("template_cvar2", "0", "just a example of a cvar with more settings", true, true, -10, true, 10 );
+		unsigned long long local_car_id = gameWrapper->GetLocalCar().GetPlayerController().GetPRI().GetUniqueIdWrapper().GetUID();
+		unsigned long long caller_id = carWrapper.GetPlayerController().GetPRI().GetUniqueIdWrapper().GetUID();
+		if (local_car_id == ID_INVALID_VALUE || caller_id == ID_INVALID_VALUE || local_car_id != caller_id)
+			return;
 
-	//cvar.addOnValueChanged([this](std::string cvarName, CVarWrapper newCvar) {
-	//	LOG("the cvar with name: {} changed", cvarName);
-	//	LOG("the new value is: {}", newCvar.getStringValue());
-	//});
+		DEBUGLOG("CAR BUMPED ({})!", ++bumpCounter);
+	});
 
-	//cvar2.addOnValueChanged(std::bind(&DemoTouchRatio::YourPluginMethod, this, _1, _2));
+	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_CAR_DEMO, [this](CarWrapper carWrapper, void* args, std::string eventName) {
 
-	// enabled decleared in the header
-	//enabled = std::make_shared<bool>(false);
-	//cvarManager->registerCvar("TEMPLATE_Enabled", "0", "Enable the TEMPLATE plugin", true, true, 0, true, 1).bindTo(enabled);
+		ACar_TA_execEventDemolished_Params* castedParams = (ACar_TA_execEventDemolished_Params*)args;
+		CarWrapper attacker = CarWrapper(castedParams->Attacker);
 
-	//cvarManager->registerNotifier("NOTIFIER", [this](std::vector<std::string> params){FUNCTION();}, "DESCRIPTION", PERMISSION_ALL);
-	//cvarManager->registerCvar("CVAR", "DEFAULTVALUE", "DESCRIPTION", true, true, MINVAL, true, MAXVAL);//.bindTo(CVARVARIABLE);
-	//gameWrapper->HookEvent("FUNCTIONNAME", std::bind(&TEMPLATE::FUNCTION, this));
-	//gameWrapper->HookEventWithCallerPost<ActorWrapper>("FUNCTIONNAME", std::bind(&DemoTouchRatio::FUNCTION, this, _1, _2, _3));
-	//gameWrapper->RegisterDrawable(bind(&TEMPLATE::Render, this, std::placeholders::_1));
+		if (!attacker.IsPlayerOwned())
+			return;
+
+		unsigned long long local_car_id = gameWrapper->GetLocalCar().GetPlayerController().GetPRI().GetUniqueIdWrapper().GetUID();
+		unsigned long long caller_id = attacker.GetPlayerController().GetPRI().GetUniqueIdWrapper().GetUID();
+		if (local_car_id == ID_INVALID_VALUE || caller_id == ID_INVALID_VALUE || local_car_id != caller_id)
+			return;
+
+		DEBUGLOG("CAR DEMO ({})!", ++demoCounter);
+	});
 
 
-	//gameWrapper->HookEvent("Function TAGame.Ball_TA.Explode", [this](std::string eventName) {
-	//	LOG("Your hook got called and the ball went POOF");
-	//});
-	// You could also use std::bind here
-	//gameWrapper->HookEvent("Function TAGame.Ball_TA.Explode", std::bind(&DemoTouchRatio::YourPluginMethod, this);
+	gameWrapper->HookEventWithCaller<CarWrapper>("Function TAGame.Car_TA.OnHitBall",
+		[this](CarWrapper carWrapper, void* params, std::string eventname) {
+			if (!carWrapper.IsPlayerOwned())
+				return;
+
+			unsigned long long local_car_id = gameWrapper->GetLocalCar().GetPlayerController().GetPRI().GetUniqueIdWrapper().GetUID();
+			unsigned long long caller_id = carWrapper.GetPlayerController().GetPRI().GetUniqueIdWrapper().GetUID();
+			if (local_car_id == ID_INVALID_VALUE || caller_id == ID_INVALID_VALUE || local_car_id != caller_id)
+				return;
+
+			DEBUGLOG("BALL HIT ({})!", ++ballHitCounter);
+		});
 }

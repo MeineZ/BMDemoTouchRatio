@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "bakkesmod/plugin/bakkesmodplugin.h"
 #include "bakkesmod/plugin/pluginwindow.h"
 #include "bakkesmod/plugin/PluginSettingsWindow.h"
@@ -14,6 +16,10 @@ class DemoTouchRatio: public BakkesMod::Plugin::BakkesModPlugin
 {
 
 	//std::shared_ptr<bool> enabled;
+	int bumpCounter;
+	int demoCounter;
+
+	int ballHitCounter;
 
 	//Boilerplate
 	void onLoad() override;
