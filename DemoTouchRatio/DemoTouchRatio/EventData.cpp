@@ -13,7 +13,6 @@ EventData::EventData():
 
 int EventData::RegisterEvent() 
 {
-	DEBUGLOG("MS {} ,, LAST {}", Util::TimestampInMS(), lastRegisteredEvent);
 	if (lastRegisteredEvent + TIMEOUT_DURATION > Util::TimestampInMS())
 		return INVALID_KEY;
 
@@ -31,7 +30,6 @@ int EventData::RegisterEvent()
 
 void EventData::Bump(int key)
 {
-	DEBUGLOG("RECEIVED KEY {} ,, EXPECTING {}", key, expectingKey);
 	if (key == INVALID_KEY || expectingKey != key)
 		return;
 

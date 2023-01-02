@@ -13,7 +13,7 @@ bool Util::IsLocalPlayer(CarWrapper& carWrapper)
 	if (gameWrapper == nullptr)
 		return false;
 
-	if (!carWrapper.IsPlayerOwned())
+	if (carWrapper.IsNull() || !carWrapper.IsPlayerOwned())
 		return false;
 
 	if (gameWrapper->GetLocalCar().IsNull())
