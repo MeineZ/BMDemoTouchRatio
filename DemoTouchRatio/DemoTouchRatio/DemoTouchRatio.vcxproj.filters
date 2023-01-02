@@ -84,6 +84,12 @@
     <ClCompile Include="Util.cpp">
       <Filter>Plugin\src</Filter>
     </ClCompile>
+    <ClCompile Include="EventData.cpp">
+      <Filter>Plugin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStats.cpp">
+      <Filter>Plugin\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imgui_rangeslider.h">
@@ -150,6 +156,12 @@
       <Filter>Plugin\header</Filter>
     </ClInclude>
     <ClInclude Include="Util.h">
+      <Filter>Plugin\header</Filter>
+    </ClInclude>
+    <ClInclude Include="EventData.h">
+      <Filter>Plugin\header</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStats.h">
       <Filter>Plugin\header</Filter>
     </ClInclude>
   </ItemGroup>

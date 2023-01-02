@@ -94,6 +94,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EventData.cpp" />
+    <ClCompile Include="GameStats.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imguivariouscontrols.cpp" />
     <ClCompile Include="imgui\imgui_additions.cpp" />
@@ -116,6 +118,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="EventData.h" />
+    <ClInclude Include="GameStats.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imguivariouscontrols.h" />

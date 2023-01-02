@@ -2,63 +2,56 @@
 #include "DemoTouchRatio.h"
 #include "Util.h"
 #include "Constants.h"
-#include "Params.h"
+#include "GameStats.h"
 
 BAKKESMOD_PLUGIN(DemoTouchRatio, "Demo Touch Ratio Plugin", plugin_version, 0)
 
 DemoTouchRatio* DemoTouchRatio::instance_ = nullptr;
+GameStats* DemoTouchRatio::lastGame = nullptr;
+GameStats* DemoTouchRatio::currentGame = nullptr;
+
 std::shared_ptr<CVarManagerWrapper> _globalCvarManager;
-
-//#define CVAR_NAME_DISPLAY "cl_session_plugin_display"
-
-#define HOOK_CAR_BUMPED "Function TAGame.Car_TA.EventBumpedCar"
-#define HOOK_CAR_DEMO "Function TAGame.Car_TA.EventDemolished"
-#define HOOK_BALL_HIT "Function TAGame.Car_TA.OnHitBall"
 
 void DemoTouchRatio::onLoad()
 {
 	instance_ = this;
 	_globalCvarManager = cvarManager;
 
+	lastGame = nullptr;
+	currentGame = nullptr;
+
 	bumpCounter = 0;
 	demoCounter = 0;
 	ballHitCounter = 0;
 
-	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_CAR_BUMPED, [this](CarWrapper carWrapper, void* args, std::string eventName) {
-		if (!Util::IsLocalPlayer(carWrapper))
+	playedGames = std::vector<GameStats*>();
+
+	gameWrapper->HookEvent(HOOK_COUNTDOWN_BEGINSTATE, [this](std::string eventName) {
+		if (!Util::CanTrack())
 			return;
 
-		DEBUGLOG("CAR BUMPED ({})!", ++bumpCounter);
+		CreateNewGame();
 	});
-
-	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_CAR_DEMO, [this](CarWrapper carWrapper, void* args, std::string eventName) {
-
-		ACar_TA_execEventDemolished_Params* castedParams = (ACar_TA_execEventDemolished_Params*)args;
-		CarWrapper attacker = CarWrapper(castedParams->Attacker);
-
-		if (!Util::IsLocalPlayer(attacker))
-			return;
-
-		DEBUGLOG("CAR DEMO ({})!", ++demoCounter);
+	
+	gameWrapper->HookEvent(HOOK_ON_MAIN_MENU, [this](std::string eventName) {
+		EndGame();
 	});
-
-
-	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_BALL_HIT,
-		[this](CarWrapper carWrapper, void* params, std::string eventname) {
-			if (!Util::IsLocalPlayer(carWrapper))
-				return;
-
-			DEBUGLOG("BALL HIT ({})!", ++ballHitCounter);
-		});
+	gameWrapper->HookEvent(HOOK_ON_WINNER_SET, [this](std::string eventName) {
+		EndGame();
+	});
 }
 
 void DemoTouchRatio::onUnload()
 {
 	gameWrapper->UnregisterDrawables();
 
-	gameWrapper->UnhookEventPost(HOOK_CAR_BUMPED);
-	gameWrapper->UnhookEventPost(HOOK_CAR_DEMO);
-	gameWrapper->UnhookEventPost(HOOK_BALL_HIT);
+	gameWrapper->UnhookEvent(HOOK_COUNTDOWN_BEGINSTATE);
+
+	for (int i = 0; i < playedGames.size(); ++i)
+	{
+		delete playedGames[i];
+	}
+	playedGames.clear();
 }
 
 DemoTouchRatio& DemoTouchRatio::Instance()
@@ -66,7 +59,32 @@ DemoTouchRatio& DemoTouchRatio::Instance()
 	return *instance_;
 }
 
-GameWrapper& DemoTouchRatio::GameWrapper()
+GameWrapper* DemoTouchRatio::GameWrapper()
 {
-	return *(instance_->gameWrapper);
+	return &*instance_->gameWrapper;
+}
+
+void DemoTouchRatio::CreateNewGame()
+{
+	if (currentGame == nullptr)
+	{
+		currentGame = new GameStats();
+		currentGame->BindEvents();
+	}
+}
+
+void DemoTouchRatio::EndGame()
+{
+	if (lastGame != nullptr)
+	{
+		playedGames.push_back(lastGame);
+		lastGame = nullptr;
+	}
+
+	if (currentGame != nullptr)
+	{
+		lastGame = currentGame;
+		lastGame->UnbindEvents();
+		currentGame = nullptr;
+	}
 }
