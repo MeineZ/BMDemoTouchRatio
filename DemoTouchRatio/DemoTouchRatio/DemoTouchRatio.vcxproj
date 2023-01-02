@@ -112,6 +112,7 @@
     </ClCompile>
     <ClCompile Include="DemoTouchRatio.cpp" />
     <ClCompile Include="GuiBase.cpp" />
+    <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
@@ -130,9 +131,11 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="logging.h" />
+    <ClInclude Include="Params.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="GuiBase.h" />
     <ClInclude Include="DemoTouchRatio.h" />
+    <ClInclude Include="Util.h" />
     <ClInclude Include="version.h" />
   </ItemGroup>
   <ItemGroup>

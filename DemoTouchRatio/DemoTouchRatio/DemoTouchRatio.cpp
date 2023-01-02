@@ -1,43 +1,31 @@
 #include "pch.h"
 #include "DemoTouchRatio.h"
+#include "Util.h"
 #include "Constants.h"
-
-struct ACar_TA_execEventDemolished_Params
-{
-	uintptr_t Attacker; // ACar_TA
-	uintptr_t Victim; // ARBActor_TA
-	uintptr_t VictimData; // ACar_TA
-	Vector AttackerVelocityData;
-	Vector VictimVelocityData;
-};
+#include "Params.h"
 
 BAKKESMOD_PLUGIN(DemoTouchRatio, "Demo Touch Ratio Plugin", plugin_version, 0)
 
+DemoTouchRatio* DemoTouchRatio::instance_ = nullptr;
 std::shared_ptr<CVarManagerWrapper> _globalCvarManager;
 
 //#define CVAR_NAME_DISPLAY "cl_session_plugin_display"
 
 #define HOOK_CAR_BUMPED "Function TAGame.Car_TA.EventBumpedCar"
-#define HOOK_CAR_Q_DEMO "Function TAGame.Car_TA.QueueDemolish"
 #define HOOK_CAR_DEMO "Function TAGame.Car_TA.EventDemolished"
+#define HOOK_BALL_HIT "Function TAGame.Car_TA.OnHitBall"
 
 void DemoTouchRatio::onLoad()
 {
+	instance_ = this;
+	_globalCvarManager = cvarManager;
+
 	bumpCounter = 0;
 	demoCounter = 0;
 	ballHitCounter = 0;
 
-	_globalCvarManager = cvarManager;
-
-	DEBUGLOG("INITIALIZED PLUGIN!");
-
 	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_CAR_BUMPED, [this](CarWrapper carWrapper, void* args, std::string eventName) {
-		if (!carWrapper.IsPlayerOwned())
-			return;
-
-		unsigned long long local_car_id = gameWrapper->GetLocalCar().GetPlayerController().GetPRI().GetUniqueIdWrapper().GetUID();
-		unsigned long long caller_id = carWrapper.GetPlayerController().GetPRI().GetUniqueIdWrapper().GetUID();
-		if (local_car_id == ID_INVALID_VALUE || caller_id == ID_INVALID_VALUE || local_car_id != caller_id)
+		if (!Util::IsLocalPlayer(carWrapper))
 			return;
 
 		DEBUGLOG("CAR BUMPED ({})!", ++bumpCounter);
@@ -48,28 +36,37 @@ void DemoTouchRatio::onLoad()
 		ACar_TA_execEventDemolished_Params* castedParams = (ACar_TA_execEventDemolished_Params*)args;
 		CarWrapper attacker = CarWrapper(castedParams->Attacker);
 
-		if (!attacker.IsPlayerOwned())
-			return;
-
-		unsigned long long local_car_id = gameWrapper->GetLocalCar().GetPlayerController().GetPRI().GetUniqueIdWrapper().GetUID();
-		unsigned long long caller_id = attacker.GetPlayerController().GetPRI().GetUniqueIdWrapper().GetUID();
-		if (local_car_id == ID_INVALID_VALUE || caller_id == ID_INVALID_VALUE || local_car_id != caller_id)
+		if (!Util::IsLocalPlayer(attacker))
 			return;
 
 		DEBUGLOG("CAR DEMO ({})!", ++demoCounter);
 	});
 
 
-	gameWrapper->HookEventWithCaller<CarWrapper>("Function TAGame.Car_TA.OnHitBall",
+	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_BALL_HIT,
 		[this](CarWrapper carWrapper, void* params, std::string eventname) {
-			if (!carWrapper.IsPlayerOwned())
-				return;
-
-			unsigned long long local_car_id = gameWrapper->GetLocalCar().GetPlayerController().GetPRI().GetUniqueIdWrapper().GetUID();
-			unsigned long long caller_id = carWrapper.GetPlayerController().GetPRI().GetUniqueIdWrapper().GetUID();
-			if (local_car_id == ID_INVALID_VALUE || caller_id == ID_INVALID_VALUE || local_car_id != caller_id)
+			if (!Util::IsLocalPlayer(carWrapper))
 				return;
 
 			DEBUGLOG("BALL HIT ({})!", ++ballHitCounter);
 		});
+}
+
+void DemoTouchRatio::onUnload()
+{
+	gameWrapper->UnregisterDrawables();
+
+	gameWrapper->UnhookEventPost(HOOK_CAR_BUMPED);
+	gameWrapper->UnhookEventPost(HOOK_CAR_DEMO);
+	gameWrapper->UnhookEventPost(HOOK_BALL_HIT);
+}
+
+DemoTouchRatio& DemoTouchRatio::Instance()
+{
+	return *instance_;
+}
+
+GameWrapper& DemoTouchRatio::GameWrapper()
+{
+	return *(instance_->gameWrapper);
 }

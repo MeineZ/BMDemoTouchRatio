@@ -11,21 +11,20 @@ constexpr auto plugin_version = stringify(VERSION_MAJOR) "." stringify(VERSION_M
 
 
 class DemoTouchRatio: public BakkesMod::Plugin::BakkesModPlugin
-	//,public SettingsWindowBase // Uncomment if you wanna render your own tab in the settings menu
 	//,public PluginWindowBase // Uncomment if you want to render your own plugin window
 {
-
+	static DemoTouchRatio* instance_;
 	//std::shared_ptr<bool> enabled;
+
 	int bumpCounter;
 	int demoCounter;
-
 	int ballHitCounter;
 
-	//Boilerplate
 	void onLoad() override;
-	//void onUnload() override; // Uncomment and implement if you need a unload method
+	void onUnload() override; // Uncomment and implement if you need a unload method
 
 public:
-	//void RenderSettings() override; // Uncomment if you wanna render your own tab in the settings menu
+	static DemoTouchRatio& Instance();
+	static GameWrapper& GameWrapper();
 	//void RenderWindow() override; // Uncomment if you want to render your own plugin window
 };
