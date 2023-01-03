@@ -90,6 +90,12 @@
     <ClCompile Include="GameStats.cpp">
       <Filter>Plugin\src</Filter>
     </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Plugin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStatsSummary.cpp">
+      <Filter>Plugin\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imgui_rangeslider.h">
@@ -162,6 +168,12 @@
       <Filter>Plugin\header</Filter>
     </ClInclude>
     <ClInclude Include="GameStats.h">
+      <Filter>Plugin\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Plugin\header</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStatsSummary.h">
       <Filter>Plugin\header</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,2 +1,18 @@
 Demo Touch Ratio
-9|This plugin DOES SOMETHING
+9|This plugin displays the ratio between car bumps, demos, and ball hits.
+9|NOTE: Be aware that leaving a match before it officially ended (leave directly after forfeit, ragequite, etc.) will result in inaccurate stats.
+9|           Use the Reset Stats button at the bottom to refresh your current session, if desired.
+1|Enable plugin|cl_demotouch_plugin_enabled
+10|cl_demotouch_plugin_enabled
+1|Show ratio during matches|cl_demotouch_plugin_in_matches
+11|
+8|
+9|Stats display position
+5|X|cl_demotouch_plugin_display_x|0|3840
+5|Y|cl_demotouch_plugin_display_y|0|2160
+9|Stats display scale 
+4|Scale|cl_demotouch_plugin_display_scale|0.5|5.0
+7|
+0|Reset|cl_demotouch_plugin_display_scale_reset
+8|
+0|Reset stats|cl_demotouch_plugin_reset

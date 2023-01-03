@@ -6,7 +6,17 @@
 
 #define ID_INVALID_VALUE 0
 
-//#define CVAR_NAME_DISPLAY "cl_session_plugin_display"
+#define TIMEOUT_BUMP 100
+#define TIMEOUT_DEMO 0
+#define TIMEOUT_BALL_HIT 750
+
+#define CVAR_NAME_ENABLED "cl_demotouch_plugin_enabled"
+#define CVAR_NAME_IN_MATCHES "cl_demotouch_plugin_in_matches"
+#define CVAR_NAME_DISPLAY_X "cl_demotouch_plugin_display_x"
+#define CVAR_NAME_DISPLAY_Y "cl_demotouch_plugin_display_y"
+#define CVAR_NAME_DISPLAY_SCALE "cl_demotouch_plugin_display_scale"
+#define CVAR_NAME_DISPLAY_SCALE_RESET "cl_demotouch_plugin_display_scale_reset"
+#define CVAR_NAME_RESET "cl_demotouch_plugin_reset"
 
 #define HOOK_COUNTDOWN_BEGINSTATE "Function GameEvent_TA.Countdown.BeginState"
 #define HOOK_ON_WINNER_SET "Function TAGame.GameEvent_Soccar_TA.EventMatchWinnerSet"

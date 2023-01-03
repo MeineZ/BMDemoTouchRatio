@@ -78,7 +78,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(BakkesModPath)\bakkesmodsdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -114,12 +114,15 @@
     </ClCompile>
     <ClCompile Include="DemoTouchRatio.cpp" />
     <ClCompile Include="GuiBase.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="GameStatsSummary.cpp" />
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
     <ClInclude Include="EventData.h" />
     <ClInclude Include="GameStats.h" />
+    <ClInclude Include="GameStatsSummary.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imguivariouscontrols.h" />
@@ -139,6 +142,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="GuiBase.h" />
     <ClInclude Include="DemoTouchRatio.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="version.h" />
   </ItemGroup>

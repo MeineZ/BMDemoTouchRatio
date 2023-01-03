@@ -9,15 +9,17 @@ private:
 	EventData demoData;
 	EventData ballHitData;
 
+	void OnBump(CarWrapper carWrapper, void* args, std::string eventName);
+	void OnDemo(CarWrapper carWrapper, void* args, std::string eventName);
+	void OnBallHit(CarWrapper carWrapper, void* args, std::string eventName);
+
 public:
 	GameStats();
 
 	void BindEvents();
 	void UnbindEvents();
 
-
-	void OnBump(CarWrapper carWrapper, void* args, std::string eventName);
-	void OnDemo(CarWrapper carWrapper, void* args, std::string eventName);
-	void OnBallHit(CarWrapper carWrapper, void* args, std::string eventName);
-
+	int GetBumps();
+	int GetDemos();
+	int GetBallHits();
 };

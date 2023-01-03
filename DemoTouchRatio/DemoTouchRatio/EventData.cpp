@@ -11,9 +11,9 @@ EventData::EventData():
 	expectingKey(INVALID_KEY)
 { }
 
-int EventData::RegisterEvent() 
+int EventData::RegisterEvent(int timeoutInMS) 
 {
-	if (lastRegisteredEvent + TIMEOUT_DURATION > Util::TimestampInMS())
+	if (lastRegisteredEvent + timeoutInMS > Util::TimestampInMS())
 		return INVALID_KEY;
 
 	lastRegisteredEvent = Util::TimestampInMS();
@@ -24,7 +24,6 @@ int EventData::RegisterEvent()
 		++expectingKey;
 	}
 
-	DEBUGLOG("EXPECTING KEY {}", expectingKey);
 	return expectingKey;
 }
 

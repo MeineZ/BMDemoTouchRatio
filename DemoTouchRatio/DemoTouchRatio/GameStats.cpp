@@ -1,4 +1,4 @@
-#include <pch.h>
+#include "pch.h"
 #include <GameStats.h>
 #include <EventData.h>
 #include <DemoTouchRatio.h>
@@ -42,14 +42,12 @@ void GameStats::OnBump(CarWrapper carWrapper, void* args, std::string eventName)
 	if (!Util::CanTrack())
 		return;
 
+	// We only register bumps from the player
 	if (!Util::IsLocalPlayer(carWrapper))
 		return;
 
-	// We only register bumps from the player
-	int bumpKey = bumpData.RegisterEvent();
+	int bumpKey = bumpData.RegisterEvent(TIMEOUT_BUMP);
 	bumpData.Bump(bumpKey);
-
-	DEBUGLOG("CAR BUMPED ({})!", bumpData.Count());
 }
 
 
@@ -61,14 +59,12 @@ void GameStats::OnDemo(CarWrapper carWrapper, void* args, std::string eventName)
 	ACar_TA_execEventDemolished_Params* castedParams = (ACar_TA_execEventDemolished_Params*)args;
 	CarWrapper attacker = CarWrapper(castedParams->Attacker);
 
+	// We only register demos from the player
 	if (!Util::IsLocalPlayer(attacker))
 		return;
 
-	// We only register demos from the player
-	int demoKey = demoData.RegisterEvent();
+	int demoKey = demoData.RegisterEvent(TIMEOUT_DEMO);
 	demoData.Bump(demoKey);
-
-	DEBUGLOG("CAR DEMO ({})!", demoData.Count());
 }
 
 
@@ -79,13 +75,22 @@ void GameStats::OnBallHit(CarWrapper carWrapper, void* args, std::string eventNa
 
 	// We care about ball hits from everyone, when A player touches a ball it seems like a global
 	// timer is used to delay 2000 continious balltouches.
-	int ballHitKey = ballHitData.RegisterEvent();
+	int ballHitKey = ballHitData.RegisterEvent(TIMEOUT_BALL_HIT);
 
 	if (!Util::IsLocalPlayer(carWrapper))
 		return;
 
 	ballHitData.Bump(ballHitKey);
+}
 
-	DEBUGLOG("BALL HIT ({})!", ballHitData.Count());
+
+int GameStats::GetBumps() {
+	return bumpData.Count();
+}
+int GameStats::GetDemos() {
+	return demoData.Count();
+}
+int GameStats::GetBallHits() {
+	return ballHitData.Count();
 }
 

@@ -13,7 +13,7 @@ private:
 public:
 	EventData();
 
-	int RegisterEvent();
+	int RegisterEvent(int timeoutInMS);
 	void Bump(int key);
 	int Count();
 };
