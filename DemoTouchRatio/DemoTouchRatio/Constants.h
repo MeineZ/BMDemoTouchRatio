@@ -6,7 +6,7 @@
 
 #define ID_INVALID_VALUE 0
 
-#define TIMEOUT_BUMP 100
+#define TIMEOUT_BUMP 30
 #define TIMEOUT_DEMO 0
 #define TIMEOUT_BALL_HIT 100
 
@@ -16,6 +16,7 @@
 #define CVAR_NAME_DISPLAY_Y "cl_demotouch_plugin_display_y"
 #define CVAR_NAME_DISPLAY_SCALE "cl_demotouch_plugin_display_scale"
 #define CVAR_NAME_DISPLAY_SCALE_RESET "cl_demotouch_plugin_display_scale_reset"
+#define CVAR_NAME_TEAM_BUMPS "cl_demotouch_plugin_team_bumps"
 #define CVAR_NAME_RESET "cl_demotouch_plugin_reset"
 
 #define HOOK_COUNTDOWN_BEGINSTATE "Function GameEvent_TA.Countdown.BeginState"

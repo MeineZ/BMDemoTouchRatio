@@ -58,7 +58,9 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats) {
 	RenderText(canvas, gameStats.GetTotal().ballHits, Vector2{ column4, row4 }, stringStream, 0);
 
 	// DRAW AVERAGE
-	RenderText(canvas, "Average", Vector2{ column1, row5 });
+	stringStream.str("");
+	stringStream << "Avg. (" << gameStats.GetNumberOfGames() << ")";
+	RenderText(canvas, stringStream, Vector2{ column1, row5 });
 	RenderText(canvas, gameStats.GetAverage().bumps, Vector2{column2, row5}, stringStream, 2);
 	RenderText(canvas, gameStats.GetAverage().demos, Vector2{ column3, row5 }, stringStream, 2);
 	RenderText(canvas, gameStats.GetAverage().ballHits, Vector2{ column4, row5 }, stringStream, 2);

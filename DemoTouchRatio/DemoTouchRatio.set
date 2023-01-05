@@ -6,6 +6,7 @@ Demo Touch Count
 10|cl_demotouch_plugin_enabled
 1|Show ratio during matches|cl_demotouch_plugin_in_matches
 11|
+1|Track friendly bumps/demos|cl_demotouch_plugin_team_bumps
 8|
 9|Stats display position
 5|X|cl_demotouch_plugin_display_x|0|3840

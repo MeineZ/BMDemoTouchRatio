@@ -75,6 +75,11 @@ const GameStatsSummary::SummarizedStats& GameStatsSummary::GetAverage()
 	return averageStats;
 }
 
+int GameStatsSummary::GetNumberOfGames()
+{
+	return numberOfGames;
+}
+
 std::string GameStatsSummary::SummarizedStats::toString() const {
 	std::stringstream stringStream;
 	float biggest = (float)(bumps >= demos && bumps >= ballHits

@@ -42,4 +42,5 @@ public:
 	const SummarizedStats& GetLast();
 	const SummarizedStats& GetTotal();
 	const SummarizedStats& GetAverage();
+	int GetNumberOfGames();
 };
