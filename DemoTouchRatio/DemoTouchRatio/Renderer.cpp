@@ -9,7 +9,6 @@ int column1 = 10;
 int column2 = 100;
 int column3 = 190;
 int column4 = 280;
-int column5 = 370;
 int row1 = 5;
 int row2 = 21;
 int row3 = 37;
@@ -33,41 +32,36 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats) {
 	// DRAW BOX
 	canvas->SetColor(backgroundColor);
 	canvas->SetPosition(position);
-	canvas->FillBox(Vector2{ (int)(475.0f * *scale), (int)(90.0f * *scale) });
+	canvas->FillBox(Vector2{ (int)(365.0f * *scale), (int)(90.0f * *scale) });
 
 	// DRAW HEADER
 	RenderText(canvas, "Bumps", Vector2{ column2, row1 });
 	RenderText(canvas, "Demos", Vector2{ column3, row1 });
 	RenderText(canvas, "Ball Hits", Vector2{ column4, row1 });
-	RenderText(canvas, "Ratio", Vector2{ column5, row1 });
 
 	// DRAW CURRENT GAME
 	RenderText(canvas, "Current", Vector2{ column1, row2 });
 	RenderText(canvas, gameStats.GetCurrent().bumps, Vector2{column2, row2}, stringStream, 0);
 	RenderText(canvas, gameStats.GetCurrent().demos, Vector2{ column3, row2 }, stringStream, 0);
 	RenderText(canvas, gameStats.GetCurrent().ballHits, Vector2{ column4, row2 }, stringStream, 0);
-	RenderText(canvas, gameStats.GetCurrent().toString(), Vector2{column5, row2});
 
 	// DRAW LAST GAME
 	RenderText(canvas, "Last", Vector2{ column1, row3 });
 	RenderText(canvas, gameStats.GetLast().bumps, Vector2{ column2, row3 }, stringStream, 0);
 	RenderText(canvas, gameStats.GetLast().demos, Vector2{ column3, row3 }, stringStream, 0);
 	RenderText(canvas, gameStats.GetLast().ballHits, Vector2{ column4, row3 }, stringStream, 0);
-	RenderText(canvas, gameStats.GetLast().toString(), Vector2{ column5, row3 });
 
 	// DRAW SESSION TOTAL
 	RenderText(canvas, "Total", Vector2{ column1, row4 });
 	RenderText(canvas, gameStats.GetTotal().bumps, Vector2{ column2, row4 }, stringStream, 0);
 	RenderText(canvas, gameStats.GetTotal().demos, Vector2{ column3, row4 }, stringStream, 0);
 	RenderText(canvas, gameStats.GetTotal().ballHits, Vector2{ column4, row4 }, stringStream, 0);
-	RenderText(canvas, gameStats.GetTotal().toString(), Vector2{ column5, row4 });
 
 	// DRAW AVERAGE
 	RenderText(canvas, "Average", Vector2{ column1, row5 });
-	RenderText(canvas, gameStats.GetAverage().bumps, Vector2{column2, row5}, stringStream);
-	RenderText(canvas, gameStats.GetAverage().demos, Vector2{ column3, row5 }, stringStream);
-	RenderText(canvas, gameStats.GetAverage().ballHits, Vector2{ column4, row5 }, stringStream);
-	RenderText(canvas, gameStats.GetAverage().toString(), Vector2{ column5, row5 });
+	RenderText(canvas, gameStats.GetAverage().bumps, Vector2{column2, row5}, stringStream, 2);
+	RenderText(canvas, gameStats.GetAverage().demos, Vector2{ column3, row5 }, stringStream, 2);
+	RenderText(canvas, gameStats.GetAverage().ballHits, Vector2{ column4, row5 }, stringStream, 2);
 }
 
 void Renderer::RenderText(CanvasWrapper* canvas, std::string text, Vector2 textPos)
@@ -76,7 +70,6 @@ void Renderer::RenderText(CanvasWrapper* canvas, std::string text, Vector2 textP
 	canvas->SetPosition(Vector2{ *posX + (int)(textPos.X * *scale), *posY + (int)(textPos.Y * *scale) });
 	canvas->DrawString(text, *scale, *scale);
 }
-
 
 void Renderer::RenderText(CanvasWrapper* canvas, float value, Vector2 textPos, std::stringstream& ss, int precision)
 {

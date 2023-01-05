@@ -1,5 +1,5 @@
-Demo Touch Ratio
-9|This plugin displays the ratio between car bumps, demos, and ball hits.
+Demo Touch Count
+9|This plugin displays your number of car bumps, demos, and ball hits of your current game, last game, total games, and average during your current game session.
 9|NOTE: Be aware that leaving a match before it officially ended (leave directly after forfeit, ragequite, etc.) will result in inaccurate stats.
 9|           Use the Reset Stats button at the bottom to refresh your current session, if desired.
 1|Enable plugin|cl_demotouch_plugin_enabled

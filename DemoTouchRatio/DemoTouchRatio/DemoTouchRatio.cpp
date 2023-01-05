@@ -6,7 +6,7 @@
 #include "GameStatsSummary.h"
 #include "Renderer.h"
 
-BAKKESMOD_PLUGIN(DemoTouchRatio, "Demo Touch Ratio Plugin", plugin_version, 0)
+BAKKESMOD_PLUGIN(DemoTouchRatio, "Demo Touch Count Plugin", plugin_version, 0)
 
 DemoTouchRatio* DemoTouchRatio::instance_ = nullptr;
 std::shared_ptr<CVarManagerWrapper> _globalCvarManager;
@@ -29,8 +29,8 @@ void DemoTouchRatio::onLoad()
 	Reset();
 
 	// Display CVar initialization
-	cvarManager->registerCvar(CVAR_NAME_ENABLED, "1", "Enable DemoTouchRatio plugin", false, true, 0, true, 1, true).bindTo(enabled);
-	cvarManager->registerCvar(CVAR_NAME_IN_MATCHES, "1", "Draw DemoTouchRation display during matches", false, true, 0, true, 1, true).bindTo(renderInMatches);
+	cvarManager->registerCvar(CVAR_NAME_ENABLED, "1", "Enable DemoTouch plugin", false, true, 0, true, 1, true).bindTo(enabled);
+	cvarManager->registerCvar(CVAR_NAME_IN_MATCHES, "1", "Draw DemoTouch display during matches", false, true, 0, true, 1, true).bindTo(renderInMatches);
 
 	// Renderer CVar initialization
 	cvarManager->registerCvar(CVAR_NAME_DISPLAY_X, "0", "X position of the display", false, true, 0, true, 3840, true).bindTo(renderer.posX);
@@ -45,7 +45,7 @@ void DemoTouchRatio::onLoad()
 
 	cvarManager->registerNotifier(CVAR_NAME_RESET, [this](std::vector<std::string> params) {
 		Reset();
-	}, "Start a fresh demo touch ratio session", PERMISSION_ALL);
+	}, "Start a fresh demo touch session", PERMISSION_ALL);
 
 	// Hook binding
 	gameWrapper->HookEvent(HOOK_COUNTDOWN_BEGINSTATE, [this](std::string eventName) {

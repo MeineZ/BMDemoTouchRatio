@@ -43,7 +43,5 @@ public:
 
 	void Render(CanvasWrapper canvas);
 
-	//void ResetCurrentGame();
-	//static GameStats* GetCurrentGame();
 	//void RenderWindow() override; // Uncomment if you want to render your own plugin window
 };
