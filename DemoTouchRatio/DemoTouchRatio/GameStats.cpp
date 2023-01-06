@@ -9,6 +9,7 @@
 
 GameStats::GameStats():
 	bumpData(EventData()),
+	teamBumpData(EventData()),
 	demoData(EventData()),
 	ballHitData(EventData())
 {
@@ -36,20 +37,35 @@ void GameStats::UnbindEvents()
 	gameWrapper->UnhookEvent(HOOK_BALL_HIT);
 }
 
-
 void GameStats::OnBump(CarWrapper carWrapper, void* args, std::string eventName)
 {
 	if (!Util::CanTrack())
 		return;
 
+	ACar_TA_execBumpCar_Params* castedParams = (ACar_TA_execBumpCar_Params*)args;
+	CarWrapper bumpedCar = CarWrapper(castedParams->bumpedCar);
+
 	// We only register bumps from the player
-	if (!Util::IsLocalPlayer(carWrapper))
+	if (!Util::IsLocalPlayer(carWrapper) && !Util::IsLocalPlayer(bumpedCar))
 		return;
 
-	int bumpKey = bumpData.RegisterEvent(TIMEOUT_BUMP);
+	// Check whether we're allowed to track it and if it's a team bump
+	bool canTrackTeamBumps = DemoTouchRatio::Instance().CanTrackTeamBumps();
+	bool sameTeam = Util::AreInSameTeam(carWrapper, bumpedCar);
+	if (canTrackTeamBumps && sameTeam) {
+		int teamBumpKey = teamBumpData.RegisterEvent(Util::GetCurrentPing());
+		teamBumpData.Bump(teamBumpKey);
+		return;
+	}
+	// Return if it was a team bump but we're not allowed to track it
+	else if(!canTrackTeamBumps && sameTeam)
+	{
+		return;
+	}
+
+	int bumpKey = bumpData.RegisterEvent(Util::GetCurrentPing());
 	bumpData.Bump(bumpKey);
 }
-
 
 void GameStats::OnDemo(CarWrapper carWrapper, void* args, std::string eventName)
 {
@@ -67,7 +83,6 @@ void GameStats::OnDemo(CarWrapper carWrapper, void* args, std::string eventName)
 	demoData.Bump(demoKey);
 }
 
-
 void GameStats::OnBallHit(CarWrapper carWrapper, void* args, std::string eventName)
 {
 	if (!Util::CanTrack())
@@ -83,9 +98,11 @@ void GameStats::OnBallHit(CarWrapper carWrapper, void* args, std::string eventNa
 	ballHitData.Bump(ballHitKey);
 }
 
-
 int GameStats::GetBumps() {
 	return bumpData.Count();
+}
+int GameStats::GetTeamBumps() {
+	return teamBumpData.Count();
 }
 int GameStats::GetDemos() {
 	return demoData.Count();

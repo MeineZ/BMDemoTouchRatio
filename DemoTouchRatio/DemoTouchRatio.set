@@ -6,7 +6,6 @@ Demo Touch Count
 10|cl_demotouch_plugin_enabled
 1|Show ratio during matches|cl_demotouch_plugin_in_matches
 11|
-1|Track friendly bumps/demos|cl_demotouch_plugin_team_bumps
 8|
 9|Stats display position
 5|X|cl_demotouch_plugin_display_x|0|3840
@@ -15,5 +14,14 @@ Demo Touch Count
 4|Scale|cl_demotouch_plugin_display_scale|0.5|5.0
 7|
 0|Reset|cl_demotouch_plugin_display_scale_reset
+13|Background color|cl_demotouch_plugin_background_color
+13|Text color|cl_demotouch_plugin_text_color
+0|Reset colors|cl_demotouch_plugin_reset_colors
+8|
+9|Show/hide data columns
+1|Bumps|cl_demotouch_plugin_show_bumps
+1|Team bumps|cl_demotouch_plugin_show_teambumps
+1|Demolitions|cl_demotouch_plugin_show_demos
+1|Ball touches|cl_demotouch_plugin_show_ballhits
 8|
 0|Reset stats|cl_demotouch_plugin_reset

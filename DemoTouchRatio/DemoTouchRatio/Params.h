@@ -10,3 +10,16 @@ struct ACar_TA_execEventDemolished_Params
 	Vector AttackerVelocityData;
 	Vector VictimVelocityData;
 };
+
+struct ACar_TA_execEventBumpedCar_Params 
+{
+	uintptr_t Car;
+	uintptr_t HitCar;
+	Vector HitLocation;
+};
+
+struct ACar_TA_execBumpCar_Params
+{
+	float arg1;
+	uintptr_t bumpedCar;
+};

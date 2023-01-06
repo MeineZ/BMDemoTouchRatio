@@ -17,8 +17,7 @@ DemoTouchRatio::DemoTouchRatio() :
 	currentGame(nullptr),
 	lastGame(nullptr),
 	enabled(std::make_shared<bool>(true)),
-	renderInMatches(std::make_shared<bool>(true)),
-	trackTeamBumps(std::make_shared<bool>(false))
+	renderInMatches(std::make_shared<bool>(true))
 { }
 
 void DemoTouchRatio::onLoad()
@@ -32,18 +31,30 @@ void DemoTouchRatio::onLoad()
 	// Display CVar initialization
 	cvarManager->registerCvar(CVAR_NAME_ENABLED, "1", "Enable DemoTouch plugin", false, true, 0, true, 1, true).bindTo(enabled);
 	cvarManager->registerCvar(CVAR_NAME_IN_MATCHES, "1", "Draw DemoTouch display during matches", false, true, 0, true, 1, true).bindTo(renderInMatches);
-	cvarManager->registerCvar(CVAR_NAME_TEAM_BUMPS, "0", "Track team bumps/demos", false, true, 0, true, 1, true).bindTo(renderer.scale);
 
 	// Renderer CVar initialization
 	cvarManager->registerCvar(CVAR_NAME_DISPLAY_X, "0", "X position of the display", false, true, 0, true, 3840, true).bindTo(renderer.posX);
 	cvarManager->registerCvar(CVAR_NAME_DISPLAY_Y, "500", "Y position of the display", false, true, 0, true, 2160, true).bindTo(renderer.posY);
 	cvarManager->registerCvar(CVAR_NAME_DISPLAY_SCALE, "1", "Scale of the display", false, true, 0.5f, true, 5.0f, true).bindTo(renderer.scale);
+	cvarManager->registerCvar(CVAR_NAME_COLOR_BACKGROUND, "(0, 0, 0, 75)", "Background color", false, false, 0, false, 255, true).bindTo(renderer.colorBackground);
+	cvarManager->registerCvar(CVAR_NAME_COLOR_TEXT, "(255, 255, 255, 127)", "Text color", false, false, 0, false, 255, true).bindTo(renderer.colorText);
+
+	// Columns show/hide CVar initialization
+	cvarManager->registerCvar(CVAR_NAME_SHOW_BUMPS, "1", "Show bumps data column", false, true, 0, true, 1, true).bindTo(renderer.displayBumps);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_TEAMBUMPS, "0", "Show team bumps data column", false, true, 0, true, 1, true).bindTo(renderer.displayTeamBumps);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_DEMOS, "1", "Show demos data column", false, true, 0, true, 1, true).bindTo(renderer.displayDemos);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_BALLHITS, "1", "Show ball touches data column", false, true, 0, true, 1, true).bindTo(renderer.displayBallHits);
+
 
 	// CVar Hooks
 	cvarManager->registerNotifier(CVAR_NAME_DISPLAY_SCALE_RESET, [this](std::vector<std::string> params) {
 		renderer.ResetScale();
 		cvarManager->getCvar(CVAR_NAME_DISPLAY_SCALE).setValue(*(renderer.scale));
 	}, "Reset display scale to 1.0", PERMISSION_ALL);
+
+	cvarManager->registerNotifier(CVAR_NAME_RESET_COLORS, [this](std::vector<std::string> params) {
+		ResetColors();
+	}, "Reset to default colors", PERMISSION_ALL);
 
 	cvarManager->registerNotifier(CVAR_NAME_RESET, [this](std::vector<std::string> params) {
 		Reset();
@@ -81,6 +92,14 @@ void DemoTouchRatio::Reset() {
 		delete playedGames[i];
 	}
 	playedGames.clear();
+}
+
+void DemoTouchRatio::ResetColors()
+{
+	renderer.ResetColors();
+
+	cvarManager->getCvar(CVAR_NAME_COLOR_BACKGROUND).setValue(*(renderer.colorBackground));
+	cvarManager->getCvar(CVAR_NAME_COLOR_TEXT).setValue(*(renderer.colorText));
 }
 
 void DemoTouchRatio::onUnload()
@@ -135,4 +154,12 @@ void DemoTouchRatio::Render(CanvasWrapper canvas) {
 
 	GameStatsSummary summary = GameStatsSummary(currentGame, lastGame, playedGames);
 	renderer.RenderStats(&canvas, summary);
+}
+
+bool DemoTouchRatio::CanRenderInMatches() {
+	return *renderInMatches;
+}
+
+bool DemoTouchRatio::CanTrackTeamBumps() {
+	return *(renderer.displayTeamBumps);
 }

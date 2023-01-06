@@ -26,12 +26,12 @@ class DemoTouchRatio: public BakkesMod::Plugin::BakkesModPlugin
 
 	std::shared_ptr<bool> enabled; // Setting if plugin is enabled
 	std::shared_ptr<bool> renderInMatches; // Setting if plugin may render during matches
-	std::shared_ptr<bool> trackTeamBumps; // Setting if plugin may render during matches
 
 	void onLoad() override;
 	void onUnload() override; // Uncomment and implement if you need a unload method
 
 	void Reset();
+	void ResetColors();
 
 public:
 	DemoTouchRatio();
@@ -43,6 +43,9 @@ public:
 	void CreateNewGame();
 
 	void Render(CanvasWrapper canvas);
+
+	bool CanRenderInMatches();
+	bool CanTrackTeamBumps();
 
 	//void RenderWindow() override; // Uncomment if you want to render your own plugin window
 };

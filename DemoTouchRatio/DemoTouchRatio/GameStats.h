@@ -6,6 +6,7 @@ class GameStats
 {
 private:
 	EventData bumpData;
+	EventData teamBumpData;
 	EventData demoData;
 	EventData ballHitData;
 
@@ -20,6 +21,7 @@ public:
 	void UnbindEvents();
 
 	int GetBumps();
+	int GetTeamBumps();
 	int GetDemos();
 	int GetBallHits();
 };
