@@ -17,7 +17,10 @@ DemoTouchRatio::DemoTouchRatio() :
 	currentGame(nullptr),
 	lastGame(nullptr),
 	enabled(std::make_shared<bool>(true)),
-	renderInMatches(std::make_shared<bool>(true))
+	renderInMatches(std::make_shared<bool>(true)),
+	renderInFreeplay(std::make_shared<bool>(true)),
+	renderInCustomTraining(std::make_shared<bool>(true)),
+	renderInReplay(std::make_shared<bool>(true))
 { }
 
 void DemoTouchRatio::onLoad()
@@ -31,6 +34,9 @@ void DemoTouchRatio::onLoad()
 	// Display CVar initialization
 	cvarManager->registerCvar(CVAR_NAME_ENABLED, "1", "Enable DemoTouch plugin", false, true, 0, true, 1, true).bindTo(enabled);
 	cvarManager->registerCvar(CVAR_NAME_IN_MATCHES, "1", "Draw DemoTouch display during matches", false, true, 0, true, 1, true).bindTo(renderInMatches);
+	cvarManager->registerCvar(CVAR_NAME_IN_FREEPLAY, "1", "Draw DemoTouch display while in freeplay", false, true, 0, true, 1, true).bindTo(renderInFreeplay);
+	cvarManager->registerCvar(CVAR_NAME_IN_CUSTOM_TRAINING, "1", "Draw DemoTouch display while in custom training", false, true, 0, true, 1, true).bindTo(renderInCustomTraining);
+	cvarManager->registerCvar(CVAR_NAME_IN_REPLAY, "1", "Draw DemoTouch display while in replays", false, true, 0, true, 1, true).bindTo(renderInReplay);
 
 	// Renderer CVar initialization
 	cvarManager->registerCvar(CVAR_NAME_DISPLAY_X, "0", "X position of the display", false, true, 0, true, 3840, true).bindTo(renderer.posX);
@@ -150,7 +156,16 @@ void DemoTouchRatio::EndGame()
 
 void DemoTouchRatio::Render(CanvasWrapper canvas) {
 	if (!*renderInMatches && currentGame != nullptr)
-		return;	
+		return;
+
+	if (!*renderInFreeplay && gameWrapper->IsInFreeplay())
+		return;
+
+	if (!*renderInCustomTraining && gameWrapper->IsInCustomTraining())
+		return;
+
+	if (!*renderInReplay && gameWrapper->IsInReplay())
+		return;
 
 	GameStatsSummary summary = GameStatsSummary(currentGame, lastGame, playedGames);
 	renderer.RenderStats(&canvas, summary);

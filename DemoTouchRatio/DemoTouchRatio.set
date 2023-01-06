@@ -5,6 +5,9 @@ Demo Touch Count
 1|Enable plugin|cl_demotouch_plugin_enabled
 10|cl_demotouch_plugin_enabled
 1|Show ratio during matches|cl_demotouch_plugin_in_matches
+1|Show ratio while in freeplay|cl_demotouch_plugin_in_freeplay
+1|Show ratio while in custom training|cl_demotouch_plugin_in_custom_training
+1|Show ratio while in replay|cl_demotouch_plugin_in_replay
 11|
 8|
 9|Stats display position

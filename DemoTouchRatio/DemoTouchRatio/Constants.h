@@ -11,6 +11,9 @@
 
 #define CVAR_NAME_ENABLED "cl_demotouch_plugin_enabled"
 #define CVAR_NAME_IN_MATCHES "cl_demotouch_plugin_in_matches"
+#define CVAR_NAME_IN_FREEPLAY "cl_demotouch_plugin_in_freeplay"
+#define CVAR_NAME_IN_CUSTOM_TRAINING "cl_demotouch_plugin_in_custom_training"
+#define CVAR_NAME_IN_REPLAY "cl_demotouch_plugin_in_replay"
 #define CVAR_NAME_DISPLAY_X "cl_demotouch_plugin_display_x"
 #define CVAR_NAME_DISPLAY_Y "cl_demotouch_plugin_display_y"
 #define CVAR_NAME_DISPLAY_SCALE "cl_demotouch_plugin_display_scale"

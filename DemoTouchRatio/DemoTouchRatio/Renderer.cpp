@@ -58,7 +58,7 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats) {
 			RenderText(canvas, gameStats.GetCurrent().bumps, currentColumn, currentRow++, stringStream, 0);
 		RenderText(canvas, gameStats.GetLast().bumps, currentColumn, currentRow++, stringStream, 0);
 		RenderText(canvas, gameStats.GetTotal().bumps, currentColumn, currentRow++, stringStream, 0);
-		RenderText(canvas, gameStats.GetAverage().bumps, currentColumn, currentRow++, stringStream, 0);
+		RenderText(canvas, gameStats.GetAverage().bumps, currentColumn, currentRow++, stringStream, 2);
 		++currentColumn;
 	}
 
@@ -71,7 +71,7 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats) {
 			RenderText(canvas, gameStats.GetCurrent().teamBumps, currentColumn, currentRow++, stringStream, 0);
 		RenderText(canvas, gameStats.GetLast().teamBumps, currentColumn, currentRow++, stringStream, 0);
 		RenderText(canvas, gameStats.GetTotal().teamBumps, currentColumn, currentRow++, stringStream, 0);
-		RenderText(canvas, gameStats.GetAverage().teamBumps, currentColumn, currentRow++, stringStream, 0);
+		RenderText(canvas, gameStats.GetAverage().teamBumps, currentColumn, currentRow++, stringStream, 2);
 		++currentColumn;
 	}
 
@@ -83,7 +83,7 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats) {
 			RenderText(canvas, gameStats.GetCurrent().demos, currentColumn, currentRow++, stringStream, 0);
 		RenderText(canvas, gameStats.GetLast().demos, currentColumn, currentRow++, stringStream, 0);
 		RenderText(canvas, gameStats.GetTotal().demos, currentColumn, currentRow++, stringStream, 0);
-		RenderText(canvas, gameStats.GetAverage().demos, currentColumn, currentRow++, stringStream, 0);
+		RenderText(canvas, gameStats.GetAverage().demos, currentColumn, currentRow++, stringStream, 2);
 		++currentColumn;
 	}
 
@@ -95,7 +95,7 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats) {
 			RenderText(canvas, gameStats.GetCurrent().ballHits, currentColumn, currentRow++, stringStream, 0);
 		RenderText(canvas, gameStats.GetLast().ballHits, currentColumn, currentRow++, stringStream, 0);
 		RenderText(canvas, gameStats.GetTotal().ballHits, currentColumn, currentRow++, stringStream, 0);
-		RenderText(canvas, gameStats.GetAverage().ballHits, currentColumn, currentRow++, stringStream, 0);
+		RenderText(canvas, gameStats.GetAverage().ballHits, currentColumn, currentRow++, stringStream, 2);
 		++currentColumn;
 	}
 }
