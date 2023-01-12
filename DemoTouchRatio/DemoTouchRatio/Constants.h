@@ -6,9 +6,6 @@
 
 #define ID_INVALID_VALUE 0
 
-#define TIMEOUT_DEMO 0
-#define TIMEOUT_BALL_HIT 100
-
 #define CVAR_NAME_ENABLED "cl_demotouch_plugin_enabled"
 #define CVAR_NAME_IN_MATCHES "cl_demotouch_plugin_in_matches"
 #define CVAR_NAME_IN_FREEPLAY "cl_demotouch_plugin_in_freeplay"

@@ -79,7 +79,7 @@ void GameStats::OnDemo(CarWrapper carWrapper, void* args, std::string eventName)
 	if (!Util::IsLocalPlayer(attacker))
 		return;
 
-	int demoKey = demoData.RegisterEvent(TIMEOUT_DEMO);
+	int demoKey = demoData.RegisterEvent(0);
 	demoData.Bump(demoKey);
 }
 
@@ -90,7 +90,7 @@ void GameStats::OnBallHit(CarWrapper carWrapper, void* args, std::string eventNa
 
 	// We care about ball hits from everyone, when A player touches a ball it seems like a global
 	// timer is used to delay 2000 continious balltouches.
-	int ballHitKey = ballHitData.RegisterEvent(TIMEOUT_BALL_HIT);
+	int ballHitKey = ballHitData.RegisterEvent(Util::GetCurrentPing());
 
 	if (!Util::IsLocalPlayer(carWrapper))
 		return;
