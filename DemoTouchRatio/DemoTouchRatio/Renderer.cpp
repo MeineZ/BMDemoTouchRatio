@@ -19,86 +19,9 @@ Renderer::Renderer() :
 	displayBumps(std::make_shared<bool>(true)),
 	displayTeamBumps(std::make_shared<bool>(false)),
 	displayDemos(std::make_shared<bool>(true)),
-	displayBallHits(std::make_shared<bool>(true))
+	displayBallHits(std::make_shared<bool>(true)),
+	renderHorizontal(std::make_shared<bool>(true))
 { }
-
-void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats) {
-	std::stringstream stringStream;
-	DemoTouchRatio app = DemoTouchRatio::Instance();
-	bool canRenderInMatches = DemoTouchRatio::Instance().CanRenderInMatches();
-
-	Vector2 position = {
-		*posX,
-		*posY
-	};
-
-	// DRAW BOX
-	canvas->SetColor(*colorBackground);
-	canvas->SetPosition(position);
-	canvas->FillBox(Vector2{ (int)(GetBoxWidth() * *scale), (int)(8.f + (*rowSize * (canRenderInMatches ? 5 : 4)) * *scale)});
-
-	int currentColumn = 0;
-
-	// DRAW FIRST COLUMN
-	int currentRow = 1;
-	RenderText(canvas, "Current", currentColumn, currentRow++);
-	RenderText(canvas, "Latest", currentColumn, currentRow++);
-	RenderText(canvas, "Total", currentColumn, currentRow++);
-	stringStream.str("");
-	stringStream << "Avg. (" << gameStats.GetNumberOfGames() << ")";
-	RenderText(canvas, stringStream, currentColumn, currentRow++);
-	++currentColumn;
-
-
-	// DRAW BUMPS COLUMN
-	if (*displayBumps) {
-		currentRow = 0;
-		RenderText(canvas, "Bumps", currentColumn, currentRow++);
-		if (canRenderInMatches)
-			RenderText(canvas, gameStats.GetCurrent().bumps, currentColumn, currentRow++, stringStream, 0);
-		RenderText(canvas, gameStats.GetLast().bumps, currentColumn, currentRow++, stringStream, 0);
-		RenderText(canvas, gameStats.GetTotal().bumps, currentColumn, currentRow++, stringStream, 0);
-		RenderText(canvas, gameStats.GetAverage().bumps, currentColumn, currentRow++, stringStream, 2);
-		++currentColumn;
-	}
-
-
-	// DRAW TEAM BUMPS COLUMN
-	if (*displayTeamBumps) {
-		currentRow = 0;
-		RenderText(canvas, "Team bumps", currentColumn, currentRow++);
-		if (canRenderInMatches)
-			RenderText(canvas, gameStats.GetCurrent().teamBumps, currentColumn, currentRow++, stringStream, 0);
-		RenderText(canvas, gameStats.GetLast().teamBumps, currentColumn, currentRow++, stringStream, 0);
-		RenderText(canvas, gameStats.GetTotal().teamBumps, currentColumn, currentRow++, stringStream, 0);
-		RenderText(canvas, gameStats.GetAverage().teamBumps, currentColumn, currentRow++, stringStream, 2);
-		++currentColumn;
-	}
-
-	// DRAW DEMOS COLUMN
-	if (*displayDemos) {
-		currentRow = 0;
-		RenderText(canvas, "Demos", currentColumn, currentRow++);
-		if (canRenderInMatches)
-			RenderText(canvas, gameStats.GetCurrent().demos, currentColumn, currentRow++, stringStream, 0);
-		RenderText(canvas, gameStats.GetLast().demos, currentColumn, currentRow++, stringStream, 0);
-		RenderText(canvas, gameStats.GetTotal().demos, currentColumn, currentRow++, stringStream, 0);
-		RenderText(canvas, gameStats.GetAverage().demos, currentColumn, currentRow++, stringStream, 2);
-		++currentColumn;
-	}
-
-	// DRAW BALL HITS COLUMN
-	if (*displayBallHits) {
-		currentRow = 0;
-		RenderText(canvas, "Ball hits", currentColumn, currentRow++);
-		if (canRenderInMatches)
-			RenderText(canvas, gameStats.GetCurrent().ballHits, currentColumn, currentRow++, stringStream, 0);
-		RenderText(canvas, gameStats.GetLast().ballHits, currentColumn, currentRow++, stringStream, 0);
-		RenderText(canvas, gameStats.GetTotal().ballHits, currentColumn, currentRow++, stringStream, 0);
-		RenderText(canvas, gameStats.GetAverage().ballHits, currentColumn, currentRow++, stringStream, 2);
-		++currentColumn;
-	}
-}
 
 void Renderer::RenderText(CanvasWrapper* canvas, std::string text, int columnId, int rowId)
 {
@@ -137,15 +60,199 @@ void Renderer::ResetColors()
 
 void Renderer::ResetTableSizes()
 {
-	*rowSize = 16.f;
-	*columnSize = 90.f;
+	if (*renderHorizontal)
+	{
+		*rowSize = 16.f;
+		*columnSize = 90.f;
+	}
+	else
+	{
+		*rowSize = 16.f;
+		*columnSize = 90.f;
+	}
 }
 
-int Renderer::GetBoxWidth()
+Vector2 Renderer::GetBox()
 {
-	return *columnSize +
-		(*displayBumps ? *columnSize : 0) +
-		(*displayTeamBumps ? *columnSize : 0) +
-		(*displayDemos ? *columnSize : 0) +
-		(*displayBallHits ? *columnSize : 0);
+	int width = 5.f,
+		height = 8.f;
+
+	int numberOfDescriptionCells = DemoTouchRatio::Instance().CanRenderInMatches() ? 5 : 4;
+
+	if (*renderHorizontal)
+	{
+		width += *columnSize +
+			(*displayBumps ? *columnSize : 0) +
+			(*displayTeamBumps ? *columnSize : 0) +
+			(*displayDemos ? *columnSize : 0) +
+			(*displayBallHits ? *columnSize : 0);
+		height += *rowSize * numberOfDescriptionCells;
+	}
+	else
+	{
+		width += numberOfDescriptionCells * *columnSize;
+		height += *rowSize +
+			(*displayBumps ? *rowSize : 0) +
+			(*displayTeamBumps ? *rowSize : 0) +
+			(*displayDemos ? *rowSize : 0) +
+			(*displayBallHits ? *rowSize : 0);
+	}
+	return Vector2 {width, height};
+}
+
+void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats)
+{
+	std::stringstream stringStream;
+	DemoTouchRatio app = DemoTouchRatio::Instance();
+	bool canRenderInMatches = DemoTouchRatio::Instance().CanRenderInMatches();
+
+	Vector2 position = {
+		*posX,
+		*posY
+	};
+
+	// DRAW BOX
+	canvas->SetColor(*colorBackground);
+	canvas->SetPosition(position);
+	canvas->FillBox(GetBox());
+
+	if (*renderHorizontal)
+	{
+
+		int currentColumn = 0;
+
+		// DRAW FIRST COLUMN
+		int currentRow = 1;
+		if (canRenderInMatches)
+			RenderText(canvas, "Current", currentColumn, currentRow++);
+		RenderText(canvas, "Latest", currentColumn, currentRow++);
+		RenderText(canvas, "Total", currentColumn, currentRow++);
+		stringStream.str("");
+		stringStream << "Avg. (" << gameStats.GetNumberOfGames() << ")";
+		RenderText(canvas, stringStream, currentColumn, currentRow++);
+		++currentColumn;
+
+
+		// DRAW BUMPS COLUMN
+		if (*displayBumps)
+		{
+			currentRow = 0;
+			RenderText(canvas, "Bumps", currentColumn, currentRow++);
+			if (canRenderInMatches)
+				RenderText(canvas, gameStats.GetCurrent().bumps, currentColumn, currentRow++, stringStream, 0);
+			RenderText(canvas, gameStats.GetLast().bumps, currentColumn, currentRow++, stringStream, 0);
+			RenderText(canvas, gameStats.GetTotal().bumps, currentColumn, currentRow++, stringStream, 0);
+			RenderText(canvas, gameStats.GetAverage().bumps, currentColumn, currentRow++, stringStream, 2);
+			++currentColumn;
+		}
+
+
+		// DRAW TEAM BUMPS COLUMN
+		if (*displayTeamBumps)
+		{
+			currentRow = 0;
+			RenderText(canvas, "Team bumps", currentColumn, currentRow++);
+			if (canRenderInMatches)
+				RenderText(canvas, gameStats.GetCurrent().teamBumps, currentColumn, currentRow++, stringStream, 0);
+			RenderText(canvas, gameStats.GetLast().teamBumps, currentColumn, currentRow++, stringStream, 0);
+			RenderText(canvas, gameStats.GetTotal().teamBumps, currentColumn, currentRow++, stringStream, 0);
+			RenderText(canvas, gameStats.GetAverage().teamBumps, currentColumn, currentRow++, stringStream, 2);
+			++currentColumn;
+		}
+
+		// DRAW DEMOS COLUMN
+		if (*displayDemos)
+		{
+			currentRow = 0;
+			RenderText(canvas, "Demos", currentColumn, currentRow++);
+			if (canRenderInMatches)
+				RenderText(canvas, gameStats.GetCurrent().demos, currentColumn, currentRow++, stringStream, 0);
+			RenderText(canvas, gameStats.GetLast().demos, currentColumn, currentRow++, stringStream, 0);
+			RenderText(canvas, gameStats.GetTotal().demos, currentColumn, currentRow++, stringStream, 0);
+			RenderText(canvas, gameStats.GetAverage().demos, currentColumn, currentRow++, stringStream, 2);
+			++currentColumn;
+		}
+
+		// DRAW BALL HITS COLUMN
+		if (*displayBallHits)
+		{
+			currentRow = 0;
+			RenderText(canvas, "Ball hits", currentColumn, currentRow++);
+			if (canRenderInMatches)
+				RenderText(canvas, gameStats.GetCurrent().ballHits, currentColumn, currentRow++, stringStream, 0);
+			RenderText(canvas, gameStats.GetLast().ballHits, currentColumn, currentRow++, stringStream, 0);
+			RenderText(canvas, gameStats.GetTotal().ballHits, currentColumn, currentRow++, stringStream, 0);
+			RenderText(canvas, gameStats.GetAverage().ballHits, currentColumn, currentRow++, stringStream, 2);
+			++currentColumn;
+		}
+	}
+	// Render vertical
+	else
+	{
+		int currentRow = 0;
+
+		// DRAW FIRST ROW
+		int currentColumn = 1;
+		if (canRenderInMatches)
+			RenderText(canvas, "Current", currentColumn++, currentRow);
+		RenderText(canvas, "Latest", currentColumn++, currentRow);
+		RenderText(canvas, "Total", currentColumn++, currentRow);
+		stringStream.str("");
+		stringStream << "Avg. (" << gameStats.GetNumberOfGames() << ")";
+		RenderText(canvas, stringStream, currentColumn++, currentRow);
+		++currentRow;
+
+
+		// DRAW BUMPS ROW
+		if (*displayBumps)
+		{
+			currentColumn = 0;
+			RenderText(canvas, "Bumps", currentColumn++, currentRow);
+			if (canRenderInMatches)
+				RenderText(canvas, gameStats.GetCurrent().bumps, currentColumn++, currentRow, stringStream, 0);
+			RenderText(canvas, gameStats.GetLast().bumps, currentColumn++, currentRow, stringStream, 0);
+			RenderText(canvas, gameStats.GetTotal().bumps, currentColumn++, currentRow, stringStream, 0);
+			RenderText(canvas, gameStats.GetAverage().bumps, currentColumn++, currentRow, stringStream, 2);
+			++currentRow;
+		}
+
+		// DRAW TEAM BUMPS ROW
+		if (*displayTeamBumps)
+		{
+			currentColumn = 0;
+			RenderText(canvas, "Team Bumps", currentColumn++, currentRow);
+			if (canRenderInMatches)
+				RenderText(canvas, gameStats.GetCurrent().teamBumps, currentColumn++, currentRow, stringStream, 0);
+			RenderText(canvas, gameStats.GetLast().teamBumps, currentColumn++, currentRow, stringStream, 0);
+			RenderText(canvas, gameStats.GetTotal().teamBumps, currentColumn++, currentRow, stringStream, 0);
+			RenderText(canvas, gameStats.GetAverage().teamBumps, currentColumn++, currentRow, stringStream, 2);
+			++currentRow;
+		}
+
+		// DRAW DEMOS ROW
+		if (*displayDemos)
+		{
+			currentColumn = 0;
+			RenderText(canvas, "Demos", currentColumn++, currentRow);
+			if (canRenderInMatches)
+				RenderText(canvas, gameStats.GetCurrent().demos, currentColumn++, currentRow, stringStream, 0);
+			RenderText(canvas, gameStats.GetLast().demos, currentColumn++, currentRow, stringStream, 0);
+			RenderText(canvas, gameStats.GetTotal().demos, currentColumn++, currentRow, stringStream, 0);
+			RenderText(canvas, gameStats.GetAverage().demos, currentColumn++, currentRow, stringStream, 2);
+			++currentRow;
+		}
+
+		// DRAW BALL HITS ROW
+		if (*displayBallHits)
+		{
+			currentColumn = 0;
+			RenderText(canvas, "Ball hits", currentColumn++, currentRow);
+			if (canRenderInMatches)
+				RenderText(canvas, gameStats.GetCurrent().ballHits, currentColumn++, currentRow, stringStream, 0);
+			RenderText(canvas, gameStats.GetLast().ballHits, currentColumn++, currentRow, stringStream, 0);
+			RenderText(canvas, gameStats.GetTotal().ballHits, currentColumn++, currentRow, stringStream, 0);
+			RenderText(canvas, gameStats.GetAverage().ballHits, currentColumn++, currentRow, stringStream, 2);
+			++currentRow;
+		}
+	}
 }

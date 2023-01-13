@@ -19,6 +19,7 @@
 #define CVAR_NAME_COLOR_BACKGROUND "cl_demotouch_plugin_background_color"
 #define CVAR_NAME_COLOR_TEXT "cl_demotouch_plugin_text_color"
 #define CVAR_NAME_RESET_COLORS "cl_demotouch_plugin_reset_colors"
+#define CVAR_NAME_RENDER_HORIZONTAL "cl_demotouch_plugin_render_horizontal"
 #define CVAR_NAME_ROW_SIZE "cl_demotouch_plugin_row_size"
 #define CVAR_NAME_COLUMN_SIZE "cl_demotouch_plugin_column_size"
 #define CVAR_NAME_RESET_TABLE_SIZE "cl_demotouch_plugin_reset_table_sizes"

@@ -13,7 +13,7 @@ private:
 	void RenderText(CanvasWrapper* canvas, std::stringstream& text, int columnId, int rowId);
 	void RenderText(CanvasWrapper* canvas, float value, int columnId, int rowId, std::stringstream& ss, int precision = 2);
 
-	int GetBoxWidth();
+	Vector2 GetBox();
 
 public:
 	std::shared_ptr<int> posX;
@@ -29,6 +29,8 @@ public:
 	std::shared_ptr<bool> displayTeamBumps;
 	std::shared_ptr<bool> displayDemos;
 	std::shared_ptr<bool> displayBallHits;
+
+	std::shared_ptr<bool> renderHorizontal;
 
 	Renderer();
 

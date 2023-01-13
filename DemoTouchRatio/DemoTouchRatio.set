@@ -20,15 +20,17 @@ Demo Touch Count
 9|Stats display position
 5|X|cl_demotouch_plugin_display_x|0|3840
 5|Y|cl_demotouch_plugin_display_y|0|2160
-9|Stats display scale 
+4|Scale|cl_demotouch_plugin_display_scale|0.5|5.0
 7|
 0|Reset|cl_demotouch_plugin_display_scale_reset
-13|Background color|cl_demotouch_plugin_background_color
-13|Text color|cl_demotouch_plugin_text_color
-0|Reset colors|cl_demotouch_plugin_reset_colors
+9|
+1|Display stats horizontally|cl_demotouch_plugin_render_horizontal
 4|Row height|cl_demotouch_plugin_row_size|12|96
 4|Column width|cl_demotouch_plugin_column_size|45|250
 0|Reset row/column size|cl_demotouch_plugin_reset_table_sizes
-4|Scale|cl_demotouch_plugin_display_scale|0.5|5.0
+9|
+13|Background color|cl_demotouch_plugin_background_color
+13|Text color|cl_demotouch_plugin_text_color
+0|Reset colors|cl_demotouch_plugin_reset_colors
 8|
 0|Reset stats|cl_demotouch_plugin_reset
