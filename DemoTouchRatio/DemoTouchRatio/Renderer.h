@@ -22,6 +22,9 @@ public:
 	std::shared_ptr<LinearColor> colorBackground; // The color used for the background
 	std::shared_ptr<LinearColor> colorText; // The color used for texts
 
+	std::shared_ptr<float> rowSize;
+	std::shared_ptr<float> columnSize;
+
 	std::shared_ptr<bool> displayBumps;
 	std::shared_ptr<bool> displayTeamBumps;
 	std::shared_ptr<bool> displayDemos;
@@ -33,4 +36,5 @@ public:
 
 	void ResetScale();
 	void ResetColors();
+	void ResetTableSizes();
 };

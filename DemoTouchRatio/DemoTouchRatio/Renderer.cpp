@@ -6,9 +6,7 @@
 #include <DemoTouchRatio.h>
 
 int columStart = 10;
-int columnSize = 90;
 int rowStart = 5;
-int rowSize = 16;
 
 Renderer::Renderer() :
 	posX(std::make_shared<int>(0)),
@@ -16,6 +14,8 @@ Renderer::Renderer() :
 	scale(std::make_shared<float>(1.0f)),
 	colorBackground(std::make_shared<LinearColor>(LinearColor())),
 	colorText(std::make_shared<LinearColor>(LinearColor())),
+	rowSize(std::make_shared<float>(16.f)),
+	columnSize(std::make_shared<float>(90.f)),
 	displayBumps(std::make_shared<bool>(true)),
 	displayTeamBumps(std::make_shared<bool>(false)),
 	displayDemos(std::make_shared<bool>(true)),
@@ -35,7 +35,7 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats) {
 	// DRAW BOX
 	canvas->SetColor(*colorBackground);
 	canvas->SetPosition(position);
-	canvas->FillBox(Vector2{ (int)(GetBoxWidth() * *scale), (int)(90.0f * *scale)});
+	canvas->FillBox(Vector2{ (int)(GetBoxWidth() * *scale), (int)(8.f + (*rowSize * (canRenderInMatches ? 5 : 4)) * *scale)});
 
 	int currentColumn = 0;
 
@@ -103,7 +103,7 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats) {
 void Renderer::RenderText(CanvasWrapper* canvas, std::string text, int columnId, int rowId)
 {
 	canvas->SetColor(*colorText);
-	canvas->SetPosition(Vector2{ *posX + (int)((columStart + (columnId * columnSize)) * *scale), *posY + (int)((rowStart + (rowId * rowSize)) * *scale) });
+	canvas->SetPosition(Vector2{ *posX + (int)((columStart + (columnId * *columnSize)) * *scale), *posY + (int)((rowStart + (rowId * *rowSize)) * *scale) });
 	canvas->DrawString(text, *scale, *scale);
 }
 
@@ -135,11 +135,17 @@ void Renderer::ResetColors()
 	colorText->A = 127.f;
 }
 
+void Renderer::ResetTableSizes()
+{
+	*rowSize = 16.f;
+	*columnSize = 90.f;
+}
+
 int Renderer::GetBoxWidth()
 {
-	return columnSize +
-		(*displayBumps ? columnSize : 0) +
-		(*displayTeamBumps ? columnSize : 0) +
-		(*displayDemos ? columnSize : 0) +
-		(*displayBallHits ? columnSize : 0);
+	return *columnSize +
+		(*displayBumps ? *columnSize : 0) +
+		(*displayTeamBumps ? *columnSize : 0) +
+		(*displayDemos ? *columnSize : 0) +
+		(*displayBallHits ? *columnSize : 0);
 }

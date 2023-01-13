@@ -8,6 +8,9 @@
 
 BAKKESMOD_PLUGIN(DemoTouchRatio, "Demo Touch Count Plugin", plugin_version, 0)
 
+// TODO: Update roadmap link to also contain closed issues
+// TODO: Update minor version
+
 DemoTouchRatio* DemoTouchRatio::instance_ = nullptr;
 std::shared_ptr<CVarManagerWrapper> _globalCvarManager;
 
@@ -48,6 +51,9 @@ void DemoTouchRatio::onLoad()
 	cvarManager->registerCvar(CVAR_NAME_COLOR_BACKGROUND, "(0, 0, 0, 75)", "Background color", false, false, 0, false, 255, true).bindTo(renderer.colorBackground);
 	cvarManager->registerCvar(CVAR_NAME_COLOR_TEXT, "(255, 255, 255, 127)", "Text color", false, false, 0, false, 255, true).bindTo(renderer.colorText);
 
+	cvarManager->registerCvar(CVAR_NAME_ROW_SIZE, "16", "Height of the displayed rows", false, true, 12, true, 96, true).bindTo(renderer.rowSize);
+	cvarManager->registerCvar(CVAR_NAME_COLUMN_SIZE, "90", "Width of the displayed columns", false, true, 45, true, 250, true).bindTo(renderer.columnSize);
+
 	// Columns show/hide CVar initialization
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BUMPS, "1", "Show bumps data column", false, true, 0, true, 1, true).bindTo(renderer.displayBumps);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_TEAMBUMPS, "0", "Show team bumps data column", false, true, 0, true, 1, true).bindTo(renderer.displayTeamBumps);
@@ -64,6 +70,10 @@ void DemoTouchRatio::onLoad()
 	cvarManager->registerNotifier(CVAR_NAME_RESET_COLORS, [this](std::vector<std::string> params) {
 		ResetColors();
 	}, "Reset to default colors", PERMISSION_ALL);
+
+	cvarManager->registerNotifier(CVAR_NAME_RESET_TABLE_SIZE, [this](std::vector<std::string> params) {
+		ResetTableSizes();
+	}, "Reset to default table row/column size", PERMISSION_ALL);
 
 	cvarManager->registerNotifier(CVAR_NAME_RESET, [this](std::vector<std::string> params) {
 		Reset();
@@ -114,6 +124,14 @@ void DemoTouchRatio::ResetColors()
 
 	cvarManager->getCvar(CVAR_NAME_COLOR_BACKGROUND).setValue(*(renderer.colorBackground));
 	cvarManager->getCvar(CVAR_NAME_COLOR_TEXT).setValue(*(renderer.colorText));
+}
+
+void DemoTouchRatio::ResetTableSizes()
+{
+	renderer.ResetTableSizes();
+
+	cvarManager->getCvar(CVAR_NAME_ROW_SIZE).setValue(*(renderer.rowSize));
+	cvarManager->getCvar(CVAR_NAME_COLUMN_SIZE).setValue(*(renderer.columnSize));
 }
 
 void DemoTouchRatio::onUnload()

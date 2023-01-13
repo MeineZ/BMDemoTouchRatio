@@ -1,6 +1,6 @@
 Demo Touch Count
 9|This plugin displays your number of car bumps, demos, and ball hits of your current game, last game, total games, and average during your current game session.
-9|NOTE: Be aware that leaving a match before it officially ended (leave directly after forfeit, ragequite, etc.) will result in inaccurate stats.
+9|NOTE: Be aware that leaving a match before it officially ended (leave directly after forfeit, ragequite, etc.) CAN result in inaccurate stats.
 9|           Use the Reset Stats button at the bottom to refresh your current session, if desired.
 1|Enable plugin|cl_demotouch_plugin_enabled
 1|Show ratio during matches|cl_demotouch_plugin_in_matches
@@ -11,21 +11,24 @@ Demo Touch Count
 1|Show ratio while in custom training|cl_demotouch_plugin_in_custom_training
 1|Show ratio while in replay|cl_demotouch_plugin_in_replay
 8|
-9|Stats display position
-5|X|cl_demotouch_plugin_display_x|0|3840
-5|Y|cl_demotouch_plugin_display_y|0|2160
-9|Stats display scale 
-4|Scale|cl_demotouch_plugin_display_scale|0.5|5.0
-7|
-0|Reset|cl_demotouch_plugin_display_scale_reset
-13|Background color|cl_demotouch_plugin_background_color
-13|Text color|cl_demotouch_plugin_text_color
-0|Reset colors|cl_demotouch_plugin_reset_colors
-8|
 9|Show/hide data columns
 1|Bumps|cl_demotouch_plugin_show_bumps
 1|Team bumps|cl_demotouch_plugin_show_teambumps
 1|Demolitions|cl_demotouch_plugin_show_demos
 1|Ball touches|cl_demotouch_plugin_show_ballhits
+8|
+9|Stats display position
+5|X|cl_demotouch_plugin_display_x|0|3840
+5|Y|cl_demotouch_plugin_display_y|0|2160
+9|Stats display scale 
+7|
+0|Reset|cl_demotouch_plugin_display_scale_reset
+13|Background color|cl_demotouch_plugin_background_color
+13|Text color|cl_demotouch_plugin_text_color
+0|Reset colors|cl_demotouch_plugin_reset_colors
+4|Row height|cl_demotouch_plugin_row_size|12|96
+4|Column width|cl_demotouch_plugin_column_size|45|250
+0|Reset row/column size|cl_demotouch_plugin_reset_table_sizes
+4|Scale|cl_demotouch_plugin_display_scale|0.5|5.0
 8|
 0|Reset stats|cl_demotouch_plugin_reset

@@ -37,6 +37,7 @@ class DemoTouchRatio: public BakkesMod::Plugin::BakkesModPlugin
 
 	void Reset();
 	void ResetColors();
+	void ResetTableSizes();
 
 public:
 	DemoTouchRatio();
