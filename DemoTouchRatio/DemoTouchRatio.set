@@ -3,12 +3,13 @@ Demo Touch Count
 9|NOTE: Be aware that leaving a match before it officially ended (leave directly after forfeit, ragequite, etc.) will result in inaccurate stats.
 9|           Use the Reset Stats button at the bottom to refresh your current session, if desired.
 1|Enable plugin|cl_demotouch_plugin_enabled
-10|cl_demotouch_plugin_enabled
 1|Show ratio during matches|cl_demotouch_plugin_in_matches
+10|cl_demotouch_plugin_in_matches
+1|Show only when scoreboard is open|cl_demotouch_plugin_on_scoreboard
+11|
 1|Show ratio while in freeplay|cl_demotouch_plugin_in_freeplay
 1|Show ratio while in custom training|cl_demotouch_plugin_in_custom_training
 1|Show ratio while in replay|cl_demotouch_plugin_in_replay
-11|
 8|
 9|Stats display position
 5|X|cl_demotouch_plugin_display_x|0|3840

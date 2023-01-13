@@ -8,6 +8,7 @@
 
 #define CVAR_NAME_ENABLED "cl_demotouch_plugin_enabled"
 #define CVAR_NAME_IN_MATCHES "cl_demotouch_plugin_in_matches"
+#define CVAR_NAME_ON_SCOREBOARD "cl_demotouch_plugin_on_scoreboard"
 #define CVAR_NAME_IN_FREEPLAY "cl_demotouch_plugin_in_freeplay"
 #define CVAR_NAME_IN_CUSTOM_TRAINING "cl_demotouch_plugin_in_custom_training"
 #define CVAR_NAME_IN_REPLAY "cl_demotouch_plugin_in_replay"
@@ -28,6 +29,8 @@
 #define HOOK_COUNTDOWN_BEGINSTATE "Function GameEvent_TA.Countdown.BeginState"
 #define HOOK_ON_WINNER_SET "Function TAGame.GameEvent_Soccar_TA.EventMatchWinnerSet"
 #define HOOK_ON_MAIN_MENU "Function TAGame.GFxData_MainMenu_TA.MainMenuAdded"
+#define HOOK_ON_SCOREBOARD_OPENED "Function TAGame.GFxData_GameEvent_TA.OnOpenScoreboard"
+#define HOOK_ON_SCOREBOARD_CLOSED "Function TAGame.GFxData_GameEvent_TA.OnCloseScoreboard"
 
 #define HOOK_CAR_BUMPED_OLD "Function TAGame.Car_TA.EventBumpedCar"
 #define HOOK_CAR_BUMPED "Function TAGame.Car_TA.BumpCar"

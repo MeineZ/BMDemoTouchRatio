@@ -14,7 +14,6 @@ constexpr auto plugin_version = stringify(VERSION_MAJOR) "." stringify(VERSION_M
 class GameStats;
 
 class DemoTouchRatio: public BakkesMod::Plugin::BakkesModPlugin
-	//,public PluginWindowBase // Uncomment if you want to render your own plugin window
 {
 	static DemoTouchRatio* instance_;
 
@@ -24,7 +23,10 @@ class DemoTouchRatio: public BakkesMod::Plugin::BakkesModPlugin
 	GameStats* lastGame;
 	GameStats* currentGame;
 
+	bool scoreboardOpened;
+
 	std::shared_ptr<bool> enabled; // Setting if plugin is enabled
+	std::shared_ptr<bool> renderOnlyOnScoreboard; // Setting if plugin may only render when scoreboard is open
 	std::shared_ptr<bool> renderInMatches; // Setting if plugin may render during matches
 	std::shared_ptr<bool> renderInFreeplay; // Setting if plugin may render during freeplay
 	std::shared_ptr<bool> renderInCustomTraining; // Setting if plugin may render during custom training

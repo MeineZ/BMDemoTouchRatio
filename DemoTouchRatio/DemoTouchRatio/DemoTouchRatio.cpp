@@ -18,9 +18,11 @@ DemoTouchRatio::DemoTouchRatio() :
 	lastGame(nullptr),
 	enabled(std::make_shared<bool>(true)),
 	renderInMatches(std::make_shared<bool>(true)),
+	renderOnlyOnScoreboard(std::make_shared<bool>(false)),
 	renderInFreeplay(std::make_shared<bool>(true)),
 	renderInCustomTraining(std::make_shared<bool>(true)),
-	renderInReplay(std::make_shared<bool>(true))
+	renderInReplay(std::make_shared<bool>(true)),
+	scoreboardOpened(false)
 { }
 
 void DemoTouchRatio::onLoad()
@@ -34,6 +36,7 @@ void DemoTouchRatio::onLoad()
 	// Display CVar initialization
 	cvarManager->registerCvar(CVAR_NAME_ENABLED, "1", "Enable DemoTouch plugin", false, true, 0, true, 1, true).bindTo(enabled);
 	cvarManager->registerCvar(CVAR_NAME_IN_MATCHES, "1", "Draw DemoTouch display during matches", false, true, 0, true, 1, true).bindTo(renderInMatches);
+	cvarManager->registerCvar(CVAR_NAME_ON_SCOREBOARD, "0", "Draw DemoTouch display only when scoreboard is open", false, true, 0, true, 1, true).bindTo(renderOnlyOnScoreboard);
 	cvarManager->registerCvar(CVAR_NAME_IN_FREEPLAY, "1", "Draw DemoTouch display while in freeplay", false, true, 0, true, 1, true).bindTo(renderInFreeplay);
 	cvarManager->registerCvar(CVAR_NAME_IN_CUSTOM_TRAINING, "1", "Draw DemoTouch display while in custom training", false, true, 0, true, 1, true).bindTo(renderInCustomTraining);
 	cvarManager->registerCvar(CVAR_NAME_IN_REPLAY, "1", "Draw DemoTouch display while in replays", false, true, 0, true, 1, true).bindTo(renderInReplay);
@@ -81,11 +84,16 @@ void DemoTouchRatio::onLoad()
 		EndGame();
 	});
 
+	gameWrapper->HookEvent(HOOK_ON_SCOREBOARD_OPENED, [this](std::string eventName) { scoreboardOpened = true; });
+	gameWrapper->HookEvent(HOOK_ON_SCOREBOARD_CLOSED, [this](std::string eventName) { scoreboardOpened = false; });
+
 	// Register drawable
 	gameWrapper->RegisterDrawable(std::bind(&DemoTouchRatio::Render, this, std::placeholders::_1));
 }
 
 void DemoTouchRatio::Reset() {
+	scoreboardOpened = false;
+
 	EndGame();
 
 	if (lastGame != nullptr) {
@@ -115,6 +123,8 @@ void DemoTouchRatio::onUnload()
 	gameWrapper->UnhookEvent(HOOK_COUNTDOWN_BEGINSTATE);
 	gameWrapper->UnhookEvent(HOOK_ON_MAIN_MENU);
 	gameWrapper->UnhookEvent(HOOK_ON_WINNER_SET);
+	gameWrapper->UnhookEvent(HOOK_ON_SCOREBOARD_OPENED);
+	gameWrapper->UnhookEvent(HOOK_ON_SCOREBOARD_CLOSED);
 
 	Reset();
 }
@@ -135,11 +145,15 @@ void DemoTouchRatio::CreateNewGame()
 	{
 		currentGame = new GameStats();
 		currentGame->BindEvents();
+
+		scoreboardOpened = false;
 	}
 }
 
 void DemoTouchRatio::EndGame()
 {
+	scoreboardOpened = false;
+
 	if (lastGame != nullptr)
 	{
 		playedGames.push_back(lastGame);
@@ -156,6 +170,9 @@ void DemoTouchRatio::EndGame()
 
 void DemoTouchRatio::Render(CanvasWrapper canvas) {
 	if (!*renderInMatches && currentGame != nullptr)
+		return;
+
+	if (currentGame != nullptr && *renderOnlyOnScoreboard && !scoreboardOpened)
 		return;
 
 	if (!*renderInFreeplay && gameWrapper->IsInFreeplay())
