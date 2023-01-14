@@ -25,6 +25,7 @@ Demo Touch Count
 0|Reset|cl_demotouch_plugin_display_scale_reset
 9|
 1|Display stats horizontally|cl_demotouch_plugin_render_horizontal
+1|Apply custom width to description cells|cl_demotouch_plugin_custom_desc_size
 4|Row height|cl_demotouch_plugin_row_size|12|96
 4|Column width|cl_demotouch_plugin_column_size|45|250
 0|Reset row/column size|cl_demotouch_plugin_reset_table_sizes

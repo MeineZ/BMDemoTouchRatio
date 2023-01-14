@@ -9,7 +9,6 @@
 BAKKESMOD_PLUGIN(DemoTouchRatio, "Demo Touch Count Plugin", plugin_version, 0)
 
 // TODO: Update roadmap link to also contain closed issues
-// TODO: Update minor version
 
 DemoTouchRatio* DemoTouchRatio::instance_ = nullptr;
 std::shared_ptr<CVarManagerWrapper> _globalCvarManager;
@@ -52,6 +51,7 @@ void DemoTouchRatio::onLoad()
 	cvarManager->registerCvar(CVAR_NAME_COLOR_TEXT, "(255, 255, 255, 127)", "Text color", false, false, 0, false, 255, true).bindTo(renderer.colorText);
 
 	cvarManager->registerCvar(CVAR_NAME_RENDER_HORIZONTAL, "1", "Whether to render the display horizontally", false, true, 12, true, 96, true).bindTo(renderer.renderHorizontal);
+	cvarManager->registerCvar(CVAR_NAME_CUSTOM_DESC_SIZE, "0", "Whether to use custom cell size for desc. cells.", false, true, 0, true, 1, true).bindTo(renderer.customDescSize);
 	cvarManager->registerCvar(CVAR_NAME_ROW_SIZE, "16", "Height of the displayed rows", false, true, 12, true, 96, true).bindTo(renderer.rowSize);
 	cvarManager->registerCvar(CVAR_NAME_COLUMN_SIZE, "90", "Width of the displayed columns", false, true, 45, true, 250, true).bindTo(renderer.columnSize);
 

@@ -9,8 +9,8 @@ class GameStatsSummary;
 
 class Renderer {
 private:
-	void RenderText(CanvasWrapper* canvas, std::string text, int columnId, int rowId);
-	void RenderText(CanvasWrapper* canvas, std::stringstream& text, int columnId, int rowId);
+	void RenderText(CanvasWrapper* canvas, std::string text, int columnId, int rowId, bool isRowDesc, bool isColDesc);
+	void RenderText(CanvasWrapper* canvas, std::stringstream& text, int columnId, int rowId, bool isRowDesc, bool isColDesc);
 	void RenderText(CanvasWrapper* canvas, float value, int columnId, int rowId, std::stringstream& ss, int precision = 2);
 
 	Vector2 GetBox();
@@ -31,6 +31,7 @@ public:
 	std::shared_ptr<bool> displayBallHits;
 
 	std::shared_ptr<bool> renderHorizontal;
+	std::shared_ptr<bool> customDescSize;
 
 	Renderer();
 
