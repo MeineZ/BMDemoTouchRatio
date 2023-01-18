@@ -95,6 +95,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DemoTouchRatioSettingsGUI.cpp" />
     <ClCompile Include="EventData.cpp" />
     <ClCompile Include="GameStats.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />

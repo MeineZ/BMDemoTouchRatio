@@ -17,7 +17,7 @@ GameStats::GameStats():
 
 void GameStats::BindEvents()
 {
-	GameWrapper* gameWrapper = DemoTouchRatio::GameWrapper();
+	GameWrapper* gameWrapper = DemoTouchRatio::GetGameWrapper();
 	if (gameWrapper == nullptr)
 		return;
 
@@ -28,7 +28,7 @@ void GameStats::BindEvents()
 
 void GameStats::UnbindEvents()
 {
-	GameWrapper* gameWrapper = DemoTouchRatio::GameWrapper();
+	GameWrapper* gameWrapper = DemoTouchRatio::GetGameWrapper();
 	if (gameWrapper == nullptr)
 		return;
 
@@ -49,11 +49,16 @@ void GameStats::OnBump(CarWrapper carWrapper, void* args, std::string eventName)
 	if (!Util::IsLocalPlayer(carWrapper) && !Util::IsLocalPlayer(bumpedCar))
 		return;
 
+	float delay =
+		DemoTouchRatio::Instance().ShouldMatchAccolades()
+			? Util::GetCurrentPing()
+			: DemoTouchRatio::Instance().GetCustomBumpDelay();
+
 	// Check whether we're allowed to track it and if it's a team bump
 	bool canTrackTeamBumps = DemoTouchRatio::Instance().CanTrackTeamBumps();
 	bool sameTeam = Util::AreInSameTeam(carWrapper, bumpedCar);
 	if (canTrackTeamBumps && sameTeam) {
-		int teamBumpKey = teamBumpData.RegisterEvent(Util::GetCurrentPing());
+		int teamBumpKey = teamBumpData.RegisterEvent(delay);
 		teamBumpData.Bump(teamBumpKey);
 		return;
 	}
@@ -63,7 +68,7 @@ void GameStats::OnBump(CarWrapper carWrapper, void* args, std::string eventName)
 		return;
 	}
 
-	int bumpKey = bumpData.RegisterEvent(Util::GetCurrentPing());
+	int bumpKey = bumpData.RegisterEvent(delay);
 	bumpData.Bump(bumpKey);
 }
 
@@ -79,7 +84,11 @@ void GameStats::OnDemo(CarWrapper carWrapper, void* args, std::string eventName)
 	if (!Util::IsLocalPlayer(attacker))
 		return;
 
-	int demoKey = demoData.RegisterEvent(0);
+	int demoKey = demoData.RegisterEvent(
+		DemoTouchRatio::Instance().ShouldMatchAccolades()
+			? 0.f
+			: DemoTouchRatio::Instance().GetCustomDemoDelay()
+	);
 	demoData.Bump(demoKey);
 }
 
@@ -90,7 +99,11 @@ void GameStats::OnBallHit(CarWrapper carWrapper, void* args, std::string eventNa
 
 	// We care about ball hits from everyone, when A player touches a ball it seems like a global
 	// timer is used to delay 2000 continious balltouches.
-	int ballHitKey = ballHitData.RegisterEvent(Util::GetCurrentPing());
+	int ballHitKey = ballHitData.RegisterEvent(
+		DemoTouchRatio::Instance().ShouldMatchAccolades()
+			? Util::GetCurrentPing()
+			: DemoTouchRatio::Instance().GetCustomBallHitDelay()
+	);
 
 	if (!Util::IsLocalPlayer(carWrapper))
 		return;

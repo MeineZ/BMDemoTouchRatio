@@ -9,7 +9,7 @@
 
 bool Util::IsLocalPlayer(CarWrapper& carWrapper)
 {
-	GameWrapper* gameWrapper = DemoTouchRatio::GameWrapper();
+	GameWrapper* gameWrapper = DemoTouchRatio::GetGameWrapper();
 	if (gameWrapper == nullptr)
 		return false;
 
@@ -24,7 +24,7 @@ bool Util::IsLocalPlayer(CarWrapper& carWrapper)
 
 bool Util::CanTrack()
 {
-	GameWrapper* gameWrapper = DemoTouchRatio::GameWrapper();
+	GameWrapper* gameWrapper = DemoTouchRatio::GetGameWrapper();
 	if (gameWrapper == nullptr)
 		return false;
 
@@ -38,7 +38,7 @@ bool Util::CanTrack()
 
 int Util::GetCurrentPing()
 {
-	GameWrapper* gameWrapper = DemoTouchRatio::GameWrapper();
+	GameWrapper* gameWrapper = DemoTouchRatio::GetGameWrapper();
 	CarWrapper localCar = gameWrapper->GetLocalCar();
 	if (localCar.IsNull())
 		return 0;
@@ -57,7 +57,7 @@ uint64_t Util::TimestampInMS()
 }
 
 bool Util::AreInSameTeam(CarWrapper carA, CarWrapper carB) {
-	GameWrapper* gameWrapper = DemoTouchRatio::GameWrapper();
+	GameWrapper* gameWrapper = DemoTouchRatio::GetGameWrapper();
 	if (gameWrapper == nullptr)
 		return false;
 

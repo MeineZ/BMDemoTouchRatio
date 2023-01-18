@@ -96,6 +96,9 @@
     <ClCompile Include="GameStatsSummary.cpp">
       <Filter>Plugin\src</Filter>
     </ClCompile>
+    <ClCompile Include="DemoTouchRatioSettingsGUI.cpp">
+      <Filter>Plugin\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imgui_rangeslider.h">

@@ -18,13 +18,16 @@ DemoTouchRatio::DemoTouchRatio() :
 	renderer(),
 	currentGame(nullptr),
 	lastGame(nullptr),
-	enabled(std::make_shared<bool>(true)),
+	scoreboardOpened(false),
 	renderInMatches(std::make_shared<bool>(true)),
 	renderOnlyOnScoreboard(std::make_shared<bool>(false)),
 	renderInFreeplay(std::make_shared<bool>(true)),
 	renderInCustomTraining(std::make_shared<bool>(true)),
 	renderInReplay(std::make_shared<bool>(true)),
-	scoreboardOpened(false)
+	matchAccolades(std::make_shared<bool>(true)),
+	customDelayBump(std::make_shared<float>(0.020f)),
+	customDelayDemo(std::make_shared<float>(0.f)),
+	customDelayBallHit(std::make_shared<float>(0.020f))
 { }
 
 void DemoTouchRatio::onLoad()
@@ -36,7 +39,6 @@ void DemoTouchRatio::onLoad()
 	Reset();
 
 	// Display CVar initialization
-	cvarManager->registerCvar(CVAR_NAME_ENABLED, "1", "Enable DemoTouch plugin", false, true, 0, true, 1, true).bindTo(enabled);
 	cvarManager->registerCvar(CVAR_NAME_IN_MATCHES, "1", "Draw DemoTouch display during matches", false, true, 0, true, 1, true).bindTo(renderInMatches);
 	cvarManager->registerCvar(CVAR_NAME_ON_SCOREBOARD, "0", "Draw DemoTouch display only when scoreboard is open", false, true, 0, true, 1, true).bindTo(renderOnlyOnScoreboard);
 	cvarManager->registerCvar(CVAR_NAME_IN_FREEPLAY, "1", "Draw DemoTouch display while in freeplay", false, true, 0, true, 1, true).bindTo(renderInFreeplay);
@@ -61,24 +63,11 @@ void DemoTouchRatio::onLoad()
 	cvarManager->registerCvar(CVAR_NAME_SHOW_DEMOS, "1", "Show demos data column", false, true, 0, true, 1, true).bindTo(renderer.displayDemos);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BALLHITS, "1", "Show ball touches data column", false, true, 0, true, 1, true).bindTo(renderer.displayBallHits);
 
-
-	// CVar Hooks
-	cvarManager->registerNotifier(CVAR_NAME_DISPLAY_SCALE_RESET, [this](std::vector<std::string> params) {
-		renderer.ResetScale();
-		cvarManager->getCvar(CVAR_NAME_DISPLAY_SCALE).setValue(*(renderer.scale));
-	}, "Reset display scale to 1.0", PERMISSION_ALL);
-
-	cvarManager->registerNotifier(CVAR_NAME_RESET_COLORS, [this](std::vector<std::string> params) {
-		ResetColors();
-	}, "Reset to default colors", PERMISSION_ALL);
-
-	cvarManager->registerNotifier(CVAR_NAME_RESET_TABLE_SIZE, [this](std::vector<std::string> params) {
-		ResetTableSizes();
-	}, "Reset to default table row/column size", PERMISSION_ALL);
-
-	cvarManager->registerNotifier(CVAR_NAME_RESET, [this](std::vector<std::string> params) {
-		Reset();
-	}, "Start a fresh demo touch session", PERMISSION_ALL);
+	// Custom behaviour
+	cvarManager->registerCvar(CVAR_NAME_MATCH_ACCOLADES, "1", "Try to match the match-accolades", false, true, 0, true, 1, true).bindTo(matchAccolades);
+	cvarManager->registerCvar(CVAR_NAME_CUSTOM_DELAY_BUMP, "0.02", "Custom timeout on bump tracking", false, true, 0.f, true, 10.f, true).bindTo(customDelayBump);
+	cvarManager->registerCvar(CVAR_NAME_CUSTOM_DELAY_DEMO, "0.0", "Custom timeout on demo tracking", false, true, 0.f, true, 10.f, true).bindTo(customDelayDemo);
+	cvarManager->registerCvar(CVAR_NAME_CUSTOM_DELAY_BALLHIT, "0.02", "Custom timeout on ballhit tracking", false, true, 0.f, true, 10.f, true).bindTo(customDelayBallHit);
 
 	// Hook binding
 	gameWrapper->HookEvent(HOOK_COUNTDOWN_BEGINSTATE, [this](std::string eventName) {
@@ -119,22 +108,6 @@ void DemoTouchRatio::Reset() {
 	playedGames.clear();
 }
 
-void DemoTouchRatio::ResetColors()
-{
-	renderer.ResetColors();
-
-	cvarManager->getCvar(CVAR_NAME_COLOR_BACKGROUND).setValue(*(renderer.colorBackground));
-	cvarManager->getCvar(CVAR_NAME_COLOR_TEXT).setValue(*(renderer.colorText));
-}
-
-void DemoTouchRatio::ResetTableSizes()
-{
-	renderer.ResetTableSizes();
-
-	cvarManager->getCvar(CVAR_NAME_ROW_SIZE).setValue(*(renderer.rowSize));
-	cvarManager->getCvar(CVAR_NAME_COLUMN_SIZE).setValue(*(renderer.columnSize));
-}
-
 void DemoTouchRatio::onUnload()
 {
 	gameWrapper->UnregisterDrawables();
@@ -153,7 +126,7 @@ DemoTouchRatio& DemoTouchRatio::Instance()
 	return *instance_;
 }
 
-GameWrapper* DemoTouchRatio::GameWrapper()
+GameWrapper* DemoTouchRatio::GetGameWrapper()
 {
 	return &*instance_->gameWrapper;
 }
@@ -213,4 +186,25 @@ bool DemoTouchRatio::CanRenderInMatches() {
 
 bool DemoTouchRatio::CanTrackTeamBumps() {
 	return *(renderer.displayTeamBumps);
+}
+
+bool DemoTouchRatio::ShouldMatchAccolades()
+{
+	return *matchAccolades;
+}
+
+
+float DemoTouchRatio::GetCustomBumpDelay()
+{
+	return *customDelayBump * 1000.f;
+}
+
+float DemoTouchRatio::GetCustomDemoDelay()
+{
+	return *customDelayDemo * 1000.f;
+}
+
+float DemoTouchRatio::GetCustomBallHitDelay()
+{
+	return *customDelayBallHit * 1000.f;
 }

@@ -15,8 +15,8 @@ Renderer::Renderer() :
 	posX(std::make_shared<int>(0)),
 	posY(std::make_shared<int>(500)),
 	scale(std::make_shared<float>(1.0f)),
-	colorBackground(std::make_shared<LinearColor>(LinearColor())),
-	colorText(std::make_shared<LinearColor>(LinearColor())),
+	colorBackground(std::make_shared<LinearColor>(LinearColor(0, 0, 0, 75))),
+	colorText(std::make_shared<LinearColor>(LinearColor(255, 255, 255, 127))),
 	rowSize(std::make_shared<float>(DEFAULT_ROW_SIZE)),
 	columnSize(std::make_shared<float>(DEFAULT_COLUMN_SIZE)),
 	displayBumps(std::make_shared<bool>(true)),
@@ -117,7 +117,7 @@ Vector2 Renderer::GetBox()
 			(*displayDemos ? *rowSize : 0) +
 			(*displayBallHits ? *rowSize : 0);
 	}
-	return Vector2 {width, height};
+	return Vector2 {(int)((float)width * *scale), (int)((float)height * *scale) };
 }
 
 void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats)

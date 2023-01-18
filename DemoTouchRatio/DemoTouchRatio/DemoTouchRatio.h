@@ -14,7 +14,9 @@ constexpr auto plugin_version = stringify(VERSION_MAJOR) "." stringify(VERSION_M
 class GameStats;
 
 class DemoTouchRatio: public BakkesMod::Plugin::BakkesModPlugin
+	, public BakkesMod::Plugin::PluginSettingsWindow
 {
+private:
 	static DemoTouchRatio* instance_;
 
 	std::vector<GameStats*> playedGames;
@@ -25,25 +27,27 @@ class DemoTouchRatio: public BakkesMod::Plugin::BakkesModPlugin
 
 	bool scoreboardOpened;
 
-	std::shared_ptr<bool> enabled; // Setting if plugin is enabled
 	std::shared_ptr<bool> renderOnlyOnScoreboard; // Setting if plugin may only render when scoreboard is open
 	std::shared_ptr<bool> renderInMatches; // Setting if plugin may render during matches
 	std::shared_ptr<bool> renderInFreeplay; // Setting if plugin may render during freeplay
 	std::shared_ptr<bool> renderInCustomTraining; // Setting if plugin may render during custom training
 	std::shared_ptr<bool> renderInReplay; // Setting if plugin may render during replays
 
+	std::shared_ptr<bool> matchAccolades; //
+	std::shared_ptr<float> customDelayBump; //
+	std::shared_ptr<float> customDelayDemo; //
+	std::shared_ptr<float> customDelayBallHit; //
+
 	void onLoad() override;
-	void onUnload() override; // Uncomment and implement if you need a unload method
+	void onUnload() override;
 
 	void Reset();
-	void ResetColors();
-	void ResetTableSizes();
 
 public:
 	DemoTouchRatio();
 
 	static DemoTouchRatio& Instance();
-	static GameWrapper* GameWrapper();
+	static GameWrapper* GetGameWrapper();
 
 	void EndGame();
 	void CreateNewGame();
@@ -52,6 +56,31 @@ public:
 
 	bool CanRenderInMatches();
 	bool CanTrackTeamBumps();
+	bool ShouldMatchAccolades();
+	float GetCustomBumpDelay();
+	float GetCustomDemoDelay();
+	float GetCustomBallHitDelay();
 
-	//void RenderWindow() override; // Uncomment if you want to render your own plugin window
+
+	// On render thread
+private:
+	// Settings renderer
+	void RenderDisplayMoments();
+	void RenderColumnVisibility();
+	void RenderDisplayLayout();
+	void RenderCustomBehaviour();
+
+	// ImGui Helpers
+	void ImGuiPushDisable(bool isDisabled);
+	void ImGuiPopDisable(bool isDisabled);
+	void DrawCheckbox(const char* label, bool* checked, const char* cvarName);
+	void DrawSlider(const char* label, int* value, int min, int max, const char* cvarName, float width = 350.f);
+	void DrawSlider(const char* label, float* value, float min, float max, const char* cvarName, float width = 350.f);
+	void DrawColorPicker(const char* label, LinearColor* color, const char* cvarName, float width = 350.f);
+
+public:
+	// Settings renderer
+	void RenderSettings() override;
+	std::string GetPluginName() override;
+	void SetImGuiContext(uintptr_t ctx) override;
 };
