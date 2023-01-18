@@ -8,8 +8,6 @@
 
 BAKKESMOD_PLUGIN(DemoTouchRatio, "Demo Touch Count Plugin", plugin_version, 0)
 
-// TODO: Update roadmap link to also contain closed issues
-
 DemoTouchRatio* DemoTouchRatio::instance_ = nullptr;
 std::shared_ptr<CVarManagerWrapper> _globalCvarManager;
 
