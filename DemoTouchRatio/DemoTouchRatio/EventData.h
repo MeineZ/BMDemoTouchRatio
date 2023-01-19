@@ -12,8 +12,9 @@ private:
 
 public:
 	EventData();
+	EventData(int initialCount);
 
 	int RegisterEvent(int timeoutInMS);
 	void Bump(int key);
-	int Count();
+	int Count() const;
 };

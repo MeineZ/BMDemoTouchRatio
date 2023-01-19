@@ -6,6 +6,7 @@
 class CanvasWrapper;
 class GameStats;
 class GameStatsSummary;
+class PersistentStats;
 
 class Renderer {
 private:
@@ -30,14 +31,24 @@ public:
 	std::shared_ptr<bool> displayDemos;
 	std::shared_ptr<bool> displayBallHits;
 
+	std::shared_ptr<bool> displayPersistentTotal;
+	std::shared_ptr<bool> displayPersistentAverage;
+	std::shared_ptr<bool> replaceSessionTotal;
+	std::shared_ptr<bool> replaceSessionAverage;
+
 	std::shared_ptr<bool> renderHorizontal;
 	std::shared_ptr<bool> customDescSize;
 
 	Renderer();
 
-	void RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats);
+	void RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, PersistentStats& persistentStats);
 
 	void ResetScale();
 	void ResetColors();
 	void ResetTableSizes();
+
+	bool ShouldShowTotal();
+	bool ShouldShowAverage();
+	bool ShouldShowPersistentTotal();
+	bool ShouldShowPersistentAverage();
 };

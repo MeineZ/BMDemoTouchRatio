@@ -1,8 +1,6 @@
 #pragma once
 
-#define EVENT_NAME_DEMO "Demos"
-#define EVENT_NAME_BUMP "Bumps"
-#define EVENT_NAME_BALL_HIT "Ball hits"
+#define NUMBER_OF_STATS_TRACKING 4
 
 #define ID_INVALID_VALUE 0
 
@@ -24,11 +22,16 @@
 #define CVAR_NAME_CUSTOM_DELAY_BUMP "cl_demotouch_plugin_custom_delay_bump"
 #define CVAR_NAME_CUSTOM_DELAY_DEMO "cl_demotouch_plugin_custom_delay_demo"
 #define CVAR_NAME_CUSTOM_DELAY_BALLHIT "cl_demotouch_plugin_custom_delay_ballhit"
+#define CVAR_NAME_PERSISTENT_STATS "cl_demotouch_plugin_persistent_stats"
 
 #define CVAR_NAME_SHOW_BUMPS "cl_demotouch_plugin_show_bumps"
 #define CVAR_NAME_SHOW_TEAMBUMPS "cl_demotouch_plugin_show_teambumps"
 #define CVAR_NAME_SHOW_DEMOS "cl_demotouch_plugin_show_demos"
 #define CVAR_NAME_SHOW_BALLHITS "cl_demotouch_plugin_show_ballhits"
+#define CVAR_NAME_SHOW_PERSISTENT_TOTAL "cl_demotouch_plugin_show_persistent_total"
+#define CVAR_NAME_SHOW_PERSISTENT_AVERAGE "cl_demotouch_plugin_show_persistent_average"
+#define CVAR_NAME_REPLACE_TOTAL "cl_demotouch_plugin_replace_total"
+#define CVAR_NAME_REPLACE_AVERAGE "cl_demotouch_plugin_replace_average"
 
 #define HOOK_COUNTDOWN_BEGINSTATE "Function GameEvent_TA.Countdown.BeginState"
 #define HOOK_ON_WINNER_SET "Function TAGame.GameEvent_Soccar_TA.EventMatchWinnerSet"

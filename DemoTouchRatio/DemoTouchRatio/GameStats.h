@@ -16,12 +16,13 @@ private:
 
 public:
 	GameStats();
+	GameStats(int bumps, int teamBumps, int demos, int ballHits);
 
 	void BindEvents();
 	void UnbindEvents();
 
-	int GetBumps();
-	int GetTeamBumps();
-	int GetDemos();
-	int GetBallHits();
+	int GetBumps() const;
+	int GetTeamBumps() const;
+	int GetDemos() const;
+	int GetBallHits() const;
 };

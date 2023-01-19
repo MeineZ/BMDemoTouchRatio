@@ -4,6 +4,7 @@
 #include "IMGUI/imgui.h"
 #include "IMGUI/imgui_internal.h"
 
+#include "Util.h"
 #include "Constants.h"
 
 
@@ -14,12 +15,12 @@ void DemoTouchRatio::RenderSettings()
 	RenderColumnVisibility();
 	RenderDisplayLayout();
 	RenderCustomBehaviour();
+	RenderPersistentStats();
 
 	// Disclaimer
 	ImGui::NewLine();
 	ImGui::Separator();
-	ImGui::TextUnformatted("NOTE: Be aware that leaving a match before it officially ended (leave directly after forfeit, ragequite, etc.) CAN result in inaccurate stats.");
-	ImGui::TextUnformatted("Use the Reset Stats button at the bottom to refresh your current session, if desired.");
+	ImGui::TextUnformatted("Use the Reset button below to refresh your current session.");
 	if (ImGui::Button("Reset##stats"))
 	{
 		gameWrapper->Execute([this](GameWrapper* gw) {
@@ -73,6 +74,33 @@ void DemoTouchRatio::RenderColumnVisibility()
 	ImGui::SameLine(150); DrawCheckbox("Team bumps", &*renderer.displayTeamBumps, CVAR_NAME_SHOW_TEAMBUMPS);
 	ImGui::SameLine(300); DrawCheckbox("Demolitions", &*renderer.displayDemos, CVAR_NAME_SHOW_DEMOS);
 	ImGui::SameLine(450); DrawCheckbox("Ball touches", &*renderer.displayBallHits, CVAR_NAME_SHOW_BALLHITS);
+
+	ImGui::NewLine();
+
+
+	ImGui::TextUnformatted("Settings about your all-time stats. See \"Track stats across game sessions\" section for more information.");
+
+	if (!*usePersistentStats) {
+		ImGui::TextUnformatted("Tracking total stats is disabled. See \"Track stats across game sessions\" section for more information.");
+	}
+	ImGuiPushDisable(!*usePersistentStats);
+	DrawCheckbox("Show all-time total", &*renderer.displayPersistentTotal, CVAR_NAME_SHOW_PERSISTENT_TOTAL);
+	ImGuiPopDisable(!*usePersistentStats);
+	ImGui::Indent();
+	ImGuiPushDisable(!*usePersistentStats || !*renderer.displayPersistentTotal);
+	DrawCheckbox("Replace session total", &*renderer.replaceSessionTotal, CVAR_NAME_REPLACE_TOTAL);
+	ImGuiPopDisable(!*usePersistentStats || !*renderer.displayPersistentTotal);
+	ImGui::Unindent();
+
+	ImGuiPushDisable(!*usePersistentStats);
+	DrawCheckbox("Show all-time average", &*renderer.displayPersistentAverage, CVAR_NAME_SHOW_PERSISTENT_AVERAGE);
+	ImGuiPopDisable(!*usePersistentStats);
+	ImGui::Indent();
+	ImGuiPushDisable(!*usePersistentStats || !*renderer.displayPersistentAverage);
+	DrawCheckbox("Replace session average", &*renderer.replaceSessionAverage, CVAR_NAME_REPLACE_AVERAGE);
+	ImGuiPopDisable(!*usePersistentStats || !*renderer.displayPersistentAverage);
+	ImGui::Unindent();
+
 
 	ImGui::Unindent();
 }
@@ -183,6 +211,40 @@ void DemoTouchRatio::RenderCustomBehaviour()
 	}
 
 	ImGuiPopDisable(*matchAccolades);
+
+	ImGui::Unindent();
+}
+
+
+void DemoTouchRatio::RenderPersistentStats() {
+	if (!ImGui::CollapsingHeader("Track stats across game sessions"))
+		return;
+
+	ImGui::TextUnformatted("Below you can choose if you want to keep tracking stats across game sessions.");
+	ImGui::TextUnformatted("You can automatically store your stats after each game to keep track of your total sum of stats.");
+	ImGui::TextUnformatted("Choose in the \"What stats do you want to see?\" section, whether you want to display them.");
+
+	// Clear total stats
+	ImGui::Indent();
+	bool oldUsePersistentStats = *usePersistentStats;
+	DrawCheckbox("Store stats", &*usePersistentStats, CVAR_NAME_PERSISTENT_STATS);
+	if (oldUsePersistentStats  != *usePersistentStats) {
+		persistentStats.Initialize();
+	}
+
+	ImGui::NewLine();
+
+	static uint64_t timeStamp = 0;
+	if (ImGui::Button("Clear total stats")) {
+		timeStamp = Util::TimestampInMS();
+	}
+	if (timeStamp + 10000 > Util::TimestampInMS()) { // Wait 10 seconds before hiding it again
+		ImGui::NewLine();
+		ImGui::TextUnformatted("!! This removes your all-time tracked stats !!");
+		if (ImGui::Button("YES, I WANT TO CLEAR MY TOTAL STATS")) {
+			persistentStats.Clear();
+		}
+	}
 
 	ImGui::Unindent();
 }

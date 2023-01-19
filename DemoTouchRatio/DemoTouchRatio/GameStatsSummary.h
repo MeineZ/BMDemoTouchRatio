@@ -6,21 +6,24 @@
 class GameStats;
 
 class GameStatsSummary {
-private:
-	struct SummarizedStats {
+public:
+	struct SummarizedStats
+	{
 		float bumps = 0;
 		float teamBumps = 0;
 		float demos = 0;
 		float ballHits = 0;
 
-		SummarizedStats(int bumps, int teamBumps, int demos, int ballHits) {
+		SummarizedStats(int bumps, int teamBumps, int demos, int ballHits)
+		{
 			this->bumps = bumps;
 			this->teamBumps = teamBumps;
 			this->demos = demos;
 			this->ballHits = ballHits;
 		}
 
-		SummarizedStats(float bumps, float teamBumps, float demos, float ballHits) {
+		SummarizedStats(float bumps, float teamBumps, float demos, float ballHits)
+		{
 			this->bumps = bumps;
 			this->teamBumps = teamBumps;
 			this->demos = demos;
@@ -29,6 +32,8 @@ private:
 
 		std::string toString() const;
 	};
+
+private:
 
 	int numberOfGames;
 	SummarizedStats currentStats;

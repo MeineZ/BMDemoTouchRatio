@@ -7,6 +7,7 @@
 #include "bakkesmod/plugin/PluginSettingsWindow.h"
 
 #include "Renderer.h"
+#include "PersistentStats.h"
 
 #include "version.h"
 constexpr auto plugin_version = stringify(VERSION_MAJOR) "." stringify(VERSION_MINOR) "." stringify(VERSION_PATCH) "." stringify(VERSION_BUILD);
@@ -21,6 +22,7 @@ private:
 
 	std::vector<GameStats*> playedGames;
 	Renderer renderer;
+	PersistentStats persistentStats;
 
 	GameStats* lastGame;
 	GameStats* currentGame;
@@ -37,6 +39,8 @@ private:
 	std::shared_ptr<float> customDelayBump; //
 	std::shared_ptr<float> customDelayDemo; //
 	std::shared_ptr<float> customDelayBallHit; //
+
+	std::shared_ptr<bool> usePersistentStats;
 
 	void onLoad() override;
 	void onUnload() override;
@@ -57,6 +61,7 @@ public:
 	bool CanRenderInMatches();
 	bool CanTrackTeamBumps();
 	bool ShouldMatchAccolades();
+	bool UsesPersistentStats();
 	float GetCustomBumpDelay();
 	float GetCustomDemoDelay();
 	float GetCustomBallHitDelay();
@@ -69,6 +74,7 @@ private:
 	void RenderColumnVisibility();
 	void RenderDisplayLayout();
 	void RenderCustomBehaviour();
+	void RenderPersistentStats();
 
 	// ImGui Helpers
 	void ImGuiPushDisable(bool isDisabled);

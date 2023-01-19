@@ -11,6 +11,12 @@ EventData::EventData():
 	expectingKey(INVALID_KEY)
 { }
 
+EventData::EventData(int initialCount) :
+	count(initialCount),
+	lastRegisteredEvent(0),
+	expectingKey(INVALID_KEY)
+{ }
+
 int EventData::RegisterEvent(int timeoutInMS) 
 {
 	if (lastRegisteredEvent + timeoutInMS > Util::TimestampInMS())
@@ -35,7 +41,7 @@ void EventData::Bump(int key)
 	++count;
 }
 
-int EventData::Count()
+int EventData::Count() const
 {
 	return count;
 }

@@ -99,6 +99,9 @@
     <ClCompile Include="DemoTouchRatioSettingsGUI.cpp">
       <Filter>Plugin\src</Filter>
     </ClCompile>
+    <ClCompile Include="PersistentStats.cpp">
+      <Filter>Plugin\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imgui_rangeslider.h">
@@ -177,6 +180,9 @@
       <Filter>Plugin\header</Filter>
     </ClInclude>
     <ClInclude Include="GameStatsSummary.h">
+      <Filter>Plugin\header</Filter>
+    </ClInclude>
+    <ClInclude Include="PersistentStats.h">
       <Filter>Plugin\header</Filter>
     </ClInclude>
   </ItemGroup>

@@ -12,8 +12,14 @@ GameStats::GameStats():
 	teamBumpData(EventData()),
 	demoData(EventData()),
 	ballHitData(EventData())
-{
-}
+{ }
+
+GameStats::GameStats(int bumps, int teamBumps, int demos, int ballHits) :
+	bumpData(EventData(bumps)),
+	teamBumpData(EventData(teamBumps)),
+	demoData(EventData(demos)),
+	ballHitData(EventData(ballHits))
+{ }
 
 void GameStats::BindEvents()
 {
@@ -111,16 +117,16 @@ void GameStats::OnBallHit(CarWrapper carWrapper, void* args, std::string eventNa
 	ballHitData.Bump(ballHitKey);
 }
 
-int GameStats::GetBumps() {
+int GameStats::GetBumps() const {
 	return bumpData.Count();
 }
-int GameStats::GetTeamBumps() {
+int GameStats::GetTeamBumps() const {
 	return teamBumpData.Count();
 }
-int GameStats::GetDemos() {
+int GameStats::GetDemos() const {
 	return demoData.Count();
 }
-int GameStats::GetBallHits() {
+int GameStats::GetBallHits() const {
 	return ballHitData.Count();
 }
 

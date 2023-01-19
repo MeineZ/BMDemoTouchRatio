@@ -14,6 +14,7 @@ std::shared_ptr<CVarManagerWrapper> _globalCvarManager;
 DemoTouchRatio::DemoTouchRatio() :
 	playedGames(std::vector<GameStats*>()),
 	renderer(),
+	persistentStats(),
 	currentGame(nullptr),
 	lastGame(nullptr),
 	scoreboardOpened(false),
@@ -25,7 +26,8 @@ DemoTouchRatio::DemoTouchRatio() :
 	matchAccolades(std::make_shared<bool>(true)),
 	customDelayBump(std::make_shared<float>(0.020f)),
 	customDelayDemo(std::make_shared<float>(0.f)),
-	customDelayBallHit(std::make_shared<float>(0.020f))
+	customDelayBallHit(std::make_shared<float>(0.020f)),
+	usePersistentStats(std::make_shared<bool>(true))
 { }
 
 void DemoTouchRatio::onLoad()
@@ -35,6 +37,7 @@ void DemoTouchRatio::onLoad()
 	_globalCvarManager = cvarManager;
 
 	Reset();
+	persistentStats.Initialize();
 
 	// Display CVar initialization
 	cvarManager->registerCvar(CVAR_NAME_IN_MATCHES, "1", "Draw DemoTouch display during matches", false, true, 0, true, 1, true).bindTo(renderInMatches);
@@ -53,7 +56,7 @@ void DemoTouchRatio::onLoad()
 	cvarManager->registerCvar(CVAR_NAME_RENDER_HORIZONTAL, "1", "Whether to render the display horizontally", false, true, 12, true, 96, true).bindTo(renderer.renderHorizontal);
 	cvarManager->registerCvar(CVAR_NAME_CUSTOM_DESC_SIZE, "0", "Whether to use custom cell size for desc. cells.", false, true, 0, true, 1, true).bindTo(renderer.customDescSize);
 	cvarManager->registerCvar(CVAR_NAME_ROW_SIZE, "16", "Height of the displayed rows", false, true, 12, true, 96, true).bindTo(renderer.rowSize);
-	cvarManager->registerCvar(CVAR_NAME_COLUMN_SIZE, "90", "Width of the displayed columns", false, true, 45, true, 250, true).bindTo(renderer.columnSize);
+	cvarManager->registerCvar(CVAR_NAME_COLUMN_SIZE, "100", "Width of the displayed columns", false, true, 45, true, 250, true).bindTo(renderer.columnSize);
 
 	// Columns show/hide CVar initialization
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BUMPS, "1", "Show bumps data column", false, true, 0, true, 1, true).bindTo(renderer.displayBumps);
@@ -61,11 +64,19 @@ void DemoTouchRatio::onLoad()
 	cvarManager->registerCvar(CVAR_NAME_SHOW_DEMOS, "1", "Show demos data column", false, true, 0, true, 1, true).bindTo(renderer.displayDemos);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BALLHITS, "1", "Show ball touches data column", false, true, 0, true, 1, true).bindTo(renderer.displayBallHits);
 
+	cvarManager->registerCvar(CVAR_NAME_SHOW_PERSISTENT_TOTAL, "0", "Show all-time total stats", false, true, 0, true, 1, true).bindTo(renderer.displayPersistentTotal);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_PERSISTENT_AVERAGE, "0", "Show all-time average stats", false, true, 0, true, 1, true).bindTo(renderer.displayPersistentAverage);
+	cvarManager->registerCvar(CVAR_NAME_REPLACE_TOTAL, "0", "Replace session total with all-time total stats", false, true, 0, true, 1, true).bindTo(renderer.replaceSessionTotal);
+	cvarManager->registerCvar(CVAR_NAME_REPLACE_AVERAGE, "0", "Replace session average with all-time average stats", false, true, 0, true, 1, true).bindTo(renderer.replaceSessionAverage);
+
 	// Custom behaviour
 	cvarManager->registerCvar(CVAR_NAME_MATCH_ACCOLADES, "1", "Try to match the match-accolades", false, true, 0, true, 1, true).bindTo(matchAccolades);
 	cvarManager->registerCvar(CVAR_NAME_CUSTOM_DELAY_BUMP, "0.02", "Custom timeout on bump tracking", false, true, 0.f, true, 10.f, true).bindTo(customDelayBump);
 	cvarManager->registerCvar(CVAR_NAME_CUSTOM_DELAY_DEMO, "0.0", "Custom timeout on demo tracking", false, true, 0.f, true, 10.f, true).bindTo(customDelayDemo);
 	cvarManager->registerCvar(CVAR_NAME_CUSTOM_DELAY_BALLHIT, "0.02", "Custom timeout on ballhit tracking", false, true, 0.f, true, 10.f, true).bindTo(customDelayBallHit);
+
+	// Store total stats
+	cvarManager->registerCvar(CVAR_NAME_PERSISTENT_STATS, "1", "Store all-time stats", false, true, 0, true, 1, true).bindTo(usePersistentStats);
 
 	// Hook binding
 	gameWrapper->HookEvent(HOOK_COUNTDOWN_BEGINSTATE, [this](std::string eventName) {
@@ -155,6 +166,10 @@ void DemoTouchRatio::EndGame()
 			lastGame = nullptr;
 		}
 
+		if (*usePersistentStats) {
+			persistentStats.Update(currentGame);
+		}
+
 		lastGame = currentGame;
 		lastGame->UnbindEvents();
 		currentGame = nullptr;
@@ -178,7 +193,7 @@ void DemoTouchRatio::Render(CanvasWrapper canvas) {
 		return;
 
 	GameStatsSummary summary = GameStatsSummary(currentGame, lastGame, playedGames);
-	renderer.RenderStats(&canvas, summary);
+	renderer.RenderStats(&canvas, summary, persistentStats);
 }
 
 bool DemoTouchRatio::CanRenderInMatches() {
@@ -192,6 +207,11 @@ bool DemoTouchRatio::CanTrackTeamBumps() {
 bool DemoTouchRatio::ShouldMatchAccolades()
 {
 	return *matchAccolades;
+}
+
+bool DemoTouchRatio::UsesPersistentStats()
+{
+	return *usePersistentStats;
 }
 
 

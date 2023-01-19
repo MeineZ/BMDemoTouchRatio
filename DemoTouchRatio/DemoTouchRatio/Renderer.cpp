@@ -1,12 +1,14 @@
 #include <pch.h>
 #include "Renderer.h"
 
+#include <Constants.h>
 #include <GameStatsSummary.h>
 #include <GameStats.h>
 #include <DemoTouchRatio.h>
+#include <PersistentStats.h>
 
 #define DEFAULT_ROW_SIZE 16.f
-#define DEFAULT_COLUMN_SIZE 90.f
+#define DEFAULT_COLUMN_SIZE 100.f
 
 int columStart = 10;
 int rowStart = 5;
@@ -23,6 +25,10 @@ Renderer::Renderer() :
 	displayTeamBumps(std::make_shared<bool>(false)),
 	displayDemos(std::make_shared<bool>(true)),
 	displayBallHits(std::make_shared<bool>(true)),
+	displayPersistentTotal(std::make_shared<bool>(false)),
+	displayPersistentAverage(std::make_shared<bool>(false)),
+	replaceSessionTotal(std::make_shared<bool>(false)),
+	replaceSessionAverage(std::make_shared<bool>(false)),
 	renderHorizontal(std::make_shared<bool>(true)),
 	customDescSize(std::make_shared<bool>(false))
 { }
@@ -97,7 +103,14 @@ Vector2 Renderer::GetBox()
 	int width = 5.f,
 		height = 8.f;
 
-	int numberOfDescriptionCells = DemoTouchRatio::Instance().CanRenderInMatches() ? 5 : 4;
+	DemoTouchRatio& app = DemoTouchRatio::Instance();
+
+	int numberOfDescriptionCells = 4 
+		+ (DemoTouchRatio::Instance().CanRenderInMatches() ? 1 : 0)
+		+ (
+			(ShouldShowPersistentTotal() && ShouldShowTotal() ? 1 : 0) +
+			(ShouldShowPersistentAverage() && ShouldShowAverage() ? 1 : 0)
+		);
 
 	if (*renderHorizontal)
 	{
@@ -120,7 +133,24 @@ Vector2 Renderer::GetBox()
 	return Vector2 {(int)((float)width * *scale), (int)((float)height * *scale) };
 }
 
-void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats)
+bool Renderer::ShouldShowTotal()
+{
+	return !ShouldShowPersistentTotal() || (ShouldShowPersistentTotal() && !*replaceSessionTotal);
+}
+bool Renderer::ShouldShowAverage()
+{
+	return !ShouldShowPersistentAverage() || (ShouldShowPersistentAverage() && !*replaceSessionAverage);
+}
+bool Renderer::ShouldShowPersistentTotal()
+{
+	return DemoTouchRatio::Instance().UsesPersistentStats() && *displayPersistentTotal;
+}
+bool Renderer::ShouldShowPersistentAverage()
+{
+	return DemoTouchRatio::Instance().UsesPersistentStats() && *displayPersistentAverage;
+}
+
+void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, PersistentStats &persistentStats)
 {
 	std::stringstream stringStream;
 	DemoTouchRatio app = DemoTouchRatio::Instance();
@@ -146,10 +176,34 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats)
 		if (canRenderInMatches)
 			RenderText(canvas, "Current", currentColumn, currentRow++, true, false);
 		RenderText(canvas, "Latest", currentColumn, currentRow++, true, false);
-		RenderText(canvas, "Total", currentColumn, currentRow++, true, false);
-		stringStream.str("");
-		stringStream << "Avg. (" << gameStats.GetNumberOfGames() << ")";
-		RenderText(canvas, stringStream, currentColumn, currentRow++, true, false);
+		if (ShouldShowTotal())
+			RenderText(canvas, "Total", currentColumn, currentRow++, true, false);
+		if (ShouldShowAverage())
+		{
+			stringStream.str("");
+			stringStream << "Avg. #" << gameStats.GetNumberOfGames();
+			RenderText(canvas, stringStream, currentColumn, currentRow++, true, false);
+		}
+
+		if (ShouldShowPersistentTotal())
+		{
+				stringStream.str("");
+				if (ShouldShowPersistentAverage())
+				{
+					stringStream << "[Total]";
+				}
+				else
+				{
+					stringStream << "[Total #" << persistentStats.GetNumberOfGames() << "]";
+				}
+				RenderText(canvas, stringStream, currentColumn, currentRow++, true, false);
+		}
+		if (ShouldShowPersistentAverage())
+		{
+			stringStream.str("");
+			stringStream << "[Avg. #" << persistentStats.GetNumberOfGames() << "]";
+			RenderText(canvas, stringStream, currentColumn, currentRow++, true, false);
+		}
 		++currentColumn;
 
 
@@ -161,8 +215,15 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats)
 			if (canRenderInMatches)
 				RenderText(canvas, gameStats.GetCurrent().bumps, currentColumn, currentRow++, stringStream, 0);
 			RenderText(canvas, gameStats.GetLast().bumps, currentColumn, currentRow++, stringStream, 0);
-			RenderText(canvas, gameStats.GetTotal().bumps, currentColumn, currentRow++, stringStream, 0);
-			RenderText(canvas, gameStats.GetAverage().bumps, currentColumn, currentRow++, stringStream, 2);
+			if (ShouldShowTotal())
+				RenderText(canvas, gameStats.GetTotal().bumps, currentColumn, currentRow++, stringStream, 0);
+			if (ShouldShowAverage())
+				RenderText(canvas, gameStats.GetAverage().bumps, currentColumn, currentRow++, stringStream, 2);
+
+			if (ShouldShowPersistentTotal())
+				RenderText(canvas, persistentStats.GetTotalStats().GetBumps(), currentColumn, currentRow++, stringStream, 0);
+			if (ShouldShowPersistentAverage())
+				RenderText(canvas, persistentStats.GetAverageStats().bumps, currentColumn, currentRow++, stringStream, 2);
 			++currentColumn;
 		}
 
@@ -175,8 +236,15 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats)
 			if (canRenderInMatches)
 				RenderText(canvas, gameStats.GetCurrent().teamBumps, currentColumn, currentRow++, stringStream, 0);
 			RenderText(canvas, gameStats.GetLast().teamBumps, currentColumn, currentRow++, stringStream, 0);
-			RenderText(canvas, gameStats.GetTotal().teamBumps, currentColumn, currentRow++, stringStream, 0);
-			RenderText(canvas, gameStats.GetAverage().teamBumps, currentColumn, currentRow++, stringStream, 2);
+			if (ShouldShowTotal())
+				RenderText(canvas, gameStats.GetTotal().teamBumps, currentColumn, currentRow++, stringStream, 0);
+			if (ShouldShowAverage())
+				RenderText(canvas, gameStats.GetAverage().teamBumps, currentColumn, currentRow++, stringStream, 2);
+
+			if (ShouldShowPersistentTotal())
+				RenderText(canvas, persistentStats.GetTotalStats().GetTeamBumps(), currentColumn, currentRow++, stringStream, 0);
+			if (ShouldShowPersistentAverage())
+				RenderText(canvas, persistentStats.GetAverageStats().teamBumps, currentColumn, currentRow++, stringStream, 2);
 			++currentColumn;
 		}
 
@@ -188,8 +256,15 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats)
 			if (canRenderInMatches)
 				RenderText(canvas, gameStats.GetCurrent().demos, currentColumn, currentRow++, stringStream, 0);
 			RenderText(canvas, gameStats.GetLast().demos, currentColumn, currentRow++, stringStream, 0);
-			RenderText(canvas, gameStats.GetTotal().demos, currentColumn, currentRow++, stringStream, 0);
-			RenderText(canvas, gameStats.GetAverage().demos, currentColumn, currentRow++, stringStream, 2);
+			if (ShouldShowTotal())
+				RenderText(canvas, gameStats.GetTotal().demos, currentColumn, currentRow++, stringStream, 0);
+			if (ShouldShowAverage())
+				RenderText(canvas, gameStats.GetAverage().demos, currentColumn, currentRow++, stringStream, 2);
+
+			if (ShouldShowPersistentTotal())
+				RenderText(canvas, persistentStats.GetTotalStats().GetDemos(), currentColumn, currentRow++, stringStream, 0);
+			if (ShouldShowPersistentAverage())
+				RenderText(canvas, persistentStats.GetAverageStats().demos, currentColumn, currentRow++, stringStream, 2);
 			++currentColumn;
 		}
 
@@ -201,8 +276,15 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats)
 			if (canRenderInMatches)
 				RenderText(canvas, gameStats.GetCurrent().ballHits, currentColumn, currentRow++, stringStream, 0);
 			RenderText(canvas, gameStats.GetLast().ballHits, currentColumn, currentRow++, stringStream, 0);
-			RenderText(canvas, gameStats.GetTotal().ballHits, currentColumn, currentRow++, stringStream, 0);
-			RenderText(canvas, gameStats.GetAverage().ballHits, currentColumn, currentRow++, stringStream, 2);
+			if (ShouldShowTotal())
+				RenderText(canvas, gameStats.GetTotal().ballHits, currentColumn, currentRow++, stringStream, 0);
+			if (ShouldShowAverage())
+				RenderText(canvas, gameStats.GetAverage().ballHits, currentColumn, currentRow++, stringStream, 2);
+
+			if (ShouldShowPersistentTotal())
+				RenderText(canvas, persistentStats.GetTotalStats().GetBallHits(), currentColumn, currentRow++, stringStream, 0);
+			if (ShouldShowPersistentAverage())
+				RenderText(canvas, persistentStats.GetAverageStats().ballHits, currentColumn, currentRow++, stringStream, 2);
 			++currentColumn;
 		}
 	}
@@ -216,10 +298,26 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats)
 		if (canRenderInMatches)
 			RenderText(canvas, "Current", currentColumn++, currentRow, false, true);
 		RenderText(canvas, "Latest", currentColumn++, currentRow, false, true);
-		RenderText(canvas, "Total", currentColumn++, currentRow, false, true);
-		stringStream.str("");
-		stringStream << "Avg. (" << gameStats.GetNumberOfGames() << ")";
-		RenderText(canvas, stringStream, currentColumn++, currentRow, false, true);
+		if (ShouldShowTotal())
+			RenderText(canvas, "Total", currentColumn++, currentRow, false, true);
+		if (ShouldShowAverage()) {
+			stringStream.str("");
+			stringStream << "Avg. #" << gameStats.GetNumberOfGames();
+			RenderText(canvas, stringStream, currentColumn++, currentRow, false, true);
+		}
+
+		if (ShouldShowPersistentTotal())
+		{
+			stringStream.str("");
+			stringStream << "[Total #" << persistentStats.GetNumberOfGames() << "]";
+			RenderText(canvas, stringStream, currentColumn++, currentRow, false, true);
+		}
+		if (ShouldShowPersistentAverage())
+		{
+			stringStream.str("");
+			stringStream << "[Avg. #" << persistentStats.GetNumberOfGames() << "]";
+			RenderText(canvas, stringStream, currentColumn++, currentRow, false, true);
+		}
 		++currentRow;
 
 
@@ -231,8 +329,15 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats)
 			if (canRenderInMatches)
 				RenderText(canvas, gameStats.GetCurrent().bumps, currentColumn++, currentRow, stringStream, 0);
 			RenderText(canvas, gameStats.GetLast().bumps, currentColumn++, currentRow, stringStream, 0);
-			RenderText(canvas, gameStats.GetTotal().bumps, currentColumn++, currentRow, stringStream, 0);
-			RenderText(canvas, gameStats.GetAverage().bumps, currentColumn++, currentRow, stringStream, 2);
+			if (ShouldShowTotal())
+				RenderText(canvas, gameStats.GetTotal().bumps, currentColumn++, currentRow, stringStream, 0);
+			if (ShouldShowAverage())
+				RenderText(canvas, gameStats.GetAverage().bumps, currentColumn++, currentRow, stringStream, 2);
+
+			if (ShouldShowPersistentTotal())
+				RenderText(canvas, persistentStats.GetTotalStats().GetBumps(), currentColumn++, currentRow, stringStream, 0);
+			if (ShouldShowPersistentAverage())
+				RenderText(canvas, persistentStats.GetAverageStats().bumps, currentColumn++, currentRow, stringStream, 2);
 			++currentRow;
 		}
 
@@ -244,8 +349,15 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats)
 			if (canRenderInMatches)
 				RenderText(canvas, gameStats.GetCurrent().teamBumps, currentColumn++, currentRow, stringStream, 0);
 			RenderText(canvas, gameStats.GetLast().teamBumps, currentColumn++, currentRow, stringStream, 0);
-			RenderText(canvas, gameStats.GetTotal().teamBumps, currentColumn++, currentRow, stringStream, 0);
-			RenderText(canvas, gameStats.GetAverage().teamBumps, currentColumn++, currentRow, stringStream, 2);
+			if (ShouldShowTotal())
+				RenderText(canvas, gameStats.GetTotal().teamBumps, currentColumn++, currentRow, stringStream, 0);
+			if (ShouldShowAverage())
+				RenderText(canvas, gameStats.GetAverage().teamBumps, currentColumn++, currentRow, stringStream, 2);
+
+			if (ShouldShowPersistentTotal())
+				RenderText(canvas, persistentStats.GetTotalStats().GetTeamBumps(), currentColumn++, currentRow, stringStream, 0);
+			if (ShouldShowPersistentAverage())
+				RenderText(canvas, persistentStats.GetAverageStats().teamBumps, currentColumn++, currentRow, stringStream, 2);
 			++currentRow;
 		}
 
@@ -257,8 +369,15 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats)
 			if (canRenderInMatches)
 				RenderText(canvas, gameStats.GetCurrent().demos, currentColumn++, currentRow, stringStream, 0);
 			RenderText(canvas, gameStats.GetLast().demos, currentColumn++, currentRow, stringStream, 0);
-			RenderText(canvas, gameStats.GetTotal().demos, currentColumn++, currentRow, stringStream, 0);
-			RenderText(canvas, gameStats.GetAverage().demos, currentColumn++, currentRow, stringStream, 2);
+			if (ShouldShowTotal())
+				RenderText(canvas, gameStats.GetTotal().demos, currentColumn++, currentRow, stringStream, 0);
+			if (ShouldShowAverage())
+				RenderText(canvas, gameStats.GetAverage().demos, currentColumn++, currentRow, stringStream, 2);
+
+			if (ShouldShowPersistentTotal())
+				RenderText(canvas, persistentStats.GetTotalStats().GetDemos(), currentColumn++, currentRow, stringStream, 0);
+			if (ShouldShowPersistentAverage())
+				RenderText(canvas, persistentStats.GetAverageStats().demos, currentColumn++, currentRow, stringStream, 2);
 			++currentRow;
 		}
 
@@ -270,8 +389,15 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats)
 			if (canRenderInMatches)
 				RenderText(canvas, gameStats.GetCurrent().ballHits, currentColumn++, currentRow, stringStream, 0);
 			RenderText(canvas, gameStats.GetLast().ballHits, currentColumn++, currentRow, stringStream, 0);
-			RenderText(canvas, gameStats.GetTotal().ballHits, currentColumn++, currentRow, stringStream, 0);
-			RenderText(canvas, gameStats.GetAverage().ballHits, currentColumn++, currentRow, stringStream, 2);
+			if (ShouldShowTotal())
+				RenderText(canvas, gameStats.GetTotal().ballHits, currentColumn++, currentRow, stringStream, 0);
+			if (ShouldShowAverage())
+				RenderText(canvas, gameStats.GetAverage().ballHits, currentColumn++, currentRow, stringStream, 2);
+
+			if (ShouldShowPersistentTotal())
+				RenderText(canvas, persistentStats.GetTotalStats().GetBallHits(), currentColumn++, currentRow, stringStream, 0);
+			if (ShouldShowPersistentAverage())
+				RenderText(canvas, persistentStats.GetAverageStats().ballHits, currentColumn++, currentRow, stringStream, 2);
 			++currentRow;
 		}
 	}

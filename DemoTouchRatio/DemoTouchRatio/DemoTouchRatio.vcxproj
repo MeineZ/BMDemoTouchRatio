@@ -91,7 +91,7 @@
       <Command>powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File update_version.ps1 "./version.h"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>"$(BakkesModPath)\bakkesmodsdk\bakkesmod-patch.exe" "$(TargetPath)" &amp;&amp; copy "$(SolutionDir)DemoTouchRatio.set" "$(BakkesModPath)\plugins\settings\DemoTouchRatio.set"</Command>
+      <Command>"$(BakkesModPath)\bakkesmodsdk\bakkesmod-patch.exe" "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -116,6 +116,7 @@
     </ClCompile>
     <ClCompile Include="DemoTouchRatio.cpp" />
     <ClCompile Include="GuiBase.cpp" />
+    <ClCompile Include="PersistentStats.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="GameStatsSummary.cpp" />
     <ClCompile Include="Util.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="GuiBase.h" />
     <ClInclude Include="DemoTouchRatio.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="PersistentStats.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="version.h" />
   </ItemGroup>
