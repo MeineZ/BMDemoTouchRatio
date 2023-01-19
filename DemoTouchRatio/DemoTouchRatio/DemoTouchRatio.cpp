@@ -81,6 +81,9 @@ void DemoTouchRatio::onLoad()
 	gameWrapper->HookEvent(HOOK_ON_WINNER_SET, [this](std::string eventName) {
 		EndGame();
 	});
+	gameWrapper->HookEvent(HOOK_ON_LEAVE_MATCH, [this](std::string eventName) {
+		EndGame();
+	});
 
 	gameWrapper->HookEvent(HOOK_ON_SCOREBOARD_OPENED, [this](std::string eventName) { scoreboardOpened = true; });
 	gameWrapper->HookEvent(HOOK_ON_SCOREBOARD_CLOSED, [this](std::string eventName) { scoreboardOpened = false; });
@@ -144,14 +147,14 @@ void DemoTouchRatio::EndGame()
 {
 	scoreboardOpened = false;
 
-	if (lastGame != nullptr)
-	{
-		playedGames.push_back(lastGame);
-		lastGame = nullptr;
-	}
-
 	if (currentGame != nullptr)
 	{
+		if (lastGame != nullptr)
+		{
+			playedGames.push_back(lastGame);
+			lastGame = nullptr;
+		}
+
 		lastGame = currentGame;
 		lastGame->UnbindEvents();
 		currentGame = nullptr;

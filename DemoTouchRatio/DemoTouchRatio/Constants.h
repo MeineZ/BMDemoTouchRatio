@@ -32,6 +32,7 @@
 
 #define HOOK_COUNTDOWN_BEGINSTATE "Function GameEvent_TA.Countdown.BeginState"
 #define HOOK_ON_WINNER_SET "Function TAGame.GameEvent_Soccar_TA.EventMatchWinnerSet"
+#define HOOK_ON_LEAVE_MATCH "Function TAGame.GFxShell_TA.LeaveMatch"
 #define HOOK_ON_MAIN_MENU "Function TAGame.GFxData_MainMenu_TA.MainMenuAdded"
 #define HOOK_ON_SCOREBOARD_OPENED "Function TAGame.GFxData_GameEvent_TA.OnOpenScoreboard"
 #define HOOK_ON_SCOREBOARD_CLOSED "Function TAGame.GFxData_GameEvent_TA.OnCloseScoreboard"
