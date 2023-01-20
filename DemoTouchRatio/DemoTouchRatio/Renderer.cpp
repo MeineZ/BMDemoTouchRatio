@@ -315,7 +315,14 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, P
 		if (ShouldShowPersistentAverage())
 		{
 			stringStream.str("");
-			stringStream << "[Avg. #" << persistentStats.GetNumberOfGames() << "]";
+			if (ShouldShowPersistentAverage())
+			{
+				stringStream << "[Total]";
+			}
+			else
+			{
+				stringStream << "[Total #" << persistentStats.GetNumberOfGames() << "]";
+			}
 			RenderText(canvas, stringStream, currentColumn++, currentRow, false, true);
 		}
 		++currentRow;
