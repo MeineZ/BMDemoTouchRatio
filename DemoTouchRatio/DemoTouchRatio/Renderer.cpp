@@ -309,12 +309,6 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, P
 		if (ShouldShowPersistentTotal())
 		{
 			stringStream.str("");
-			stringStream << "[Total #" << persistentStats.GetNumberOfGames() << "]";
-			RenderText(canvas, stringStream, currentColumn++, currentRow, false, true);
-		}
-		if (ShouldShowPersistentAverage())
-		{
-			stringStream.str("");
 			if (ShouldShowPersistentAverage())
 			{
 				stringStream << "[Total]";
@@ -323,6 +317,12 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, P
 			{
 				stringStream << "[Total #" << persistentStats.GetNumberOfGames() << "]";
 			}
+			RenderText(canvas, stringStream, currentColumn++, currentRow, false, true);
+		}
+		if (ShouldShowPersistentAverage())
+		{
+			stringStream.str("");
+			stringStream << "[Avg. #" << persistentStats.GetNumberOfGames() << "]";
 			RenderText(canvas, stringStream, currentColumn++, currentRow, false, true);
 		}
 		++currentRow;
