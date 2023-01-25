@@ -119,6 +119,8 @@
     <ClCompile Include="PersistentStats.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="GameStatsSummary.cpp" />
+    <ClCompile Include="RendererTableUtil.cpp" />
+    <ClCompile Include="RendererUtil.cpp" />
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -8,13 +8,23 @@ class GameStats;
 class GameStatsSummary;
 class PersistentStats;
 
+#define DEFAULT_ROW_SIZE 16.f
+#define DEFAULT_COLUMN_SIZE 100.f
+
+#define STATS_RENDER_ARGUMENTS float current, float last, float total, float average, float persistentTotal, float persistentAverage
+
 class Renderer {
 private:
+
+	// Private utils
 	void RenderText(CanvasWrapper* canvas, std::string text, int columnId, int rowId, bool isRowDesc, bool isColDesc);
 	void RenderText(CanvasWrapper* canvas, std::stringstream& text, int columnId, int rowId, bool isRowDesc, bool isColDesc);
 	void RenderText(CanvasWrapper* canvas, float value, int columnId, int rowId, std::stringstream& ss, int precision = 2);
 
 	Vector2 GetBox();
+
+	void RenderHeader(CanvasWrapper* canvas, int nOfGames, int persistentNOfGames); // Renders header for table
+	void RenderData(CanvasWrapper* canvas, int nth, std::string label, STATS_RENDER_ARGUMENTS); // Renders header for table
 
 public:
 	std::shared_ptr<int> posX;
@@ -47,6 +57,7 @@ public:
 	void ResetColors();
 	void ResetTableSizes();
 
+	// Public utils
 	bool ShouldShowTotal();
 	bool ShouldShowAverage();
 	bool ShouldShowPersistentTotal();
