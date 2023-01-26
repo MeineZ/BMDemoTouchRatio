@@ -67,34 +67,5 @@ bool Util::AreInSameTeam(CarWrapper carA, CarWrapper carB) {
 	if (carA.IsNull() || carB.IsNull())
 		return false;
 
-	/*ServerWrapper serverWrapper = gameWrapper->GetOnlineGame();
-	if (serverWrapper.IsNull())
-		return false;
-
-	ArrayWrapper<TeamWrapper> teams = serverWrapper.GetTeams();
-	if (teams.IsNull())
-		return false;*/
-
-
-	/*unsigned char carATeamNum = 0;
-	unsigned char carBTeamNum = 0;
-
-	uintptr_t localCarAddress = gameWrapper->GetLocalCar().memory_address;
-	uintptr_t carAAddress = carA.memory_address;
-
-	if (localCarAddress == carAAddress)
-	{
-		carATeamNum = carA.GetTeamNum2();
-		carBTeamNum = carB.GetTeamNum2();
-	}
-	else
-	{
-		carATeamNum = carA.GetTeamNum2();
-		carBTeamNum = carB.GetTeamNum2();
-	}
-
-	bool result = carA.GetTeamNum2() == carB.GetTeamNum2();*/
-
-	/*return result;*/
 	return carA.GetTeamNum2() == carB.GetTeamNum2();
 }

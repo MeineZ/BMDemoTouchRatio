@@ -98,6 +98,10 @@
     <ClCompile Include="DemoTouchRatioSettingsGUI.cpp" />
     <ClCompile Include="EventData.cpp" />
     <ClCompile Include="GameStats.cpp" />
+    <ClCompile Include="GameStatsBallHits.cpp" />
+    <ClCompile Include="GameStatsBoost.cpp" />
+    <ClCompile Include="GameStatsBumps.cpp" />
+    <ClCompile Include="GameStatsDemos.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imguivariouscontrols.cpp" />
     <ClCompile Include="imgui\imgui_additions.cpp" />

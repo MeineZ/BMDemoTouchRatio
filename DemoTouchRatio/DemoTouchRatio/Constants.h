@@ -33,6 +33,7 @@
 #define CVAR_NAME_REPLACE_TOTAL "cl_demotouch_plugin_replace_total"
 #define CVAR_NAME_REPLACE_AVERAGE "cl_demotouch_plugin_replace_average"
 
+// Global plugin hooks
 #define HOOK_COUNTDOWN_BEGINSTATE "Function GameEvent_TA.Countdown.BeginState"
 #define HOOK_ON_WINNER_SET "Function TAGame.GameEvent_Soccar_TA.EventMatchWinnerSet"
 #define HOOK_ON_LEAVE_MATCH "Function TAGame.GFxShell_TA.LeaveMatch"
@@ -40,7 +41,8 @@
 #define HOOK_ON_SCOREBOARD_OPENED "Function TAGame.GFxData_GameEvent_TA.OnOpenScoreboard"
 #define HOOK_ON_SCOREBOARD_CLOSED "Function TAGame.GFxData_GameEvent_TA.OnCloseScoreboard"
 
-#define HOOK_CAR_BUMPED_OLD "Function TAGame.Car_TA.EventBumpedCar"
+// Game stats hooks
+#define HOOK_SET_VEHICLE_INPUT "Function TAGame.Car_TA.SetVehicleInput"
 #define HOOK_CAR_BUMPED "Function TAGame.Car_TA.BumpCar"
 #define HOOK_CAR_DEMO "Function TAGame.Car_TA.EventDemolished"
 #define HOOK_BALL_HIT "Function TAGame.Car_TA.OnHitBall"

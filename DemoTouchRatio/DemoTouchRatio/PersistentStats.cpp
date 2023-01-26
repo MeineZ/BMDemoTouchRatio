@@ -39,7 +39,10 @@ const GameStats& PersistentStats::Update(GameStats* stats)
 		total.GetDemos() + stats->GetDemos(),
 		total.GetBallHits() + stats->GetBallHits()
 	);
+	// prev boostpminute
+	// ((total.GetBoostPMinute() * (nofgames - 1)) + stats->GetBoostPMinute()) / nofgames // same
 
+	// Revert if file update failed
 	if (!UpdateFile()) {
 		--nOfGames;
 
@@ -48,6 +51,7 @@ const GameStats& PersistentStats::Update(GameStats* stats)
 			total.GetTeamBumps() - stats->GetTeamBumps(),
 			total.GetDemos() - stats->GetDemos(),
 			total.GetBallHits() - stats->GetBallHits()
+			// set prev boostpminute
 		);
 	}
 
@@ -69,6 +73,9 @@ void PersistentStats::UpdateAverageStats()
 		(float)total.GetTeamBumps() / (float)nOfGames,
 		(float)total.GetDemos() / (float)nOfGames,
 		(float)total.GetBallHits() / (float)nOfGames);
+
+
+	// total.GetBoostPMinute() // same
 }
 
 void PersistentStats::Clear()
@@ -110,7 +117,7 @@ void PersistentStats::LoadFile()
 	try {
 		// Load content of file
 		std::ifstream in(GetFullPath());
-		int stats[STATS_COUNT] = { 0, 0, 0, 0, 0 };
+		int stats[STATS_COUNT] = {0, 0, 0, 0, 0};
 		if (in) {
 			char comma;
 			int count = 0;

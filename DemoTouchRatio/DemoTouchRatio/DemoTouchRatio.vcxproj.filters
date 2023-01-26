@@ -34,6 +34,9 @@
     <Filter Include="Plugin\src">
       <UniqueIdentifier>{33ae5c6a-718c-410e-bdb8-9c032f65c710}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plugin\src\GameStatsTracking">
+      <UniqueIdentifier>{c13fe923-c05d-4ba7-a276-2cd769232c36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -87,9 +90,6 @@
     <ClCompile Include="EventData.cpp">
       <Filter>Plugin\src</Filter>
     </ClCompile>
-    <ClCompile Include="GameStats.cpp">
-      <Filter>Plugin\src</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Plugin\src</Filter>
     </ClCompile>
@@ -107,6 +107,21 @@
     </ClCompile>
     <ClCompile Include="RendererTableUtil.cpp">
       <Filter>Plugin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStatsBumps.cpp">
+      <Filter>Plugin\src\GameStatsTracking</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStatsDemos.cpp">
+      <Filter>Plugin\src\GameStatsTracking</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStatsBallHits.cpp">
+      <Filter>Plugin\src\GameStatsTracking</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStats.cpp">
+      <Filter>Plugin\src\GameStatsTracking</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStatsBoost.cpp">
+      <Filter>Plugin\src\GameStatsTracking</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

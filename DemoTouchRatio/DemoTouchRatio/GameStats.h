@@ -13,6 +13,9 @@ private:
 	void OnBump(CarWrapper carWrapper, void* args, std::string eventName);
 	void OnDemo(CarWrapper carWrapper, void* args, std::string eventName);
 	void OnBallHit(CarWrapper carWrapper, void* args, std::string eventName);
+	void HandleBoostUsage();
+
+	void OnPhysicsTick(std::string eventName);
 
 public:
 	GameStats();

@@ -228,7 +228,7 @@ void DemoTouchRatio::RenderPersistentStats() {
 	ImGui::Indent();
 	bool oldUsePersistentStats = *usePersistentStats;
 	DrawCheckbox("Store stats", &*usePersistentStats, CVAR_NAME_PERSISTENT_STATS);
-	if (oldUsePersistentStats  != *usePersistentStats) {
+	if (oldUsePersistentStats  != *usePersistentStats && *usePersistentStats) {
 		persistentStats.Initialize();
 	}
 
