@@ -4,10 +4,10 @@
 #include <GameStats.h>
 
 GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastGameStats, std::vector<GameStats*> previousGameStats):
-	currentStats(SummarizedStats(0, 0, 0, 0)),
-	lastStats(SummarizedStats(0, 0, 0, 0)),
-	totalStats(SummarizedStats(0, 0, 0, 0)),
-	averageStats(SummarizedStats(0, 0, 0, 0))
+	currentStats(SummarizedStats(DEFAULT_SUMMARY_ARGS)),
+	lastStats(SummarizedStats(DEFAULT_SUMMARY_ARGS)),
+	totalStats(SummarizedStats(DEFAULT_SUMMARY_ARGS)),
+	averageStats(SummarizedStats(DEFAULT_SUMMARY_ARGS))
 {
 	numberOfGames = 0;
 	// Current
@@ -16,18 +16,24 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 	lastStats = CreateSummaryFrom(lastGameStats);
 
 	// Total
+	// [STAT_ADD] 19. Add data
 	totalStats = CreateSummaryFrom(nullptr);
 	totalStats.bumps += currentStats.bumps + lastStats.bumps;
 	totalStats.teamBumps += currentStats.teamBumps + lastStats.teamBumps;
 	totalStats.demos += currentStats.demos + lastStats.demos;
 	totalStats.ballHits += currentStats.ballHits + lastStats.ballHits;
+	totalStats.totalBoostUsed += currentStats.totalBoostUsed + lastStats.totalBoostUsed;
+	totalStats.boostPMinute += currentStats.boostPMinute + lastStats.boostPMinute;
 
 	for (int i = 0; i < previousGameStats.size(); ++i) {
 		SummarizedStats newStats = CreateSummaryFrom(previousGameStats[i]);
+		// [STAT_ADD] 20. Add data
 		totalStats.bumps += newStats.bumps;
 		totalStats.teamBumps += newStats.teamBumps;
 		totalStats.demos += newStats.demos;
 		totalStats.ballHits += newStats.ballHits;
+		totalStats.totalBoostUsed += newStats.totalBoostUsed;
+		totalStats.boostPMinute += newStats.boostPMinute;
 	}
 
 	// Avarage
@@ -36,10 +42,12 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 	}
 	else {
 		averageStats = SummarizedStats {
-			(float)totalStats.bumps / (float)numberOfGames,
-			(float)totalStats.teamBumps / (float)numberOfGames,
-			(float)totalStats.demos / (float)numberOfGames,
-			(float)totalStats.ballHits / (float)numberOfGames,
+			totalStats.bumps / (float)numberOfGames,
+			totalStats.teamBumps / (float)numberOfGames,
+			totalStats.demos / (float)numberOfGames,
+			totalStats.ballHits / (float)numberOfGames,
+			totalStats.totalBoostUsed / (float)numberOfGames,
+			totalStats.boostPMinute / (float)numberOfGames
 		};
 	}
 }
@@ -47,13 +55,14 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 GameStatsSummary::SummarizedStats GameStatsSummary::CreateSummaryFrom(GameStats* gameStats) {
 	if (gameStats == nullptr) {
 		return GameStatsSummary::SummarizedStats{
-			0,0,0,0
+			DEFAULT_SUMMARY_ARGS
 		};
 	}
 	else {
 		++numberOfGames;
 		return GameStatsSummary::SummarizedStats{
-			gameStats->GetBumps(), gameStats->GetTeamBumps(), gameStats->GetDemos(), gameStats->GetBallHits()
+			gameStats->GetBumps(), gameStats->GetTeamBumps(), gameStats->GetDemos(), gameStats->GetBallHits(),
+			gameStats->GetBoostUsed(), gameStats->GetBoostPMinute()
 		};
 	}
 }
@@ -81,19 +90,4 @@ const GameStatsSummary::SummarizedStats& GameStatsSummary::GetAverage()
 int GameStatsSummary::GetNumberOfGames()
 {
 	return numberOfGames;
-}
-
-std::string GameStatsSummary::SummarizedStats::toString() const {
-	std::stringstream stringStream;
-	float biggest = (float)(bumps >= demos && bumps >= ballHits
-		? bumps
-		: (demos >= bumps && demos >= ballHits
-			? demos
-			: ballHits));
-
-	if (biggest == 0.f) {
-		return "0.00/0.00/0.00";
-	}
-	stringStream << std::fixed << std::setprecision(2) << (bumps / biggest) << "/" << (demos / biggest) << "/" << (ballHits / biggest);
-	return stringStream.str();
 }

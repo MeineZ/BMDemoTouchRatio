@@ -96,6 +96,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DemoTouchRatioSettingsGUI.cpp" />
+    <ClCompile Include="EventBoost.cpp" />
     <ClCompile Include="EventData.cpp" />
     <ClCompile Include="GameStats.cpp" />
     <ClCompile Include="GameStatsBallHits.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="EventData.h" />
     <ClInclude Include="GameStats.h" />
+    <ClInclude Include="EventBoost.h" />
     <ClInclude Include="GameStatsSummary.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />

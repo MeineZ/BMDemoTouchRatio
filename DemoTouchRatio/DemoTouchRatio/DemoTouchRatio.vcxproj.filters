@@ -37,6 +37,18 @@
     <Filter Include="Plugin\src\GameStatsTracking">
       <UniqueIdentifier>{c13fe923-c05d-4ba7-a276-2cd769232c36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plugin\src\Renderer">
+      <UniqueIdentifier>{b1db41aa-6306-475d-b47f-2d68672f0bac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugin\header\GameStatsTracking">
+      <UniqueIdentifier>{828311d6-93d0-425c-8606-9c18172a57da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugin\header\GameStatsTracking\Events">
+      <UniqueIdentifier>{de5edde2-b839-4053-902e-3324a9b12571}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugin\src\GameStatsTracking\Events">
+      <UniqueIdentifier>{4338a0da-5787-4267-b2de-08c50c49ad5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -87,12 +99,6 @@
     <ClCompile Include="Util.cpp">
       <Filter>Plugin\src</Filter>
     </ClCompile>
-    <ClCompile Include="EventData.cpp">
-      <Filter>Plugin\src</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Plugin\src</Filter>
-    </ClCompile>
     <ClCompile Include="GameStatsSummary.cpp">
       <Filter>Plugin\src</Filter>
     </ClCompile>
@@ -100,12 +106,6 @@
       <Filter>Plugin\src</Filter>
     </ClCompile>
     <ClCompile Include="PersistentStats.cpp">
-      <Filter>Plugin\src</Filter>
-    </ClCompile>
-    <ClCompile Include="RendererUtil.cpp">
-      <Filter>Plugin\src</Filter>
-    </ClCompile>
-    <ClCompile Include="RendererTableUtil.cpp">
       <Filter>Plugin\src</Filter>
     </ClCompile>
     <ClCompile Include="GameStatsBumps.cpp">
@@ -122,6 +122,21 @@
     </ClCompile>
     <ClCompile Include="GameStatsBoost.cpp">
       <Filter>Plugin\src\GameStatsTracking</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Plugin\src\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="RendererTableUtil.cpp">
+      <Filter>Plugin\src\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="RendererUtil.cpp">
+      <Filter>Plugin\src\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="EventData.cpp">
+      <Filter>Plugin\src\GameStatsTracking\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="EventBoost.cpp">
+      <Filter>Plugin\src\GameStatsTracking\Events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,20 +206,23 @@
     <ClInclude Include="Util.h">
       <Filter>Plugin\header</Filter>
     </ClInclude>
-    <ClInclude Include="EventData.h">
-      <Filter>Plugin\header</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStats.h">
-      <Filter>Plugin\header</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer.h">
-      <Filter>Plugin\header</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStatsSummary.h">
       <Filter>Plugin\header</Filter>
     </ClInclude>
     <ClInclude Include="PersistentStats.h">
       <Filter>Plugin\header</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStats.h">
+      <Filter>Plugin\header\GameStatsTracking</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStatsSummary.h">
+      <Filter>Plugin\header\GameStatsTracking</Filter>
+    </ClInclude>
+    <ClInclude Include="EventBoost.h">
+      <Filter>Plugin\header\GameStatsTracking\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EventData.h">
+      <Filter>Plugin\header\GameStatsTracking\Events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

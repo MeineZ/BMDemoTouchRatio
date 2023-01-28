@@ -23,10 +23,13 @@ Renderer::Renderer() :
 	colorText(std::make_shared<LinearColor>(LinearColor(255, 255, 255, 127))),
 	rowSize(std::make_shared<float>(DEFAULT_ROW_SIZE)),
 	columnSize(std::make_shared<float>(DEFAULT_COLUMN_SIZE)),
+	// [STAT_ADD] 4. Add display bool
 	displayBumps(std::make_shared<bool>(true)),
 	displayTeamBumps(std::make_shared<bool>(false)),
 	displayDemos(std::make_shared<bool>(true)),
 	displayBallHits(std::make_shared<bool>(true)),
+	displayBoostUsage(std::make_shared<bool>(false)),
+	displayBoostPMinute(std::make_shared<bool>(false)),
 	displayPersistentTotal(std::make_shared<bool>(false)),
 	displayPersistentAverage(std::make_shared<bool>(false)),
 	replaceSessionTotal(std::make_shared<bool>(false)),
@@ -90,4 +93,6 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, P
 	if (*displayTeamBumps) RenderData(canvas, nth++, "Team bumps", STATS_RENDER_ARGUMENTS_SOURCE(teamBumps, GetTeamBumps));
 	if (*displayDemos) RenderData(canvas, nth++, "Demos", STATS_RENDER_ARGUMENTS_SOURCE(demos, GetDemos));
 	if (*displayBallHits) RenderData(canvas, nth++, "Ball hits", STATS_RENDER_ARGUMENTS_SOURCE(ballHits, GetBallHits));
+	if (*displayBoostUsage) RenderData(canvas, nth++, "Boost", STATS_RENDER_ARGUMENTS_SOURCE(totalBoostUsed, GetBoostUsed));
+	if (*displayBoostPMinute) RenderData(canvas, nth++, "Boost/min", STATS_RENDER_ARGUMENTS_SOURCE(boostPMinute, GetBoostPMinute));
 }

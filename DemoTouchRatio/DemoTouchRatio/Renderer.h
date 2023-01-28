@@ -36,10 +36,13 @@ public:
 	std::shared_ptr<float> rowSize;
 	std::shared_ptr<float> columnSize;
 
+	// [STAT_ADD] 3. Declare display bool
 	std::shared_ptr<bool> displayBumps;
 	std::shared_ptr<bool> displayTeamBumps;
 	std::shared_ptr<bool> displayDemos;
 	std::shared_ptr<bool> displayBallHits;
+	std::shared_ptr<bool> displayBoostUsage;
+	std::shared_ptr<bool> displayBoostPMinute;
 
 	std::shared_ptr<bool> displayPersistentTotal;
 	std::shared_ptr<bool> displayPersistentAverage;

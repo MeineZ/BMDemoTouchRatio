@@ -59,10 +59,13 @@ void DemoTouchRatio::onLoad()
 	cvarManager->registerCvar(CVAR_NAME_COLUMN_SIZE, "100", "Width of the displayed columns", false, true, 45, true, 250, true).bindTo(renderer.columnSize);
 
 	// Columns show/hide CVar initialization
+	// [STAT_ADD] 2. Register display cvar
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BUMPS, "1", "Show bumps data column", false, true, 0, true, 1, true).bindTo(renderer.displayBumps);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_TEAMBUMPS, "0", "Show team bumps data column", false, true, 0, true, 1, true).bindTo(renderer.displayTeamBumps);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_DEMOS, "1", "Show demos data column", false, true, 0, true, 1, true).bindTo(renderer.displayDemos);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BALLHITS, "1", "Show ball touches data column", false, true, 0, true, 1, true).bindTo(renderer.displayBallHits);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_BOOSTUSAGE, "0", "Show boost usage data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostUsage);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_BOOSTPMINUTE, "0", "Show boost per minute data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostPMinute);
 
 	cvarManager->registerCvar(CVAR_NAME_SHOW_PERSISTENT_TOTAL, "0", "Show all-time total stats", false, true, 0, true, 1, true).bindTo(renderer.displayPersistentTotal);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_PERSISTENT_AVERAGE, "0", "Show all-time average stats", false, true, 0, true, 1, true).bindTo(renderer.displayPersistentAverage);

@@ -8,9 +8,8 @@
 #define STATS_FOLDER "demotouchdata"
 #define STATS_FILE "demotouchstats.csv"
 
-#define STATS_COUNT 5
-
-#define DEFAULT_SUMMARY_ARGS 0,0,0,0
+// [STAT_ADD] 17. Add arguments
+#define STATS_COUNT 7
 
 PersistentStats::PersistentStats():
 	total(),
@@ -33,25 +32,28 @@ const GameStats& PersistentStats::Update(GameStats* stats)
 		return total;
 
 	++nOfGames;
+	// [STAT_ADD] 11. Add arguments
 	total = GameStats(
 		total.GetBumps() + stats->GetBumps(),
 		total.GetTeamBumps() + stats->GetTeamBumps(),
 		total.GetDemos() + stats->GetDemos(),
-		total.GetBallHits() + stats->GetBallHits()
+		total.GetBallHits() + stats->GetBallHits(),
+		total.GetTotalPlayedTime() + stats->GetTotalPlayedTime(),
+		total.GetBoostUsed() + stats->GetBoostUsed()
 	);
-	// prev boostpminute
-	// ((total.GetBoostPMinute() * (nofgames - 1)) + stats->GetBoostPMinute()) / nofgames // same
 
 	// Revert if file update failed
 	if (!UpdateFile()) {
 		--nOfGames;
 
+		// [STAT_ADD] 12. Add arguments
 		total = GameStats(
 			total.GetBumps() - stats->GetBumps(),
 			total.GetTeamBumps() - stats->GetTeamBumps(),
 			total.GetDemos() - stats->GetDemos(),
-			total.GetBallHits() - stats->GetBallHits()
-			// set prev boostpminute
+			total.GetBallHits() - stats->GetBallHits(),
+			total.GetTotalPlayedTime() - stats->GetTotalPlayedTime(),
+			total.GetBoostUsed() - stats->GetBoostUsed()
 		);
 	}
 
@@ -67,21 +69,22 @@ void PersistentStats::UpdateAverageStats()
 		average = GameStatsSummary::SummarizedStats(DEFAULT_SUMMARY_ARGS);
 		return;
 	}
-	
+
+	// [STAT_ADD] 13. Add arguments
 	average = GameStatsSummary::SummarizedStats(
 		(float)total.GetBumps() / (float)nOfGames, 
 		(float)total.GetTeamBumps() / (float)nOfGames,
 		(float)total.GetDemos() / (float)nOfGames,
-		(float)total.GetBallHits() / (float)nOfGames);
-
-
-	// total.GetBoostPMinute() // same
+		(float)total.GetBallHits() / (float)nOfGames,
+		total.GetBoostUsed() / (float)nOfGames,
+		total.GetBoostPMinute());
 }
 
 void PersistentStats::Clear()
 {
 	nOfGames = 0;
-	total = GameStats(0, 0, 0, 0);
+	// [STAT_ADD] 14. Add arguments
+	total = GameStats(0, 0, 0, 0, 0, 0);
 	average = GameStatsSummary::SummarizedStats(DEFAULT_SUMMARY_ARGS);
 	// Update file
 	UpdateFile();
@@ -117,7 +120,7 @@ void PersistentStats::LoadFile()
 	try {
 		// Load content of file
 		std::ifstream in(GetFullPath());
-		int stats[STATS_COUNT] = {0, 0, 0, 0, 0};
+		int stats[STATS_COUNT] = {0, 0, 0, 0, 0, 0, 0};
 		if (in) {
 			char comma;
 			int count = 0;
@@ -138,7 +141,11 @@ void PersistentStats::LoadFile()
 		}
 
 		nOfGames = stats[0];
-		total = GameStats(stats[1], stats[2], stats[3], stats[4]);
+		total = GameStats(
+			stats[1], stats[2], stats[3], stats[4],
+			reinterpret_cast<float&>(stats[5]),
+			reinterpret_cast<float&>(stats[6])
+		);
 		UpdateAverageStats();
 	}
 	catch (std::exception ex) {
@@ -153,11 +160,15 @@ bool PersistentStats::UpdateFile()
 		// Update content of file
 		std::ofstream out(GetFullPath(), std::ofstream::trunc);
 		if (out) {
+			float totalPlayedTime = total.GetTotalPlayedTime();
+			float totalBoostUsed = total.GetBoostUsed();
 			out << nOfGames << ","
 				<< total.GetBumps() << ','
 				<< total.GetTeamBumps() << ','
 				<< total.GetDemos() << ','
-				<< total.GetBallHits();
+				<< total.GetBallHits() << ','
+				<< reinterpret_cast<int&>(totalPlayedTime) << ','
+				<< reinterpret_cast<int&>(totalBoostUsed);
 
 			out.close();
 		}

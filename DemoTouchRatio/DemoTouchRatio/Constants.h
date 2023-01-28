@@ -24,10 +24,14 @@
 #define CVAR_NAME_CUSTOM_DELAY_BALLHIT "cl_demotouch_plugin_custom_delay_ballhit"
 #define CVAR_NAME_PERSISTENT_STATS "cl_demotouch_plugin_persistent_stats"
 
+// [STAT_ADD] 1. Add display cvar name
 #define CVAR_NAME_SHOW_BUMPS "cl_demotouch_plugin_show_bumps"
 #define CVAR_NAME_SHOW_TEAMBUMPS "cl_demotouch_plugin_show_teambumps"
 #define CVAR_NAME_SHOW_DEMOS "cl_demotouch_plugin_show_demos"
 #define CVAR_NAME_SHOW_BALLHITS "cl_demotouch_plugin_show_ballhits"
+#define CVAR_NAME_SHOW_BOOSTUSAGE "cl_demotouch_plugin_show_boostusage"
+#define CVAR_NAME_SHOW_BOOSTPMINUTE "cl_demotouch_plugin_show_boostpminute"
+
 #define CVAR_NAME_SHOW_PERSISTENT_TOTAL "cl_demotouch_plugin_show_persistent_total"
 #define CVAR_NAME_SHOW_PERSISTENT_AVERAGE "cl_demotouch_plugin_show_persistent_average"
 #define CVAR_NAME_REPLACE_TOTAL "cl_demotouch_plugin_replace_total"

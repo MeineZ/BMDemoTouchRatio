@@ -26,7 +26,9 @@ Vector2 Renderer::GetBox()
 			(*displayBumps ? *columnSize : 0) +
 			(*displayTeamBumps ? *columnSize : 0) +
 			(*displayDemos ? *columnSize : 0) +
-			(*displayBallHits ? *columnSize : 0);
+			(*displayBallHits ? *columnSize : 0) +
+			(*displayBoostUsage ? *columnSize : 0) +
+			(*displayBoostPMinute ? *columnSize : 0);
 		height += *rowSize * numberOfDescriptionCells + (!*customDescSize ? (DEFAULT_ROW_SIZE - *rowSize) : 0.f);
 	}
 	else
@@ -36,7 +38,9 @@ Vector2 Renderer::GetBox()
 			(*displayBumps ? *rowSize : 0) +
 			(*displayTeamBumps ? *rowSize : 0) +
 			(*displayDemos ? *rowSize : 0) +
-			(*displayBallHits ? *rowSize : 0);
+			(*displayBallHits ? *rowSize : 0) +
+			(*displayBoostUsage ? *rowSize : 0) +
+			(*displayBoostPMinute ? *rowSize : 0);
 	}
 	return Vector2{ (int)((float)width * *scale), (int)((float)height * *scale) };
 }
