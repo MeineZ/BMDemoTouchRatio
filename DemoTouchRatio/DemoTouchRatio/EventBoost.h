@@ -12,5 +12,5 @@ public:
 	void RegisterBoost(float currentBoostAmount);
 
 	float GetTotalBoostUsed() const;
-	float GetBoostPMinute(float totalTime) const;
+	float GetBoostPMinute(float totalTimeInMinutes) const;
 };

@@ -32,10 +32,10 @@ float EventBoost::GetTotalBoostUsed() const
 	return totalBoostUsed;
 }
 
-float EventBoost::GetBoostPMinute(float totalTime) const
+float EventBoost::GetBoostPMinute(float totalTimeInMinutes) const
 {
-	if (totalTime == 0)
+	if (totalTimeInMinutes == 0)
 		return 0.f;
 
-	return ((1.0f / totalTime) * totalBoostUsed) * 60.f;
+	return static_cast<float>(((1.0 / static_cast<double>(totalTimeInMinutes * 60.0)) * static_cast<double>(totalBoostUsed)) * 60.0);
 }

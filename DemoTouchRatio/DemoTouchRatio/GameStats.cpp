@@ -57,27 +57,23 @@ void GameStats::UnbindEvents()
 void GameStats::OnPhysicsTick(std::string eventName)
 {
 	uint64_t dt = 0;
-	uint64_t rawDt = 0;
 	if (lastTimeStamp == 0)
 	{
 		lastTimeStamp = Util::TimestampInMS();
-		rawDt = 1; // Set to 1 ms to prevent 
-		dt = rawDt;
+		dt = 1;
 	}
 	else
 	{
-		rawDt = Util::TimestampInMS() - lastTimeStamp;
+		dt = Util::TimestampInMS() - lastTimeStamp;
 		lastTimeStamp = Util::TimestampInMS();
-		
-		dt = rawDt > 200 ? 200 : rawDt;
 	}
 
 	// Limit the delta time to 200ms. This may cause inaccurate results, 
 	// but this number equals 5 fps. If the player gets above 10fps you have
 	// a shit pc and we don't care about that here.
-	totalPlayedTime += static_cast<float>(static_cast<double>(dt) / 1000.0);
+	totalPlayedTime += (static_cast<float>(static_cast<double>(dt > 200 ? 200 : dt) / 60000.0));
 
-	HandleBoost(rawDt);
+	HandleBoost(dt);
 }
 
 float GameStats::GetTotalPlayedTime() const
