@@ -67,10 +67,10 @@ void DemoTouchRatio::onLoad()
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BOOSTUSAGE, "0", "Show boost usage data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostUsage);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BOOSTPMINUTE, "0", "Show boost per minute data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostPMinute);
 
+	cvarManager->registerCvar(CVAR_NAME_SHOW_TOTAL, "1", "Show session total stats", false, true, 0, true, 1, true).bindTo(renderer.displayTotal);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_AVERAGE, "1", "Show session average stats", false, true, 0, true, 1, true).bindTo(renderer.displayAverage);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_PERSISTENT_TOTAL, "0", "Show all-time total stats", false, true, 0, true, 1, true).bindTo(renderer.displayPersistentTotal);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_PERSISTENT_AVERAGE, "0", "Show all-time average stats", false, true, 0, true, 1, true).bindTo(renderer.displayPersistentAverage);
-	cvarManager->registerCvar(CVAR_NAME_REPLACE_TOTAL, "0", "Replace session total with all-time total stats", false, true, 0, true, 1, true).bindTo(renderer.replaceSessionTotal);
-	cvarManager->registerCvar(CVAR_NAME_REPLACE_AVERAGE, "0", "Replace session average with all-time average stats", false, true, 0, true, 1, true).bindTo(renderer.replaceSessionAverage);
 
 	// Custom behaviour
 	cvarManager->registerCvar(CVAR_NAME_MATCH_ACCOLADES, "1", "Try to match the match-accolades", false, true, 0, true, 1, true).bindTo(matchAccolades);

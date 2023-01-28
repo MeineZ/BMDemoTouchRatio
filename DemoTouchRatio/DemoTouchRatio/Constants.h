@@ -32,10 +32,10 @@
 #define CVAR_NAME_SHOW_BOOSTUSAGE "cl_demotouch_plugin_show_boostusage"
 #define CVAR_NAME_SHOW_BOOSTPMINUTE "cl_demotouch_plugin_show_boostpminute"
 
+#define CVAR_NAME_SHOW_TOTAL "cl_demotouch_plugin_show_total"
+#define CVAR_NAME_SHOW_AVERAGE "cl_demotouch_plugin_show_average"
 #define CVAR_NAME_SHOW_PERSISTENT_TOTAL "cl_demotouch_plugin_show_persistent_total"
 #define CVAR_NAME_SHOW_PERSISTENT_AVERAGE "cl_demotouch_plugin_show_persistent_average"
-#define CVAR_NAME_REPLACE_TOTAL "cl_demotouch_plugin_replace_total"
-#define CVAR_NAME_REPLACE_AVERAGE "cl_demotouch_plugin_replace_average"
 
 // Global plugin hooks
 #define HOOK_COUNTDOWN_BEGINSTATE "Function GameEvent_TA.Countdown.BeginState"

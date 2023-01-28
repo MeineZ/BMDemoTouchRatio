@@ -8,39 +8,36 @@
 
 Vector2 Renderer::GetBox()
 {
-	int width = 5.f,
-		height = 8.f;
+	int width = X_OFFSET,
+		height = Y_OFFSET;
 
 	DemoTouchRatio& app = DemoTouchRatio::Instance();
 
-	int numberOfDescriptionCells = 4
-		+ (DemoTouchRatio::Instance().CanRenderInMatches() ? 1 : 0)
-		+ (
-			(ShouldShowPersistentTotal() && ShouldShowTotal() ? 1 : 0) +
-			(ShouldShowPersistentAverage() && ShouldShowAverage() ? 1 : 0)
-			);
+	int numberOfDescriptionCells = 2 // description + last is always shown
+		+ (DemoTouchRatio::Instance().CanRenderInMatches() ? 1 : 0) // current
+		+ (ShouldShowTotal() ? 1 : 0) // total
+		+ (ShouldShowAverage() ? 1 : 0) // average
+		+ (ShouldShowPersistentTotal() ? 1 : 0) // persistent total
+		+ (ShouldShowPersistentAverage() ? 1 : 0) // persistent average
+		;
+
+	int numberOfDataShown = 
+		(*displayBumps ? 1 : 0) +
+		(*displayTeamBumps ? 1 : 0) +
+		(*displayDemos ? 1 : 0) +
+		(*displayBallHits ? 1 : 0) +
+		(*displayBoostUsage ? 1 : 0) +
+		(*displayBoostPMinute ? 1 : 0);
 
 	if (*renderHorizontal)
 	{
-		width += (!*customDescSize ? DEFAULT_COLUMN_SIZE : *columnSize) +
-			(*displayBumps ? *columnSize : 0) +
-			(*displayTeamBumps ? *columnSize : 0) +
-			(*displayDemos ? *columnSize : 0) +
-			(*displayBallHits ? *columnSize : 0) +
-			(*displayBoostUsage ? *columnSize : 0) +
-			(*displayBoostPMinute ? *columnSize : 0);
+		width += (!*customDescSize ? DEFAULT_COLUMN_SIZE : *columnSize) + (numberOfDataShown * *columnSize);
 		height += *rowSize * numberOfDescriptionCells + (!*customDescSize ? (DEFAULT_ROW_SIZE - *rowSize) : 0.f);
 	}
 	else
 	{
 		width += *columnSize * numberOfDescriptionCells + (!*customDescSize ? (DEFAULT_COLUMN_SIZE - *columnSize) : 0.f);
-		height += (!*customDescSize ? DEFAULT_ROW_SIZE : *rowSize) +
-			(*displayBumps ? *rowSize : 0) +
-			(*displayTeamBumps ? *rowSize : 0) +
-			(*displayDemos ? *rowSize : 0) +
-			(*displayBallHits ? *rowSize : 0) +
-			(*displayBoostUsage ? *rowSize : 0) +
-			(*displayBoostPMinute ? *rowSize : 0);
+		height += (!*customDescSize ? DEFAULT_ROW_SIZE : *rowSize) + (numberOfDataShown * *rowSize);
 	}
 	return Vector2{ (int)((float)width * *scale), (int)((float)height * *scale) };
 }
@@ -82,11 +79,11 @@ void Renderer::RenderText(CanvasWrapper* canvas, std::stringstream& text, int co
 
 bool Renderer::ShouldShowTotal()
 {
-	return !ShouldShowPersistentTotal() || (ShouldShowPersistentTotal() && !*replaceSessionTotal);
+	return *displayTotal;
 }
 bool Renderer::ShouldShowAverage()
 {
-	return !ShouldShowPersistentAverage() || (ShouldShowPersistentAverage() && !*replaceSessionAverage);
+	return *displayAverage;
 }
 bool Renderer::ShouldShowPersistentTotal()
 {

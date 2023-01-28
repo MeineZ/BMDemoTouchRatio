@@ -30,10 +30,10 @@ Renderer::Renderer() :
 	displayBallHits(std::make_shared<bool>(true)),
 	displayBoostUsage(std::make_shared<bool>(false)),
 	displayBoostPMinute(std::make_shared<bool>(false)),
+	displayTotal(std::make_shared<bool>(true)),
+	displayAverage(std::make_shared<bool>(true)),
 	displayPersistentTotal(std::make_shared<bool>(false)),
 	displayPersistentAverage(std::make_shared<bool>(false)),
-	replaceSessionTotal(std::make_shared<bool>(false)),
-	replaceSessionAverage(std::make_shared<bool>(false)),
 	renderHorizontal(std::make_shared<bool>(true)),
 	customDescSize(std::make_shared<bool>(false))
 { }

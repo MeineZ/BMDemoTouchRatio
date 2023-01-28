@@ -23,9 +23,15 @@ void Renderer::RenderHeader(CanvasWrapper *canvas, int nOfGames, int persistentN
 	renderCell("Latest", increment++);
 
 	if (ShouldShowTotal())
-		renderCell("Total", increment++);
+	{
+		stringStream.str("");
+		if (ShouldShowAverage()) stringStream << "Total";
+		else stringStream << "Total #" << nOfGames;
+		renderCell(stringStream.str(), increment++);
+	}
 	if (ShouldShowAverage())
 	{
+		stringStream.str("");
 		stringStream << "Avg. #" << nOfGames;
 		renderCell(stringStream.str(), increment++);
 	}

@@ -79,6 +79,10 @@ void DemoTouchRatio::RenderColumnVisibility()
 
 	ImGui::NewLine();
 
+	DrawCheckbox("Show total", &*renderer.displayTotal, CVAR_NAME_SHOW_TOTAL);
+	DrawCheckbox("Show average", &*renderer.displayAverage, CVAR_NAME_SHOW_AVERAGE);
+
+	ImGui::NewLine();
 
 	ImGui::TextUnformatted("Settings about your all-time stats. See \"Track stats across game sessions\" section for more information.");
 
@@ -87,21 +91,8 @@ void DemoTouchRatio::RenderColumnVisibility()
 	}
 	ImGuiPushDisable(!*usePersistentStats);
 	DrawCheckbox("Show all-time total", &*renderer.displayPersistentTotal, CVAR_NAME_SHOW_PERSISTENT_TOTAL);
-	ImGuiPopDisable(!*usePersistentStats);
-	ImGui::Indent();
-	ImGuiPushDisable(!*usePersistentStats || !*renderer.displayPersistentTotal);
-	DrawCheckbox("Replace session total", &*renderer.replaceSessionTotal, CVAR_NAME_REPLACE_TOTAL);
-	ImGuiPopDisable(!*usePersistentStats || !*renderer.displayPersistentTotal);
-	ImGui::Unindent();
-
-	ImGuiPushDisable(!*usePersistentStats);
 	DrawCheckbox("Show all-time average", &*renderer.displayPersistentAverage, CVAR_NAME_SHOW_PERSISTENT_AVERAGE);
 	ImGuiPopDisable(!*usePersistentStats);
-	ImGui::Indent();
-	ImGuiPushDisable(!*usePersistentStats || !*renderer.displayPersistentAverage);
-	DrawCheckbox("Replace session average", &*renderer.replaceSessionAverage, CVAR_NAME_REPLACE_AVERAGE);
-	ImGuiPopDisable(!*usePersistentStats || !*renderer.displayPersistentAverage);
-	ImGui::Unindent();
 
 
 	ImGui::Unindent();

@@ -44,10 +44,10 @@ public:
 	std::shared_ptr<bool> displayBoostUsage;
 	std::shared_ptr<bool> displayBoostPMinute;
 
+	std::shared_ptr<bool> displayTotal;
+	std::shared_ptr<bool> displayAverage;
 	std::shared_ptr<bool> displayPersistentTotal;
 	std::shared_ptr<bool> displayPersistentAverage;
-	std::shared_ptr<bool> replaceSessionTotal;
-	std::shared_ptr<bool> replaceSessionAverage;
 
 	std::shared_ptr<bool> renderHorizontal;
 	std::shared_ptr<bool> customDescSize;
