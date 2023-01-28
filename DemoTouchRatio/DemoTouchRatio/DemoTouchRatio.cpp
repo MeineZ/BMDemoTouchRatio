@@ -81,6 +81,10 @@ void DemoTouchRatio::onLoad()
 	// Store total stats
 	cvarManager->registerCvar(CVAR_NAME_PERSISTENT_STATS, "1", "Store all-time stats", false, true, 0, true, 1, true).bindTo(usePersistentStats);
 
+	cvarManager->registerNotifier(CVAR_NOT_RESET_STATS, [this](std::vector<std::string> params) {
+		Reset();
+	}, "Trigger a reset for your session stats", PERMISSION_ALL);
+
 	// Hook binding
 	gameWrapper->HookEvent(HOOK_COUNTDOWN_BEGINSTATE, [this](std::string eventName) {
 		if (!Util::CanTrack())

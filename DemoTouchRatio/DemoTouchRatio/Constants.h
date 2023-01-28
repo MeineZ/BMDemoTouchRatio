@@ -37,6 +37,9 @@
 #define CVAR_NAME_SHOW_PERSISTENT_TOTAL "cl_demotouch_plugin_show_persistent_total"
 #define CVAR_NAME_SHOW_PERSISTENT_AVERAGE "cl_demotouch_plugin_show_persistent_average"
 
+// Cvar notifiers
+#define CVAR_NOT_RESET_STATS "cl_demotouch_plugin_reset_stats"
+
 // Global plugin hooks
 #define HOOK_COUNTDOWN_BEGINSTATE "Function GameEvent_TA.Countdown.BeginState"
 #define HOOK_ON_WINNER_SET "Function TAGame.GameEvent_Soccar_TA.EventMatchWinnerSet"
