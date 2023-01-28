@@ -74,8 +74,8 @@ void DemoTouchRatio::RenderColumnVisibility()
 	ImGui::SameLine(150); DrawCheckbox("Team bumps", &*renderer.displayTeamBumps, CVAR_NAME_SHOW_TEAMBUMPS);
 	ImGui::SameLine(300); DrawCheckbox("Demolitions", &*renderer.displayDemos, CVAR_NAME_SHOW_DEMOS);
 	ImGui::SameLine(450); DrawCheckbox("Ball touches", &*renderer.displayBallHits, CVAR_NAME_SHOW_BALLHITS);
-	DrawCheckbox("Boost use per game", &*renderer.displayBoostUsage, CVAR_NAME_SHOW_BOOSTUSAGE);
-	ImGui::SameLine(150); DrawCheckbox("Boost use per minute", &*renderer.displayBoostPMinute, CVAR_NAME_SHOW_BOOSTPMINUTE);
+	DrawCheckbox("Boost usage", &*renderer.displayBoostUsage, CVAR_NAME_SHOW_BOOSTUSAGE);
+	ImGui::SameLine(150); DrawCheckbox("Boost/minute", &*renderer.displayBoostPMinute, CVAR_NAME_SHOW_BOOSTPMINUTE);
 
 	ImGui::NewLine();
 
