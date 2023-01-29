@@ -23,6 +23,7 @@ DemoTouchRatio::DemoTouchRatio() :
 	renderInFreeplay(std::make_shared<bool>(true)),
 	renderInCustomTraining(std::make_shared<bool>(true)),
 	renderInReplay(std::make_shared<bool>(true)),
+	forceStatsDisplay(std::make_shared<bool>(false)),
 	matchAccolades(std::make_shared<bool>(true)),
 	customDelayBump(std::make_shared<float>(0.020f)),
 	customDelayDemo(std::make_shared<float>(0.f)),
@@ -72,6 +73,8 @@ void DemoTouchRatio::onLoad()
 	cvarManager->registerCvar(CVAR_NAME_SHOW_PERSISTENT_TOTAL, "0", "Show all-time total stats", false, true, 0, true, 1, true).bindTo(renderer.displayPersistentTotal);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_PERSISTENT_AVERAGE, "0", "Show all-time average stats", false, true, 0, true, 1, true).bindTo(renderer.displayPersistentAverage);
 
+	cvarManager->registerCvar(CVAR_NOT_FORCE_SHOW_STATS, "0", "Force the display of your stats", true, true, 0, true, 1, false).bindTo(forceStatsDisplay);
+
 	// Custom behaviour
 	cvarManager->registerCvar(CVAR_NAME_MATCH_ACCOLADES, "1", "Try to match the match-accolades", false, true, 0, true, 1, true).bindTo(matchAccolades);
 	cvarManager->registerCvar(CVAR_NAME_CUSTOM_DELAY_BUMP, "0.02", "Custom timeout on bump tracking", false, true, 0.f, true, 10.f, true).bindTo(customDelayBump);
@@ -81,9 +84,12 @@ void DemoTouchRatio::onLoad()
 	// Store total stats
 	cvarManager->registerCvar(CVAR_NAME_PERSISTENT_STATS, "1", "Store all-time stats", false, true, 0, true, 1, true).bindTo(usePersistentStats);
 
+	// Register notifiers
+	cvarManager->registerCvar(CVAR_NOT_RESET_STATS, "0", "Cvar notifier to reset stats", true, true, 0, true, 1, false);
 	cvarManager->registerNotifier(CVAR_NOT_RESET_STATS, [this](std::vector<std::string> params) {
 		Reset();
 	}, "Trigger a reset for your session stats", PERMISSION_ALL);
+
 
 	// Hook binding
 	gameWrapper->HookEvent(HOOK_COUNTDOWN_BEGINSTATE, [this](std::string eventName) {
@@ -184,20 +190,24 @@ void DemoTouchRatio::EndGame()
 }
 
 void DemoTouchRatio::Render(CanvasWrapper canvas) {
-	if (!*renderInMatches && currentGame != nullptr)
-		return;
+	// ALWAYS show if the user uses the force notifier
+	if (!*forceStatsDisplay)
+	{
+		if (!*renderInMatches && currentGame != nullptr)
+			return;
 
-	if (currentGame != nullptr && *renderOnlyOnScoreboard && !scoreboardOpened)
-		return;
+		if (currentGame != nullptr && *renderOnlyOnScoreboard && !scoreboardOpened)
+			return;
 
-	if (!*renderInFreeplay && gameWrapper->IsInFreeplay())
-		return;
+		if (!*renderInFreeplay && gameWrapper->IsInFreeplay())
+			return;
 
-	if (!*renderInCustomTraining && gameWrapper->IsInCustomTraining())
-		return;
+		if (!*renderInCustomTraining && gameWrapper->IsInCustomTraining())
+			return;
 
-	if (!*renderInReplay && gameWrapper->IsInReplay())
-		return;
+		if (!*renderInReplay && gameWrapper->IsInReplay())
+			return;
+	}
 
 	GameStatsSummary summary = GameStatsSummary(currentGame, lastGame, playedGames);
 	renderer.RenderStats(&canvas, summary, persistentStats);

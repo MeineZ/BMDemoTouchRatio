@@ -39,6 +39,7 @@
 
 // Cvar notifiers
 #define CVAR_NOT_RESET_STATS "cl_demotouch_plugin_reset_stats"
+#define CVAR_NOT_FORCE_SHOW_STATS "cl_demotouch_plugin_force_show_stats"
 
 // Global plugin hooks
 #define HOOK_COUNTDOWN_BEGINSTATE "Function GameEvent_TA.Countdown.BeginState"

@@ -34,6 +34,7 @@ private:
 	std::shared_ptr<bool> renderInFreeplay; // Setting if plugin may render during freeplay
 	std::shared_ptr<bool> renderInCustomTraining; // Setting if plugin may render during custom training
 	std::shared_ptr<bool> renderInReplay; // Setting if plugin may render during replays
+	std::shared_ptr<bool> forceStatsDisplay;
 
 	std::shared_ptr<bool> matchAccolades; //
 	std::shared_ptr<float> customDelayBump; //

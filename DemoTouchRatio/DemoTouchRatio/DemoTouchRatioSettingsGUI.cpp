@@ -31,7 +31,7 @@ void DemoTouchRatio::RenderSettings()
 
 std::string DemoTouchRatio::GetPluginName()
 {
-	return "Demo Touch Count";
+	return "Simple Stats Tracker";
 }
 
 void DemoTouchRatio::SetImGuiContext(uintptr_t ctx)
