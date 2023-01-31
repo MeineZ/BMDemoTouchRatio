@@ -53,7 +53,7 @@ private:
 	SummarizedStats totalStats;
 	SummarizedStats averageStats;
 
-	SummarizedStats CreateSummaryFrom(GameStats* currentGameStats);
+	SummarizedStats CreateSummaryFrom(GameStats* currentGameStats, float& totalTime, float& totalTimeInAir);
 
 public:
 	GameStatsSummary(GameStats* currentGameStats, GameStats* lastGameStats, std::vector<GameStats*> previousGameStats);

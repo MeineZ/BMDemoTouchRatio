@@ -11,13 +11,15 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 {
 	numberOfGames = 0;
 	// Current
-	currentStats = CreateSummaryFrom(currentGameStats);
+	float totalTimePlayed = 0.f;
+	float totalTimeInAir = 0.f;
+	currentStats = CreateSummaryFrom(currentGameStats, totalTimePlayed, totalTimeInAir);
 	// Last
-	lastStats = CreateSummaryFrom(lastGameStats);
+	lastStats = CreateSummaryFrom(lastGameStats, totalTimePlayed, totalTimeInAir);
 
 	// Total
 	// [STAT_ADD] 19. Add data
-	totalStats = CreateSummaryFrom(nullptr);
+	totalStats = CreateSummaryFrom(nullptr, totalTimePlayed, totalTimeInAir);
 	totalStats.bumps += currentStats.bumps + lastStats.bumps;
 	totalStats.teamBumps += currentStats.teamBumps + lastStats.teamBumps;
 	totalStats.demos += currentStats.demos + lastStats.demos;
@@ -27,7 +29,7 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 	totalStats.inAirPercentage += currentStats.inAirPercentage + lastStats.inAirPercentage;
 
 	for (int i = 0; i < previousGameStats.size(); ++i) {
-		SummarizedStats newStats = CreateSummaryFrom(previousGameStats[i]);
+		SummarizedStats newStats = CreateSummaryFrom(previousGameStats[i], totalTimePlayed, totalTimeInAir);
 		// [STAT_ADD] 20. Add data
 		totalStats.bumps += newStats.bumps;
 		totalStats.teamBumps += newStats.teamBumps;
@@ -40,9 +42,15 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 
 	// Avarage
 	if (numberOfGames == 0) {
-		averageStats = CreateSummaryFrom(nullptr);
+		averageStats = CreateSummaryFrom(nullptr, totalTimePlayed, totalTimeInAir);
 	}
 	else {
+		float averageAirTime = 0.f;
+		if (totalTimePlayed != 0.f)
+		{
+			averageAirTime = totalTimeInAir / totalTimePlayed;
+		}
+
 		averageStats = SummarizedStats {
 			totalStats.bumps / (float)numberOfGames,
 			totalStats.teamBumps / (float)numberOfGames,
@@ -53,9 +61,14 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 			totalStats.inAirPercentage / (float)numberOfGames
 		};
 	}
+
+	// Some stats can't have totals, so they'll just display the average.
+	totalStats.boostPMinute = averageStats.boostPMinute;
+	totalStats.inAirPercentage = averageStats.inAirPercentage;
+
 }
 
-GameStatsSummary::SummarizedStats GameStatsSummary::CreateSummaryFrom(GameStats* gameStats) {
+GameStatsSummary::SummarizedStats GameStatsSummary::CreateSummaryFrom(GameStats* gameStats, float& totalTime, float& totalTimeInAir) {
 	if (gameStats == nullptr) {
 		return GameStatsSummary::SummarizedStats{
 			DEFAULT_SUMMARY_ARGS
@@ -63,6 +76,9 @@ GameStatsSummary::SummarizedStats GameStatsSummary::CreateSummaryFrom(GameStats*
 	}
 	else {
 		++numberOfGames;
+		totalTime += gameStats->GetTotalPlayedTime();
+		totalTimeInAir += gameStats->GetTimeInAir();
+
 		return GameStatsSummary::SummarizedStats{
 			gameStats->GetBumps(), gameStats->GetTeamBumps(), gameStats->GetDemos(), gameStats->GetBallHits(),
 			gameStats->GetBoostUsed(), gameStats->GetBoostPMinute(), gameStats->GetInAirPercentage()
