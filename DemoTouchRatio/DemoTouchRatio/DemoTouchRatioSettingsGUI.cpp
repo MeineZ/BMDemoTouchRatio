@@ -76,6 +76,7 @@ void DemoTouchRatio::RenderColumnVisibility()
 	ImGui::SameLine(450); DrawCheckbox("Ball touches", &*renderer.displayBallHits, CVAR_NAME_SHOW_BALLHITS);
 	DrawCheckbox("Boost usage", &*renderer.displayBoostUsage, CVAR_NAME_SHOW_BOOSTUSAGE);
 	ImGui::SameLine(150); DrawCheckbox("Boost/minute", &*renderer.displayBoostPMinute, CVAR_NAME_SHOW_BOOSTPMINUTE);
+	ImGui::SameLine(300); DrawCheckbox("In air %", &*renderer.displayInAirPercentage, CVAR_NAME_SHOW_INAIRPERCENTAGE);
 
 	ImGui::NewLine();
 

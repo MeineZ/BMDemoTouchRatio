@@ -23,3 +23,8 @@ struct ACar_TA_execBumpCar_Params
 	float arg1;
 	uintptr_t bumpedCar;
 };
+
+struct AVehicle_TA_execNumWheelWorldContacts_Params
+{
+	int32_t ReturnValue;
+};

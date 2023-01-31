@@ -31,6 +31,7 @@
 #define CVAR_NAME_SHOW_BALLHITS "cl_demotouch_plugin_show_ballhits"
 #define CVAR_NAME_SHOW_BOOSTUSAGE "cl_demotouch_plugin_show_boostusage"
 #define CVAR_NAME_SHOW_BOOSTPMINUTE "cl_demotouch_plugin_show_boostpminute"
+#define CVAR_NAME_SHOW_INAIRPERCENTAGE "cl_demotouch_plugin_show_inairpercentage"
 
 #define CVAR_NAME_SHOW_TOTAL "cl_demotouch_plugin_show_total"
 #define CVAR_NAME_SHOW_AVERAGE "cl_demotouch_plugin_show_average"
@@ -54,3 +55,5 @@
 #define HOOK_CAR_BUMPED "Function TAGame.Car_TA.BumpCar"
 #define HOOK_CAR_DEMO "Function TAGame.Car_TA.EventDemolished"
 #define HOOK_BALL_HIT "Function TAGame.Car_TA.OnHitBall"
+#define HOOK_NUM_WHEEL_CONTACTS "Function TAGame.Vehicle_TA.GetNumWheelWorldContacts"
+#define HOOK_CAR_HIT_WORLD "Function TAGame.Car_TA.EventHitWorld"

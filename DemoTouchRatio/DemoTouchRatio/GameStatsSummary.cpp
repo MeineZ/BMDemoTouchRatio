@@ -24,6 +24,7 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 	totalStats.ballHits += currentStats.ballHits + lastStats.ballHits;
 	totalStats.totalBoostUsed += currentStats.totalBoostUsed + lastStats.totalBoostUsed;
 	totalStats.boostPMinute += currentStats.boostPMinute + lastStats.boostPMinute;
+	totalStats.inAirPercentage += currentStats.inAirPercentage + lastStats.inAirPercentage;
 
 	for (int i = 0; i < previousGameStats.size(); ++i) {
 		SummarizedStats newStats = CreateSummaryFrom(previousGameStats[i]);
@@ -34,6 +35,7 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 		totalStats.ballHits += newStats.ballHits;
 		totalStats.totalBoostUsed += newStats.totalBoostUsed;
 		totalStats.boostPMinute += newStats.boostPMinute;
+		totalStats.inAirPercentage += newStats.inAirPercentage;
 	}
 
 	// Avarage
@@ -47,7 +49,8 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 			totalStats.demos / (float)numberOfGames,
 			totalStats.ballHits / (float)numberOfGames,
 			totalStats.totalBoostUsed / (float)numberOfGames,
-			totalStats.boostPMinute / (float)numberOfGames
+			totalStats.boostPMinute / (float)numberOfGames,
+			totalStats.inAirPercentage / (float)numberOfGames
 		};
 	}
 }
@@ -62,7 +65,7 @@ GameStatsSummary::SummarizedStats GameStatsSummary::CreateSummaryFrom(GameStats*
 		++numberOfGames;
 		return GameStatsSummary::SummarizedStats{
 			gameStats->GetBumps(), gameStats->GetTeamBumps(), gameStats->GetDemos(), gameStats->GetBallHits(),
-			gameStats->GetBoostUsed(), gameStats->GetBoostPMinute()
+			gameStats->GetBoostUsed(), gameStats->GetBoostPMinute(), gameStats->GetInAirPercentage()
 		};
 	}
 }

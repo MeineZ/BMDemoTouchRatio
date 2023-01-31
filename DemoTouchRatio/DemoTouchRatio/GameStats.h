@@ -2,6 +2,7 @@
 
 #include <EventData.h>
 #include <EventBoost.h>
+#include <EventInAir.h>
 
 class GameStats
 {
@@ -16,18 +17,21 @@ private:
 	EventData demoData;
 	EventData ballHitData;
 	EventBoost boostData;
+	EventInAir inAirData;
 
 	// [STAT_ADD] 6. Add data tracking method
 	void OnBump(CarWrapper carWrapper, void* args, std::string eventName);
 	void OnDemo(CarWrapper carWrapper, void* args, std::string eventName);
 	void OnBallHit(CarWrapper carWrapper, void* args, std::string eventName);
-	void HandleBoost(float deltaTime);
+	void OnCarWorldHit(CarWrapper carWrapper, void* args, std::string eventName);
 
 	void OnPhysicsTick(std::string eventName);
+	void HandleBoost(uint64_t deltaTime);
+	void HandleInAir(uint64_t deltaTime);
 
 public:
 	GameStats();
-	const GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost);
+	const GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes);
 
 	void BindEvents();
 	void UnbindEvents();
@@ -41,4 +45,6 @@ public:
 	int GetBallHits() const;
 	float GetBoostUsed() const;
 	float GetBoostPMinute() const;
+	float GetTimeInAir() const;
+	float GetInAirPercentage() const;
 };

@@ -15,10 +15,11 @@ GameStats::GameStats():
 	demoData(EventData()),
 	ballHitData(EventData()),
 	// [STAT_ADD] 8. Add constructor
-	boostData(EventBoost())
+	boostData(EventBoost()),
+	inAirData(EventInAir())
 { }
 
-GameStats::GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost) :
+GameStats::GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes) :
 	lastTimeStamp(0),
 	totalPlayedTime(totalTime),
 	bumpData(EventData(bumps)),
@@ -26,7 +27,8 @@ GameStats::GameStats(int bumps, int teamBumps, int demos, int ballHits, float to
 	demoData(EventData(demos)),
 	ballHitData(EventData(ballHits)),
 	// [STAT_ADD] 9. Add constructor with params
-	boostData(EventBoost(totalBoost))
+	boostData(EventBoost(totalBoost)),
+	inAirData(EventInAir(airTimeInMinutes))
 { }
 
 void GameStats::BindEvents()
@@ -40,6 +42,7 @@ void GameStats::BindEvents()
 	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_CAR_BUMPED, std::bind(&GameStats::OnBump, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_CAR_DEMO, std::bind(&GameStats::OnDemo, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_BALL_HIT, std::bind(&GameStats::OnBallHit, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_CAR_HIT_WORLD, std::bind(&GameStats::OnCarWorldHit, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 }
 
 void GameStats::UnbindEvents()
@@ -52,6 +55,7 @@ void GameStats::UnbindEvents()
 	gameWrapper->UnhookEvent(HOOK_CAR_BUMPED);
 	gameWrapper->UnhookEvent(HOOK_CAR_DEMO);
 	gameWrapper->UnhookEvent(HOOK_BALL_HIT);
+	gameWrapper->UnhookEvent(HOOK_CAR_HIT_WORLD);
 }
 
 void GameStats::OnPhysicsTick(std::string eventName)
@@ -74,6 +78,7 @@ void GameStats::OnPhysicsTick(std::string eventName)
 	totalPlayedTime += (static_cast<float>(static_cast<double>(dt > 200 ? 200 : dt) / 60000.0));
 
 	HandleBoost(dt);
+	HandleInAir(dt);
 }
 
 float GameStats::GetTotalPlayedTime() const

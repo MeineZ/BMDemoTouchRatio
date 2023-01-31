@@ -27,7 +27,8 @@ Vector2 Renderer::GetBox()
 		(*displayDemos ? 1 : 0) +
 		(*displayBallHits ? 1 : 0) +
 		(*displayBoostUsage ? 1 : 0) +
-		(*displayBoostPMinute ? 1 : 0);
+		(*displayBoostPMinute ? 1 : 0) +
+		(*displayInAirPercentage ? 1 : 0);
 
 	if (*renderHorizontal)
 	{

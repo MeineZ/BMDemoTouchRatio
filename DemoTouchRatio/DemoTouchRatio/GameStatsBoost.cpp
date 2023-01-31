@@ -6,7 +6,7 @@
 #include "Util.h"
 #include "Params.h"
 
-void GameStats::HandleBoost(float deltaTime)
+void GameStats::HandleBoost(uint64_t deltaTime)
 {
 	// Do not track boost if delta time is over 200ms (5fps). This means there is some kind of gap between the tracking,
 	// allbeit insane amount of lagg a goal that has been scored, you've been demo'd. In all these moments, the physics tick method isn't called,
