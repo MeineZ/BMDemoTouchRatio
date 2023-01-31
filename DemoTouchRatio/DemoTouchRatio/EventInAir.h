@@ -4,6 +4,7 @@ class EventInAir
 {
 private:
 	float minutesInAir;
+	uint64_t lastGroundTimestamp;
 	bool aWheelContacts;
 	bool carHitsWorld;
 

@@ -204,6 +204,13 @@ void DemoTouchRatio::RenderCustomBehaviour()
 		gameWrapper->Execute([this](GameWrapper* gw) { cvarManager->getCvar(CVAR_NAME_CUSTOM_DELAY_BALLHIT).setValue(*customDelayBallHit); });
 	}
 
+	DrawSlider("In air delay", &*customDelayInAir, 0.f, 10.f, CVAR_NAME_CUSTOM_DELAY_INAIR); ImGui::SameLine();
+	if (ImGui::Button("Reset##delayinair"))
+	{
+		*customDelayInAir = 0.0f;
+		gameWrapper->Execute([this](GameWrapper* gw) { cvarManager->getCvar(CVAR_NAME_CUSTOM_DELAY_INAIR).setValue(*customDelayInAir); });
+	}
+
 	ImGuiPopDisable(*matchAccolades);
 
 	ImGui::Unindent();

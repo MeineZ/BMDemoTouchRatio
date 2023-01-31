@@ -22,6 +22,7 @@
 #define CVAR_NAME_CUSTOM_DELAY_BUMP "cl_demotouch_plugin_custom_delay_bump"
 #define CVAR_NAME_CUSTOM_DELAY_DEMO "cl_demotouch_plugin_custom_delay_demo"
 #define CVAR_NAME_CUSTOM_DELAY_BALLHIT "cl_demotouch_plugin_custom_delay_ballhit"
+#define CVAR_NAME_CUSTOM_DELAY_INAIR "cl_demotouch_plugin_custom_delay_inair"
 #define CVAR_NAME_PERSISTENT_STATS "cl_demotouch_plugin_persistent_stats"
 
 // [STAT_ADD] 1. Add display cvar name

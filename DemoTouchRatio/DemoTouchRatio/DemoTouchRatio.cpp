@@ -28,6 +28,7 @@ DemoTouchRatio::DemoTouchRatio() :
 	customDelayBump(std::make_shared<float>(0.020f)),
 	customDelayDemo(std::make_shared<float>(0.f)),
 	customDelayBallHit(std::make_shared<float>(0.020f)),
+	customDelayInAir(std::make_shared<float>(0.f)),
 	usePersistentStats(std::make_shared<bool>(true))
 { }
 
@@ -81,6 +82,7 @@ void DemoTouchRatio::onLoad()
 	cvarManager->registerCvar(CVAR_NAME_CUSTOM_DELAY_BUMP, "0.02", "Custom timeout on bump tracking", false, true, 0.f, true, 10.f, true).bindTo(customDelayBump);
 	cvarManager->registerCvar(CVAR_NAME_CUSTOM_DELAY_DEMO, "0.0", "Custom timeout on demo tracking", false, true, 0.f, true, 10.f, true).bindTo(customDelayDemo);
 	cvarManager->registerCvar(CVAR_NAME_CUSTOM_DELAY_BALLHIT, "0.02", "Custom timeout on ballhit tracking", false, true, 0.f, true, 10.f, true).bindTo(customDelayBallHit);
+	cvarManager->registerCvar(CVAR_NAME_CUSTOM_DELAY_INAIR, "0.0", "Custom timeout on in-air tracking", false, true, 0.f, true, 10.f, true).bindTo(customDelayInAir);
 
 	// Store total stats
 	cvarManager->registerCvar(CVAR_NAME_PERSISTENT_STATS, "1", "Store all-time stats", false, true, 0, true, 1, true).bindTo(usePersistentStats);
@@ -246,4 +248,9 @@ float DemoTouchRatio::GetCustomDemoDelay()
 float DemoTouchRatio::GetCustomBallHitDelay()
 {
 	return *customDelayBallHit * 1000.f;
+}
+
+float DemoTouchRatio::GetCustomInAirDelay()
+{
+	return *customDelayInAir * 1000.f;
 }

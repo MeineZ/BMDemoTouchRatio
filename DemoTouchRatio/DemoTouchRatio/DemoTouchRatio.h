@@ -40,6 +40,7 @@ private:
 	std::shared_ptr<float> customDelayBump; //
 	std::shared_ptr<float> customDelayDemo; //
 	std::shared_ptr<float> customDelayBallHit; //
+	std::shared_ptr<float> customDelayInAir; //
 
 	std::shared_ptr<bool> usePersistentStats;
 
@@ -66,6 +67,7 @@ public:
 	float GetCustomBumpDelay();
 	float GetCustomDemoDelay();
 	float GetCustomBallHitDelay();
+	float GetCustomInAirDelay();
 
 
 	// On render thread
