@@ -69,3 +69,16 @@ bool Util::AreInSameTeam(CarWrapper carA, CarWrapper carB) {
 
 	return carA.GetTeamNum2() == carB.GetTeamNum2();
 }
+
+PlaylistType Util::CurrentPlaylist()
+{
+	GameWrapper* gameWrapper = DemoTouchRatio::GetGameWrapper();
+	if (gameWrapper == nullptr)
+		return PlaylistType::PLAYLIST_UNKNOWN;
+
+	MMRWrapper mmrWrapper = gameWrapper->GetMMRWrapper();
+	int id = mmrWrapper.GetCurrentPlaylist();
+	DEBUGLOG("UTIL::CURRENTPLAYLIST: {}", id);
+
+	return PlaylistHelpers::ConvertToPluginPlaylist(PlaylistHelpers::GetPlaylistFromInt(id));
+}

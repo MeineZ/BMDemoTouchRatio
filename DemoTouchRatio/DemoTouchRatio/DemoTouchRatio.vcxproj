@@ -124,6 +124,7 @@
     <ClCompile Include="DemoTouchRatio.cpp" />
     <ClCompile Include="GuiBase.cpp" />
     <ClCompile Include="PersistentStats.cpp" />
+    <ClCompile Include="PlaylistStats.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="GameStatsSummary.cpp" />
     <ClCompile Include="RendererTableUtil.cpp" />
@@ -132,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="PlaylistEnum.h" />
     <ClInclude Include="EventData.h" />
     <ClInclude Include="EventInAir.h" />
     <ClInclude Include="GameStats.h" />
@@ -156,6 +158,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="GuiBase.h" />
     <ClInclude Include="DemoTouchRatio.h" />
+    <ClInclude Include="PlaylistStats.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="PersistentStats.h" />
     <ClInclude Include="Util.h" />

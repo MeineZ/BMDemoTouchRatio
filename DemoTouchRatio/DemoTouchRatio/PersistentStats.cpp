@@ -6,22 +6,25 @@
 #include <logging.h>
 
 #define STATS_FOLDER "demotouchdata"
-#define STATS_FILE "demotouchstats.csv"
+#define STATS_FILENAME "demotouchstats"
+#define STATS_FILEEXTENSION ".csv"
 
 // [STAT_ADD] 17. Add arguments
 #define STATS_COUNT 8
 
-PersistentStats::PersistentStats():
+PersistentStats::PersistentStats() :
+	suffix(""),
 	total(),
 	average(DEFAULT_SUMMARY_ARGS),
 	nOfGames(0)
 { }
 
-void PersistentStats::Initialize()
+void PersistentStats::Initialize(std::string fileSuffix)
 {
 	total = GameStats();
 	average = GameStatsSummary::SummarizedStats(DEFAULT_SUMMARY_ARGS);
 	nOfGames = 0;
+	suffix = fileSuffix;
 
 	LoadFile();
 }
@@ -110,7 +113,7 @@ int PersistentStats::GetNumberOfGames() const
 std::filesystem::path PersistentStats::GetFullPath()
 {
 	std::filesystem::path filePath = DemoTouchRatio::Instance().GetGameWrapper()->GetDataFolder() / STATS_FOLDER;
-	std::filesystem::path fullPath = filePath / STATS_FILE;
+	std::filesystem::path fullPath = filePath / (STATS_FILENAME + suffix + STATS_FILEEXTENSION);
 	if (!std::filesystem::exists(fullPath)) {
 		std::filesystem::create_directories(filePath);
 	}

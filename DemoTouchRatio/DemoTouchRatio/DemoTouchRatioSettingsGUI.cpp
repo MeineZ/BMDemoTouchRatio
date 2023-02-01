@@ -230,7 +230,10 @@ void DemoTouchRatio::RenderPersistentStats() {
 	bool oldUsePersistentStats = *usePersistentStats;
 	DrawCheckbox("Store stats", &*usePersistentStats, CVAR_NAME_PERSISTENT_STATS);
 	if (oldUsePersistentStats  != *usePersistentStats && *usePersistentStats) {
-		persistentStats.Initialize();
+		for (int i = 0; i < NUMBER_OF_TRACKED_PLAYLISTS; ++i)
+		{
+			playlistStats[i].Initialize();
+		}
 	}
 
 	ImGui::NewLine();
@@ -243,7 +246,10 @@ void DemoTouchRatio::RenderPersistentStats() {
 		ImGui::NewLine();
 		ImGui::TextUnformatted("!! This removes your all-time tracked stats !!");
 		if (ImGui::Button("YES, I WANT TO CLEAR MY TOTAL STATS")) {
-			persistentStats.Clear();
+			for (int i = 0; i < NUMBER_OF_TRACKED_PLAYLISTS; ++i)
+			{
+				playlistStats[i].GetPersistentStats().Clear();
+			}
 		}
 	}
 

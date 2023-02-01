@@ -10,6 +10,10 @@ class PersistentStats;
 
 #define DEFAULT_ROW_SIZE 16.f
 #define DEFAULT_COLUMN_SIZE 100.f
+#define TITLE_SIZE 1.2f
+
+#define X_OFFSET 10
+#define Y_OFFSET 5
 
 #define STATS_RENDER_ARGUMENTS float current, float last, float total, float average, float persistentTotal, float persistentAverage
 
@@ -23,6 +27,7 @@ private:
 
 	Vector2 GetBox();
 
+	void RenderTitle(CanvasWrapper* canvas); // Renders title for table
 	void RenderHeader(CanvasWrapper* canvas, int nOfGames, int persistentNOfGames); // Renders header for table
 	void RenderData(CanvasWrapper* canvas, int nth, std::string label, STATS_RENDER_ARGUMENTS); // Renders header for table
 

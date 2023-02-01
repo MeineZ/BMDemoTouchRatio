@@ -86,7 +86,9 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, P
 	canvas->SetPosition(position);
 	canvas->FillBox(GetBox());
 
+	canvas->SetColor(*colorText);
 
+	RenderTitle(canvas);
 	RenderHeader(canvas, gameStats.GetNumberOfGames(), persistentStats.GetNumberOfGames());
 
 	int nth = 1;

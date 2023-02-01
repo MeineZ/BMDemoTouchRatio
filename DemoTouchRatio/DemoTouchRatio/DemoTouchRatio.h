@@ -7,12 +7,13 @@
 #include "bakkesmod/plugin/PluginSettingsWindow.h"
 
 #include "Renderer.h"
-#include "PersistentStats.h"
+#include "PlaylistStats.h"
+#include "PlaylistEnum.h"
 
 #include "version.h"
 constexpr auto plugin_version = stringify(VERSION_MAJOR) "." stringify(VERSION_MINOR) "." stringify(VERSION_PATCH) "." stringify(VERSION_BUILD);
 
-class GameStats;
+#define NUMBER_OF_TRACKED_PLAYLISTS 8
 
 class DemoTouchRatio: public BakkesMod::Plugin::BakkesModPlugin
 	, public BakkesMod::Plugin::PluginSettingsWindow
@@ -20,12 +21,10 @@ class DemoTouchRatio: public BakkesMod::Plugin::BakkesModPlugin
 private:
 	static DemoTouchRatio* instance_;
 
-	std::vector<GameStats*> playedGames;
-	Renderer renderer;
-	PersistentStats persistentStats;
+	PlaylistType lastPlaylist;
+	PlaylistStats* playlistStats;
 
-	GameStats* lastGame;
-	GameStats* currentGame;
+	Renderer renderer;
 
 	bool scoreboardOpened;
 
@@ -49,6 +48,8 @@ private:
 
 	void Reset();
 
+	PlaylistStats* GetCurrentStats();
+
 public:
 	DemoTouchRatio();
 
@@ -60,6 +61,7 @@ public:
 
 	void Render(CanvasWrapper canvas);
 
+	PlaylistType GetCurrentShownPlaylist();
 	bool CanRenderInMatches();
 	bool CanTrackTeamBumps();
 	bool ShouldMatchAccolades();

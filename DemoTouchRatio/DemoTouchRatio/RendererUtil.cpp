@@ -3,9 +3,6 @@
 
 #include <DemoTouchRatio.h>
 
-#define X_OFFSET 10
-#define Y_OFFSET 5
-
 Vector2 Renderer::GetBox()
 {
 	int width = X_OFFSET,
@@ -40,13 +37,12 @@ Vector2 Renderer::GetBox()
 		width += *columnSize * numberOfDescriptionCells + (!*customDescSize ? (DEFAULT_COLUMN_SIZE - *columnSize) : 0.f);
 		height += (!*customDescSize ? DEFAULT_ROW_SIZE : *rowSize) + (numberOfDataShown * *rowSize);
 	}
+	height += *rowSize * TITLE_SIZE;
 	return Vector2{ (int)((float)width * *scale), (int)((float)height * *scale) };
 }
 
 void Renderer::RenderText(CanvasWrapper* canvas, std::string text, int columnId, int rowId, bool isRowDesc = false, bool isColDesc = false)
 {
-	canvas->SetColor(*colorText);
-
 	// Take custom size off into account
 	float offsetColumn = 0.f,
 		offsetRow = 0.f;
@@ -62,7 +58,7 @@ void Renderer::RenderText(CanvasWrapper* canvas, std::string text, int columnId,
 		--rowId;
 	}
 
-	canvas->SetPosition(Vector2{ *posX + (int)((X_OFFSET + offsetColumn + (columnId * *columnSize)) * *scale), *posY + (int)((Y_OFFSET + offsetRow + (rowId * *rowSize)) * *scale) });
+	canvas->SetPosition(Vector2{ *posX + (int)((X_OFFSET + offsetColumn + (columnId * *columnSize)) * *scale), (int)(*rowSize * TITLE_SIZE) + *posY + (int)((Y_OFFSET + offsetRow + (rowId * *rowSize)) * *scale)});
 	canvas->DrawString(text, *scale, *scale);
 }
 

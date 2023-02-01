@@ -12,11 +12,9 @@ DemoTouchRatio* DemoTouchRatio::instance_ = nullptr;
 std::shared_ptr<CVarManagerWrapper> _globalCvarManager;
 
 DemoTouchRatio::DemoTouchRatio() :
-	playedGames(std::vector<GameStats*>()),
 	renderer(),
-	persistentStats(),
-	currentGame(nullptr),
-	lastGame(nullptr),
+	lastPlaylist(PlaylistType::PLAYLIST_RANKEDSTANDARD),
+	playlistStats(nullptr),
 	scoreboardOpened(false),
 	renderInMatches(std::make_shared<bool>(true)),
 	renderOnlyOnScoreboard(std::make_shared<bool>(false)),
@@ -30,7 +28,7 @@ DemoTouchRatio::DemoTouchRatio() :
 	customDelayBallHit(std::make_shared<float>(0.020f)),
 	customDelayInAir(std::make_shared<float>(0.f)),
 	usePersistentStats(std::make_shared<bool>(true))
-{ }
+{} 
 
 void DemoTouchRatio::onLoad()
 {
@@ -39,7 +37,23 @@ void DemoTouchRatio::onLoad()
 	_globalCvarManager = cvarManager;
 
 	Reset();
-	persistentStats.Initialize();
+
+	// Initialize playlist stats
+	playlistStats = new PlaylistStats[NUMBER_OF_TRACKED_PLAYLISTS] {
+		PlaylistStats(PlaylistType::PLAYLIST_CASUAL),
+		PlaylistStats(PlaylistType::PLAYLIST_RANKEDDUEL),
+		PlaylistStats(PlaylistType::PLAYLIST_RANKEDDOUBLES),
+		PlaylistStats(PlaylistType::PLAYLIST_RANKEDSTANDARD),
+		PlaylistStats(PlaylistType::PLAYLIST_RANKEDHOOPS),
+		PlaylistStats(PlaylistType::PLAYLIST_RANKEDRUMBLE),
+		PlaylistStats(PlaylistType::PLAYLIST_RANKEDDROPSHOT),
+		PlaylistStats(PlaylistType::PLAYLIST_RANKEDSNOWDAY)
+	};
+
+	for (int i = 0; i < NUMBER_OF_TRACKED_PLAYLISTS; ++i)
+	{
+		playlistStats[i].Initialize();
+	}
 
 	// Display CVar initialization
 	cvarManager->registerCvar(CVAR_NAME_IN_MATCHES, "1", "Draw DemoTouch display during matches", false, true, 0, true, 1, true).bindTo(renderInMatches);
@@ -123,17 +137,6 @@ void DemoTouchRatio::Reset() {
 	scoreboardOpened = false;
 
 	EndGame();
-
-	if (lastGame != nullptr) {
-		delete lastGame;
-		lastGame = nullptr;
-	}
-
-	for (int i = 0; i < playedGames.size(); ++i)
-	{
-		delete playedGames[i];
-	}
-	playedGames.clear();
 }
 
 void DemoTouchRatio::onUnload()
@@ -147,6 +150,9 @@ void DemoTouchRatio::onUnload()
 	gameWrapper->UnhookEvent(HOOK_ON_SCOREBOARD_CLOSED);
 
 	Reset();
+
+	delete playlistStats;
+	playlistStats = nullptr;
 }
 
 DemoTouchRatio& DemoTouchRatio::Instance()
@@ -161,45 +167,51 @@ GameWrapper* DemoTouchRatio::GetGameWrapper()
 
 void DemoTouchRatio::CreateNewGame()
 {
-	if (currentGame == nullptr)
-	{
-		currentGame = new GameStats();
-		currentGame->BindEvents();
+	scoreboardOpened = false;
 
-		scoreboardOpened = false;
+	if (playlistStats == nullptr)
+		return;
+
+	lastPlaylist = Util::CurrentPlaylist();
+
+	// Create new game 
+	for (int i = 0; i < NUMBER_OF_TRACKED_PLAYLISTS; ++i)
+	{
+		playlistStats[i].CreateNewGame();
+		if (playlistStats[i].GetCurrentGame() != nullptr)
+			return;
 	}
+	// Set to unknown playlist if no supported gamemode is active
+	lastPlaylist = PlaylistType::PLAYLIST_UNKNOWN;
 }
 
 void DemoTouchRatio::EndGame()
 {
 	scoreboardOpened = false;
+	
+	if (playlistStats == nullptr)
+		return;
 
-	if (currentGame != nullptr)
+	// EndGame
+	for (int i = 0; i < NUMBER_OF_TRACKED_PLAYLISTS; ++i)
 	{
-		if (lastGame != nullptr)
-		{
-			playedGames.push_back(lastGame);
-			lastGame = nullptr;
-		}
-
-		if (*usePersistentStats) {
-			persistentStats.Update(currentGame);
-		}
-
-		lastGame = currentGame;
-		lastGame->UnbindEvents();
-		currentGame = nullptr;
+		playlistStats[i].EndGame();
 	}
 }
 
 void DemoTouchRatio::Render(CanvasWrapper canvas) {
+	PlaylistStats* currentStats = nullptr;
+	currentStats = GetCurrentStats();
+	if (currentStats == nullptr)
+		return;
+
 	// ALWAYS show if the user uses the force notifier
 	if (!*forceStatsDisplay)
 	{
-		if (!*renderInMatches && currentGame != nullptr)
+		if (!*renderInMatches && currentStats->GetCurrentGame() != nullptr)
 			return;
 
-		if (currentGame != nullptr && *renderOnlyOnScoreboard && !scoreboardOpened)
+		if (currentStats->GetCurrentGame() != nullptr && *renderOnlyOnScoreboard && !scoreboardOpened)
 			return;
 
 		if (!*renderInFreeplay && gameWrapper->IsInFreeplay())
@@ -212,8 +224,28 @@ void DemoTouchRatio::Render(CanvasWrapper canvas) {
 			return;
 	}
 
-	GameStatsSummary summary = GameStatsSummary(currentGame, lastGame, playedGames);
-	renderer.RenderStats(&canvas, summary, persistentStats);
+	GameStatsSummary summary = GameStatsSummary(currentStats->GetCurrentGame(), currentStats->GetLastGame(), currentStats->GetPlayedGames());
+	renderer.RenderStats(&canvas, summary, currentStats->GetPersistentStats());
+}
+
+PlaylistStats* DemoTouchRatio::GetCurrentStats()
+{
+	if (playlistStats == nullptr)
+		return nullptr;
+
+	for (int i = 0; i < NUMBER_OF_TRACKED_PLAYLISTS; ++i)
+	{
+		if (playlistStats[i].IsCurrent(GetCurrentShownPlaylist()))
+		{
+			return &playlistStats[i];
+		}
+	}
+
+}
+
+PlaylistType DemoTouchRatio::GetCurrentShownPlaylist()
+{
+	return lastPlaylist;
 }
 
 bool DemoTouchRatio::CanRenderInMatches() {

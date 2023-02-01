@@ -1,5 +1,7 @@
 #pragma once
 
+#include "PlaylistEnum.h"
+
 static class Util
 {
 public:
@@ -12,4 +14,6 @@ public:
 	static uint64_t TimestampInMS();
 
 	static bool AreInSameTeam(CarWrapper carA, CarWrapper carB);
+
+	static PlaylistType CurrentPlaylist();
 };

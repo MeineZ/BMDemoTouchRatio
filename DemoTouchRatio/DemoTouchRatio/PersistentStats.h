@@ -1,10 +1,14 @@
 #pragma once
 
+#include <string>
+
 #include <GameStats.h>
 #include <GameStatsSummary.h>
 
 class PersistentStats {
 private:
+	std::string suffix;
+
 	GameStats total;
 	GameStatsSummary::SummarizedStats average;
 	int nOfGames;
@@ -18,7 +22,7 @@ private:
 public:
 	PersistentStats();
 
-	void Initialize();
+	void Initialize(std::string fileSuffix);
 	const GameStats& Update(GameStats* stats);
 	void Clear();
 

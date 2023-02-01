@@ -144,6 +144,9 @@
     <ClCompile Include="GameStatsInAir.cpp">
       <Filter>Plugin\src\GameStatsTracking</Filter>
     </ClCompile>
+    <ClCompile Include="PlaylistStats.cpp">
+      <Filter>Plugin\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imgui_rangeslider.h">
@@ -232,6 +235,12 @@
     </ClInclude>
     <ClInclude Include="EventInAir.h">
       <Filter>Plugin\header\GameStatsTracking\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaylistStats.h">
+      <Filter>Plugin\header</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaylistEnum.h">
+      <Filter>Plugin\header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
