@@ -96,6 +96,26 @@ void PersistentStats::Clear()
 	UpdateFile();
 }
 
+void PersistentStats::Add(PersistentStats& other)
+{
+	if (nOfGames == 0 && other.nOfGames)
+		return;
+
+
+	total = GameStats(
+		total.GetBumps() + other.total.GetBumps(),
+		total.GetTeamBumps() + other.total.GetTeamBumps(),
+		total.GetDemos() + other.total.GetDemos(),
+		total.GetBallHits() + other.total.GetBallHits(),
+		total.GetTotalPlayedTime() + other.total.GetTotalPlayedTime(),
+		total.GetBoostUsed() + other.total.GetBoostUsed(),
+		total.GetTimeInAir() + other.total.GetTimeInAir()
+	);
+
+	nOfGames += other.nOfGames;
+	average.Add(other.average);
+}
+
 const GameStats& PersistentStats::GetTotalStats() const {
 	return total;
 }

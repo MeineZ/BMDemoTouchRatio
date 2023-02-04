@@ -52,6 +52,9 @@ void EventInAir::OnCarHitWorld()
 
 float EventInAir::GetInAirPercentage(float totalTimeInMinutes) const
 {
+	if (totalTimeInMinutes == 0.f)
+		return 0.f;
+
 	return (minutesInAir / totalTimeInMinutes) * 100.f;
 }
 

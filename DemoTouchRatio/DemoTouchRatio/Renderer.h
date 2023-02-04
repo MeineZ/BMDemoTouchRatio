@@ -15,7 +15,7 @@ class PersistentStats;
 #define X_OFFSET 10
 #define Y_OFFSET 5
 
-#define STATS_RENDER_ARGUMENTS float current, float last, float total, float average, float persistentTotal, float persistentAverage
+#define STATS_RENDER_ARGUMENTS float current, float last, float total, float average, float playlistsTotal, float playlistsAverage, float persistentTotal, float persistentAverage, float persistentPlaylistsTotal, float persistentPlaylistsAverage
 
 class Renderer {
 private:
@@ -28,7 +28,7 @@ private:
 	Vector2 GetBox();
 
 	void RenderTitle(CanvasWrapper* canvas); // Renders title for table
-	void RenderHeader(CanvasWrapper* canvas, int nOfGames, int persistentNOfGames); // Renders header for table
+	void RenderHeader(CanvasWrapper* canvas, int nOfGames, int playlistsNOfGames, int persistentNOfGames, int playlistsPersistentNOfGames); // Renders header for table
 	void RenderData(CanvasWrapper* canvas, int nth, std::string label, STATS_RENDER_ARGUMENTS); // Renders header for table
 
 public:
@@ -52,15 +52,19 @@ public:
 
 	std::shared_ptr<bool> displayTotal;
 	std::shared_ptr<bool> displayAverage;
+	std::shared_ptr<bool> displayPlaylistsTotal;
+	std::shared_ptr<bool> displayPlaylistsAverage;
 	std::shared_ptr<bool> displayPersistentTotal;
 	std::shared_ptr<bool> displayPersistentAverage;
+	std::shared_ptr<bool> displayPlaylistsPersistentTotal;
+	std::shared_ptr<bool> displayPlaylistsPersistentAverage;
 
 	std::shared_ptr<bool> renderHorizontal;
 	std::shared_ptr<bool> customDescSize;
 
 	Renderer();
 
-	void RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, PersistentStats& persistentStats);
+	void RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, PersistentStats& persistentStats, GameStatsSummary& playlists, PersistentStats& playlistsPersistent);
 
 	void ResetScale();
 	void ResetColors();
@@ -69,6 +73,10 @@ public:
 	// Public utils
 	bool ShouldShowTotal();
 	bool ShouldShowAverage();
+	bool ShouldShowPlaylistsTotal();
+	bool ShouldShowPlaylistsAverage();
 	bool ShouldShowPersistentTotal();
 	bool ShouldShowPersistentAverage();
+	bool ShouldShowPlaylistsPersistentTotal();
+	bool ShouldShowPlaylistsPersistentAverage();
 };

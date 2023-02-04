@@ -15,7 +15,7 @@ void Renderer::RenderTitle(CanvasWrapper* canvas)
 	canvas->DrawString(PlaylistHelpers::GetPlaylistName(DemoTouchRatio::Instance().GetCurrentShownPlaylist()), TITLE_SIZE * *scale, TITLE_SIZE * *scale);
 }
 
-void Renderer::RenderHeader(CanvasWrapper *canvas, int nOfGames, int persistentNOfGames)
+void Renderer::RenderHeader(CanvasWrapper *canvas, int nOfGames, int playlistsNOfGames, int persistentNOfGames, int playlistsPersistentNOfGames)
 {
 	std::stringstream stringStream;
 
@@ -43,6 +43,19 @@ void Renderer::RenderHeader(CanvasWrapper *canvas, int nOfGames, int persistentN
 		stringStream << "Avg. #" << nOfGames;
 		renderCell(stringStream.str(), increment++);
 	}
+	if (ShouldShowPlaylistsTotal())
+	{
+		stringStream.str("");
+		if (ShouldShowPlaylistsAverage()) stringStream << "<Total>";
+		else stringStream << "<Total #" << playlistsNOfGames << ">";
+		renderCell(stringStream.str(), increment++);
+	}
+	if (ShouldShowPlaylistsAverage())
+	{
+		stringStream.str("");
+		stringStream << "<Avg. #" << playlistsNOfGames << ">";
+		renderCell(stringStream.str(), increment++);
+	}
 
 	if (ShouldShowPersistentTotal())
 	{
@@ -56,6 +69,20 @@ void Renderer::RenderHeader(CanvasWrapper *canvas, int nOfGames, int persistentN
 	{
 		stringStream.str("");
 		stringStream << "[Avg. #" << persistentNOfGames << "]";
+		renderCell(stringStream.str(), increment++);
+	}
+	if (ShouldShowPlaylistsPersistentTotal())
+	{
+		stringStream.str("");
+		if (ShouldShowPlaylistsPersistentAverage()) stringStream << "[[Total]]";
+		else stringStream << "[[Total #" << playlistsPersistentNOfGames << "]]";
+
+		renderCell(stringStream.str(), increment++);
+	}
+	if (ShouldShowPlaylistsPersistentAverage())
+	{
+		stringStream.str("");
+		stringStream << "[[Avg. #" << playlistsPersistentNOfGames << "]]";
 		renderCell(stringStream.str(), increment++);
 	}
 }
@@ -83,9 +110,17 @@ void Renderer::RenderData(CanvasWrapper* canvas, int nth, std::string label, STA
 		renderCellFloat(total, increment++, 0, stringStream);
 	if (ShouldShowAverage())
 		renderCellFloat(average, increment++, 2, stringStream);
+	if (ShouldShowPlaylistsTotal())
+		renderCellFloat(playlistsTotal, increment++, 0, stringStream);
+	if (ShouldShowPlaylistsAverage())
+		renderCellFloat(playlistsAverage, increment++, 2, stringStream);
 
 	if (ShouldShowPersistentTotal())
 		renderCellFloat(persistentTotal, increment++, 0, stringStream);
 	if (ShouldShowPersistentAverage())
 		renderCellFloat(persistentAverage, increment++, 2, stringStream);
+	if (ShouldShowPlaylistsPersistentTotal())
+		renderCellFloat(persistentPlaylistsTotal, increment++, 0, stringStream);
+	if (ShouldShowPlaylistsPersistentAverage())
+		renderCellFloat(persistentPlaylistsAverage, increment++, 2, stringStream);
 }

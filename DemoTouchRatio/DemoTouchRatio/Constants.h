@@ -36,8 +36,12 @@
 
 #define CVAR_NAME_SHOW_TOTAL "cl_demotouch_plugin_show_total"
 #define CVAR_NAME_SHOW_AVERAGE "cl_demotouch_plugin_show_average"
+#define CVAR_NAME_SHOW_PLAYLISTS_TOTAL "cl_demotouch_plugin_show_playlists_total"
+#define CVAR_NAME_SHOW_PLAYLISTS_AVERAGE "cl_demotouch_plugin_show_playlists_average"
 #define CVAR_NAME_SHOW_PERSISTENT_TOTAL "cl_demotouch_plugin_show_persistent_total"
 #define CVAR_NAME_SHOW_PERSISTENT_AVERAGE "cl_demotouch_plugin_show_persistent_average"
+#define CVAR_NAME_SHOW_PLAYLISTS_PERSISTENT_TOTAL "cl_demotouch_plugin_show_playlists_persistent_total"
+#define CVAR_NAME_SHOW_PLAYLISTS_PERSISTENT_AVERAGE "cl_demotouch_plugin_show_playlists_persistent_average"
 
 // Cvar notifiers
 #define CVAR_NOT_RESET_STATS "cl_demotouch_plugin_reset_stats"

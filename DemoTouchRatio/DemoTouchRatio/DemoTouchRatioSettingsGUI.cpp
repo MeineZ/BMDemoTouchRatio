@@ -80,21 +80,41 @@ void DemoTouchRatio::RenderColumnVisibility()
 
 	ImGui::NewLine();
 
-	DrawCheckbox("Show total", &*renderer.displayTotal, CVAR_NAME_SHOW_TOTAL);
-	DrawCheckbox("Show average", &*renderer.displayAverage, CVAR_NAME_SHOW_AVERAGE);
+	// Total / average
+	ImGui::TextUnformatted("Current session stats.");
+	DrawCheckbox("Show total##normal", &*renderer.displayTotal, CVAR_NAME_SHOW_TOTAL);
+	ImGui::SameLine(200); DrawCheckbox("Show average##normal", &*renderer.displayAverage, CVAR_NAME_SHOW_AVERAGE);
 
 	ImGui::NewLine();
 
-	ImGui::TextUnformatted("Settings about your all-time stats. See \"Track stats across game sessions\" section for more information.");
+	// Playlists total / average
+	ImGui::TextUnformatted("Current session stats, but from all playlists combined. Its label is surrounded with '<...>'.");
+	DrawCheckbox("Show total##playlists", &*renderer.displayPlaylistsTotal, CVAR_NAME_SHOW_PLAYLISTS_TOTAL);
+	ImGui::SameLine(200); DrawCheckbox("Show average##playlists", &*renderer.displayPlaylistsAverage, CVAR_NAME_SHOW_PLAYLISTS_AVERAGE);
 
-	if (!*usePersistentStats) {
-		ImGui::TextUnformatted("Tracking total stats is disabled. See \"Track stats across game sessions\" section for more information.");
+	ImGui::NewLine();
+	if (!*usePersistentStats)
+	{
+		ImGui::TextUnformatted("Tracking total stats is disabled.");
+		ImGui::NewLine();
 	}
+
+	// All-time stats
+	ImGui::TextUnformatted("All-time stats. Its label is surrounded with '[...]'.");
+	ImGui::TextUnformatted("See \"Track stats across game sessions\" section for more information.");
 	ImGuiPushDisable(!*usePersistentStats);
-	DrawCheckbox("Show all-time total", &*renderer.displayPersistentTotal, CVAR_NAME_SHOW_PERSISTENT_TOTAL);
-	DrawCheckbox("Show all-time average", &*renderer.displayPersistentAverage, CVAR_NAME_SHOW_PERSISTENT_AVERAGE);
+	DrawCheckbox("Show total##persistent", &*renderer.displayPersistentTotal, CVAR_NAME_SHOW_PERSISTENT_TOTAL);
+	ImGui::SameLine(200); DrawCheckbox("Show average##persistent", &*renderer.displayPersistentAverage, CVAR_NAME_SHOW_PERSISTENT_AVERAGE);
 	ImGuiPopDisable(!*usePersistentStats);
 
+	ImGui::NewLine();
+
+	// All-time playlists stats
+	ImGui::TextUnformatted("All-time stats, but from all playlists combined. Its label is surrounded with '[[...]]'.");
+	ImGuiPushDisable(!*usePersistentStats);
+	DrawCheckbox("Show total##playlistsPersistent", &*renderer.displayPlaylistsPersistentTotal, CVAR_NAME_SHOW_PLAYLISTS_PERSISTENT_TOTAL);
+	ImGui::SameLine(200); DrawCheckbox("Show average##playlistsPersistent", &*renderer.displayPlaylistsPersistentAverage, CVAR_NAME_SHOW_PLAYLISTS_PERSISTENT_AVERAGE);
+	ImGuiPopDisable(!*usePersistentStats);
 
 	ImGui::Unindent();
 }
@@ -232,7 +252,7 @@ void DemoTouchRatio::RenderPersistentStats() {
 	if (oldUsePersistentStats  != *usePersistentStats && *usePersistentStats) {
 		for (int i = 0; i < NUMBER_OF_TRACKED_PLAYLISTS; ++i)
 		{
-			playlistStats[i].Initialize();
+			playlistStats[i].InitializePersistentStats();
 		}
 	}
 
@@ -314,8 +334,6 @@ void DemoTouchRatio::DrawColorPicker(const char* label, LinearColor* color, cons
 		});
 	}
 }
-
-
 
 void DemoTouchRatio::ImGuiPushDisable(bool isDisabled)
 {

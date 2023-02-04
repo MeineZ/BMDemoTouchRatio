@@ -26,6 +26,8 @@ public:
 	const GameStats& Update(GameStats* stats);
 	void Clear();
 
+	void Add(PersistentStats& other);
+
 	const GameStats& GetTotalStats() const;
 	const GameStatsSummary::SummarizedStats& GetAverageStats() const;
 	int GetNumberOfGames() const;

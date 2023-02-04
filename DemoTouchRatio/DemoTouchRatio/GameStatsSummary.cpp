@@ -3,6 +3,14 @@
 
 #include <GameStats.h>
 
+GameStatsSummary::GameStatsSummary() :
+	currentStats(SummarizedStats(DEFAULT_SUMMARY_ARGS)),
+	lastStats(SummarizedStats(DEFAULT_SUMMARY_ARGS)),
+	totalStats(SummarizedStats(DEFAULT_SUMMARY_ARGS)),
+	averageStats(SummarizedStats(DEFAULT_SUMMARY_ARGS)),
+	numberOfGames(0)
+{}
+
 GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastGameStats, std::vector<GameStats*> previousGameStats):
 	currentStats(SummarizedStats(DEFAULT_SUMMARY_ARGS)),
 	lastStats(SummarizedStats(DEFAULT_SUMMARY_ARGS)),
@@ -84,6 +92,17 @@ GameStatsSummary::SummarizedStats GameStatsSummary::CreateSummaryFrom(GameStats*
 			gameStats->GetBoostUsed(), gameStats->GetBoostPMinute(), gameStats->GetInAirPercentage()
 		};
 	}
+}
+
+void GameStatsSummary::AddTotalAndAverage(GameStatsSummary& other)
+{
+	if (numberOfGames == 0 && other.numberOfGames == 0)
+		return;
+
+	totalStats.Add(other.totalStats);
+	averageStats.Add(other.averageStats);
+
+	numberOfGames += other.numberOfGames;
 }
 
 const GameStatsSummary::SummarizedStats& GameStatsSummary::GetCurrent()

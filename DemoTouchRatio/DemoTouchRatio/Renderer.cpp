@@ -12,8 +12,12 @@ gameStats.GetCurrent().propName, \
 gameStats.GetLast().propName, \
 gameStats.GetTotal().propName, \
 gameStats.GetAverage().propName, \
+playlistsStats.GetTotal().propName, \
+playlistsStats.GetAverage().propName, \
 persistentStats.GetTotalStats().propFunc(), \
-persistentStats.GetAverageStats().propName
+persistentStats.GetAverageStats().propName, \
+playlistsPersistent.GetTotalStats().propFunc(), \
+playlistsPersistent.GetAverageStats().propName
 
 Renderer::Renderer() :
 	posX(std::make_shared<int>(0)),
@@ -33,8 +37,12 @@ Renderer::Renderer() :
 	displayInAirPercentage(std::make_shared<bool>(false)),
 	displayTotal(std::make_shared<bool>(true)),
 	displayAverage(std::make_shared<bool>(true)),
+	displayPlaylistsTotal(std::make_shared<bool>(false)),
+	displayPlaylistsAverage(std::make_shared<bool>(false)),
 	displayPersistentTotal(std::make_shared<bool>(false)),
 	displayPersistentAverage(std::make_shared<bool>(false)),
+	displayPlaylistsPersistentTotal(std::make_shared<bool>(false)),
+	displayPlaylistsPersistentAverage(std::make_shared<bool>(false)),
 	renderHorizontal(std::make_shared<bool>(true)),
 	customDescSize(std::make_shared<bool>(false))
 { }
@@ -70,7 +78,7 @@ void Renderer::ResetTableSizes()
 	}
 }
 
-void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, PersistentStats &persistentStats)
+void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, PersistentStats &persistentStats, GameStatsSummary& playlistsStats, PersistentStats& playlistsPersistent)
 {
 	std::stringstream stringStream;
 	DemoTouchRatio app = DemoTouchRatio::Instance();
@@ -89,7 +97,7 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, P
 	canvas->SetColor(*colorText);
 
 	RenderTitle(canvas);
-	RenderHeader(canvas, gameStats.GetNumberOfGames(), persistentStats.GetNumberOfGames());
+	RenderHeader(canvas, gameStats.GetNumberOfGames(), playlistsStats.GetNumberOfGames(), persistentStats.GetNumberOfGames(), playlistsPersistent.GetNumberOfGames());
 
 	int nth = 1;
 	if(*displayBumps) RenderData(canvas, nth++, "Bumps", STATS_RENDER_ARGUMENTS_SOURCE(bumps, GetBumps));

@@ -86,8 +86,13 @@ void DemoTouchRatio::onLoad()
 
 	cvarManager->registerCvar(CVAR_NAME_SHOW_TOTAL, "1", "Show session total stats", false, true, 0, true, 1, true).bindTo(renderer.displayTotal);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_AVERAGE, "1", "Show session average stats", false, true, 0, true, 1, true).bindTo(renderer.displayAverage);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_PLAYLISTS_TOTAL, "0", "Show session total stats over all gamemodes", false, true, 0, true, 1, true).bindTo(renderer.displayPlaylistsTotal);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_PLAYLISTS_AVERAGE, "0", "Show session average stats over all gamemodes", false, true, 0, true, 1, true).bindTo(renderer.displayPlaylistsAverage);
+
 	cvarManager->registerCvar(CVAR_NAME_SHOW_PERSISTENT_TOTAL, "0", "Show all-time total stats", false, true, 0, true, 1, true).bindTo(renderer.displayPersistentTotal);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_PERSISTENT_AVERAGE, "0", "Show all-time average stats", false, true, 0, true, 1, true).bindTo(renderer.displayPersistentAverage);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_PLAYLISTS_PERSISTENT_TOTAL, "0", "Show all-time total stats over all gamemodes", false, true, 0, true, 1, true).bindTo(renderer.displayPlaylistsPersistentTotal);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_PLAYLISTS_PERSISTENT_AVERAGE, "0", "Show all-time average stats over all gamemodes", false, true, 0, true, 1, true).bindTo(renderer.displayPlaylistsPersistentAverage);
 
 	cvarManager->registerCvar(CVAR_NOT_FORCE_SHOW_STATS, "0", "Force the display of your stats", true, true, 0, true, 1, false).bindTo(forceStatsDisplay);
 
@@ -224,8 +229,26 @@ void DemoTouchRatio::Render(CanvasWrapper canvas) {
 			return;
 	}
 
+	// Calculate all playlists stats if neccessary
+	GameStatsSummary playlistsSummary = GameStatsSummary();
+	PersistentStats playlistsPersistentSummary = playlistStats[0].GetPersistentStats();
+	if (renderer.ShouldShowPlaylistsTotal() || renderer.ShouldShowPlaylistsAverage())
+	{
+		for (int i = 0; i < NUMBER_OF_TRACKED_PLAYLISTS; ++i) {
+			GameStatsSummary playlistSummary = GameStatsSummary(playlistStats[i].GetCurrentGame(), playlistStats[i].GetLastGame(), playlistStats[i].GetPlayedGames());
+			playlistsSummary.AddTotalAndAverage(playlistSummary);
+		}
+	}
+
+	if (renderer.ShouldShowPlaylistsPersistentTotal() || renderer.ShouldShowPlaylistsPersistentAverage())
+	{
+		for (int i = 1; i < NUMBER_OF_TRACKED_PLAYLISTS; ++i) {
+			playlistsPersistentSummary.Add(playlistStats[i].GetPersistentStats());
+		}
+	}
+
 	GameStatsSummary summary = GameStatsSummary(currentStats->GetCurrentGame(), currentStats->GetLastGame(), currentStats->GetPlayedGames());
-	renderer.RenderStats(&canvas, summary, currentStats->GetPersistentStats());
+	renderer.RenderStats(&canvas, summary, currentStats->GetPersistentStats(), playlistsSummary, playlistsPersistentSummary);
 }
 
 PlaylistStats* DemoTouchRatio::GetCurrentStats()

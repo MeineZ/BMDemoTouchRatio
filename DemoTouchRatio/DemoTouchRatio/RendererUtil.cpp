@@ -14,8 +14,12 @@ Vector2 Renderer::GetBox()
 		+ (DemoTouchRatio::Instance().CanRenderInMatches() ? 1 : 0) // current
 		+ (ShouldShowTotal() ? 1 : 0) // total
 		+ (ShouldShowAverage() ? 1 : 0) // average
+		+ (ShouldShowPlaylistsTotal() ? 1 : 0) // playlists total
+		+ (ShouldShowPlaylistsAverage() ? 1 : 0) // playlists average
 		+ (ShouldShowPersistentTotal() ? 1 : 0) // persistent total
 		+ (ShouldShowPersistentAverage() ? 1 : 0) // persistent average
+		+ (ShouldShowPlaylistsPersistentTotal() ? 1 : 0) // playlists persistent total
+		+ (ShouldShowPlaylistsPersistentAverage() ? 1 : 0) // playlists persistent average
 		;
 
 	int numberOfDataShown = 
@@ -37,7 +41,9 @@ Vector2 Renderer::GetBox()
 		width += *columnSize * numberOfDescriptionCells + (!*customDescSize ? (DEFAULT_COLUMN_SIZE - *columnSize) : 0.f);
 		height += (!*customDescSize ? DEFAULT_ROW_SIZE : *rowSize) + (numberOfDataShown * *rowSize);
 	}
+	// Include title
 	height += *rowSize * TITLE_SIZE;
+	// Calculate box size including the scale
 	return Vector2{ (int)((float)width * *scale), (int)((float)height * *scale) };
 }
 
@@ -82,6 +88,15 @@ bool Renderer::ShouldShowAverage()
 {
 	return *displayAverage;
 }
+bool Renderer::ShouldShowPlaylistsTotal()
+{
+	return *displayPlaylistsTotal;
+}
+bool Renderer::ShouldShowPlaylistsAverage()
+{
+	return *displayPlaylistsAverage;
+}
+
 bool Renderer::ShouldShowPersistentTotal()
 {
 	return DemoTouchRatio::Instance().UsesPersistentStats() && *displayPersistentTotal;
@@ -89,4 +104,12 @@ bool Renderer::ShouldShowPersistentTotal()
 bool Renderer::ShouldShowPersistentAverage()
 {
 	return DemoTouchRatio::Instance().UsesPersistentStats() && *displayPersistentAverage;
+}
+bool Renderer::ShouldShowPlaylistsPersistentTotal()
+{
+	return DemoTouchRatio::Instance().UsesPersistentStats() && *displayPlaylistsPersistentTotal;
+}
+bool Renderer::ShouldShowPlaylistsPersistentAverage()
+{
+	return DemoTouchRatio::Instance().UsesPersistentStats() && *displayPlaylistsPersistentAverage;
 }
