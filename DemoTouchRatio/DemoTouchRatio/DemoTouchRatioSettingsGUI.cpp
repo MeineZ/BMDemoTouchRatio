@@ -233,6 +233,14 @@ void DemoTouchRatio::RenderCustomBehaviour()
 
 	ImGuiPopDisable(*matchAccolades);
 
+	ImGui::NewLine();
+
+	ImGui::TextUnformatted("Bind the following notifiers to a key to manually scroll through playlist stats.");
+	ImGui::TextUnformatted("Default behaviour shows the latest playlist played, but you can manually scroll through playlist stats with the following notifiers:");
+	ImGui::TextUnformatted("      -  `cl_demotouch_plugin_force_next_playlist` to scroll forward");
+	ImGui::TextUnformatted("      -  `cl_demotouch_plugin_force_prev_playlist` to scroll back");
+	ImGui::TextUnformatted("      -  `cl_demotouch_plugin_reset_force_playlist` to reset to default behaviour (show latest playlist played)");
+
 	ImGui::Unindent();
 }
 
