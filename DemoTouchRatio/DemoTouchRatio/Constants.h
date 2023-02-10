@@ -46,6 +46,9 @@
 // Cvar notifiers
 #define CVAR_NOT_RESET_STATS "cl_demotouch_plugin_reset_stats"
 #define CVAR_NOT_FORCE_SHOW_STATS "cl_demotouch_plugin_force_show_stats"
+#define CVAR_NOT_RESET_FORCE_PLAYLIST "cl_demotouch_plugin_reset_force_playlist"
+#define CVAR_NOT_FORCE_NEXT_PLAYLIST "cl_demotouch_plugin_force_next_playlist"
+#define CVAR_NOT_FORCE_PREV_PLAYLIST "cl_demotouch_plugin_force_prev_playlist"
 
 // Global plugin hooks
 #define HOOK_COUNTDOWN_BEGINSTATE "Function GameEvent_TA.Countdown.BeginState"

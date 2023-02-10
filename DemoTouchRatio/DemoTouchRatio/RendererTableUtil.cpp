@@ -12,7 +12,10 @@
 void Renderer::RenderTitle(CanvasWrapper* canvas)
 {
 	canvas->SetPosition(Vector2{ *posX + X_OFFSET, *posY + Y_OFFSET });
-	canvas->DrawString(PlaylistHelpers::GetPlaylistName(DemoTouchRatio::Instance().GetCurrentShownPlaylist()), TITLE_SIZE * *scale, TITLE_SIZE * *scale);
+
+	std::stringstream sstream;
+	sstream << PlaylistHelpers::GetPlaylistName(DemoTouchRatio::Instance().GetCurrentShownPlaylist()) << (DemoTouchRatio::Instance().IsPlaylistForced() ? "" : " (current)");
+	canvas->DrawString(sstream.str(), TITLE_SIZE * *scale, TITLE_SIZE * *scale);
 }
 
 void Renderer::RenderHeader(CanvasWrapper *canvas, int nOfGames, int playlistsNOfGames, int persistentNOfGames, int playlistsPersistentNOfGames)

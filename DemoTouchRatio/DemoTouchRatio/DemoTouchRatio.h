@@ -21,6 +21,7 @@ class DemoTouchRatio: public BakkesMod::Plugin::BakkesModPlugin
 private:
 	static DemoTouchRatio* instance_;
 
+	PlaylistType forcePlaylist;
 	PlaylistType lastPlaylist;
 	PlaylistStats* playlistStats;
 
@@ -50,6 +51,10 @@ private:
 
 	PlaylistStats* GetCurrentStats();
 
+	void ResetForcePlaylist();
+	void ForceNextPlaylist();
+	void ForcePrevPlaylist();
+
 public:
 	DemoTouchRatio();
 
@@ -61,6 +66,7 @@ public:
 
 	void Render(CanvasWrapper canvas);
 
+	bool IsPlaylistForced();
 	PlaylistType GetCurrentShownPlaylist();
 	bool CanRenderInMatches();
 	bool CanTrackTeamBumps();

@@ -98,9 +98,8 @@ void PersistentStats::Clear()
 
 void PersistentStats::Add(PersistentStats& other)
 {
-	if (nOfGames == 0 && other.nOfGames)
+	if (nOfGames == 0 && other.nOfGames == 0)
 		return;
-
 
 	total = GameStats(
 		total.GetBumps() + other.total.GetBumps(),
@@ -112,8 +111,9 @@ void PersistentStats::Add(PersistentStats& other)
 		total.GetTimeInAir() + other.total.GetTimeInAir()
 	);
 
+	int oldGames = nOfGames;
 	nOfGames += other.nOfGames;
-	average.Add(other.average);
+	average.Add(other.average, true, oldGames, nOfGames);
 }
 
 const GameStats& PersistentStats::GetTotalStats() const {

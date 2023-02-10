@@ -30,6 +30,10 @@ public:
 
 	inline static std::string GetPlaylistName(PlaylistType playlist);
 	inline static std::string GetPlaylistFileSuffix(PlaylistType playlist);
+
+	inline static PlaylistType GetNextPlaylist(PlaylistType currentPlaylist);
+	inline static PlaylistType GetPrevPlaylist(PlaylistType currentPlaylist);
+
 };
 
 inline PlaylistType PlaylistHelpers::GetPlaylistFromInt(int playlistType)
@@ -101,5 +105,39 @@ inline std::string PlaylistHelpers::GetPlaylistFileSuffix(PlaylistType playlist)
 		case PlaylistType::PLAYLIST_RANKEDDROPSHOT: return "_comp_dropshot";
 		case PlaylistType::PLAYLIST_RANKEDSNOWDAY: return "_comp_snowday";
 		default: return "";
+	}
+}
+
+inline PlaylistType PlaylistHelpers::GetNextPlaylist(PlaylistType currentPlaylist)
+{
+	switch (currentPlaylist)
+	{
+		case PlaylistType::PLAYLIST_UNKNOWN: return PlaylistType::PLAYLIST_CASUAL;
+		case PlaylistType::PLAYLIST_CASUAL: return PlaylistType::PLAYLIST_RANKEDDUEL;
+		case PlaylistType::PLAYLIST_RANKEDDUEL: return PlaylistType::PLAYLIST_RANKEDDOUBLES;
+		case PlaylistType::PLAYLIST_RANKEDDOUBLES: return PlaylistType::PLAYLIST_RANKEDSTANDARD;
+		case PlaylistType::PLAYLIST_RANKEDSTANDARD: return PlaylistType::PLAYLIST_RANKEDHOOPS;
+		case PlaylistType::PLAYLIST_RANKEDHOOPS: return PlaylistType::PLAYLIST_RANKEDRUMBLE;
+		case PlaylistType::PLAYLIST_RANKEDRUMBLE: return PlaylistType::PLAYLIST_RANKEDDROPSHOT;
+		case PlaylistType::PLAYLIST_RANKEDDROPSHOT: return PlaylistType::PLAYLIST_RANKEDSNOWDAY;
+		case PlaylistType::PLAYLIST_RANKEDSNOWDAY: return PlaylistType::PLAYLIST_CASUAL;
+		default: return PlaylistType::PLAYLIST_UNKNOWN;
+	}
+}
+
+inline PlaylistType PlaylistHelpers::GetPrevPlaylist(PlaylistType currentPlaylist)
+{
+	switch (currentPlaylist)
+	{
+		case PlaylistType::PLAYLIST_UNKNOWN: return PlaylistType::PLAYLIST_RANKEDSNOWDAY;
+		case PlaylistType::PLAYLIST_CASUAL: return PlaylistType::PLAYLIST_RANKEDSNOWDAY;
+		case PlaylistType::PLAYLIST_RANKEDDUEL: return PlaylistType::PLAYLIST_CASUAL;
+		case PlaylistType::PLAYLIST_RANKEDDOUBLES: return PlaylistType::PLAYLIST_RANKEDDUEL;
+		case PlaylistType::PLAYLIST_RANKEDSTANDARD: return PlaylistType::PLAYLIST_RANKEDDOUBLES;
+		case PlaylistType::PLAYLIST_RANKEDHOOPS: return PlaylistType::PLAYLIST_RANKEDSTANDARD;
+		case PlaylistType::PLAYLIST_RANKEDRUMBLE: return PlaylistType::PLAYLIST_RANKEDHOOPS;
+		case PlaylistType::PLAYLIST_RANKEDDROPSHOT: return PlaylistType::PLAYLIST_RANKEDRUMBLE;
+		case PlaylistType::PLAYLIST_RANKEDSNOWDAY: return PlaylistType::PLAYLIST_RANKEDDROPSHOT;
+		default: return PlaylistType::PLAYLIST_UNKNOWN;
 	}
 }

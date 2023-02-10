@@ -99,10 +99,11 @@ void GameStatsSummary::AddTotalAndAverage(GameStatsSummary& other)
 	if (numberOfGames == 0 && other.numberOfGames == 0)
 		return;
 
-	totalStats.Add(other.totalStats);
-	averageStats.Add(other.averageStats);
-
+	int oldNOfGames = numberOfGames;
 	numberOfGames += other.numberOfGames;
+
+	totalStats.Add(other.totalStats, false, oldNOfGames, numberOfGames);
+	averageStats.Add(other.averageStats, true, oldNOfGames, numberOfGames);
 }
 
 const GameStatsSummary::SummarizedStats& GameStatsSummary::GetCurrent()

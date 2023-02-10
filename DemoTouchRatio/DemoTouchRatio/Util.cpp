@@ -78,7 +78,6 @@ PlaylistType Util::CurrentPlaylist()
 
 	MMRWrapper mmrWrapper = gameWrapper->GetMMRWrapper();
 	int id = mmrWrapper.GetCurrentPlaylist();
-	DEBUGLOG("UTIL::CURRENTPLAYLIST: {}", id);
 
 	return PlaylistHelpers::ConvertToPluginPlaylist(PlaylistHelpers::GetPlaylistFromInt(id));
 }

@@ -12,9 +12,6 @@ class GameStatsSummary {
 public:
 	struct SummarizedStats
 	{
-	private:
-		int numSummarizedStats = 1;
-
 	public:
 		float bumps = 0;
 		float teamBumps = 0;
@@ -27,7 +24,6 @@ public:
 		// [STAT_ADD] 15. Add arguments
 		SummarizedStats(int bumps, int teamBumps, int demos, int ballHits, float totalBoostUsed, float boostPMinute, float inAirPercentage)
 		{
-			numSummarizedStats = 1;
 
 			this->bumps = bumps;
 			this->teamBumps = teamBumps;
@@ -41,8 +37,6 @@ public:
 		// [STAT_ADD] 16. Add arguments
 		SummarizedStats(float bumps, float teamBumps, float demos, float ballHits, float totalBoostUsed, float boostPMinute, float inAirPercentage)
 		{
-			numSummarizedStats = 1;
-
 			this->bumps = bumps;
 			this->teamBumps = teamBumps;
 			this->demos = demos;
@@ -52,17 +46,32 @@ public:
 			this->inAirPercentage = inAirPercentage;
 		}
 
-		void Add(SummarizedStats& other) {
-			++numSummarizedStats;
+		void Add(SummarizedStats& other, bool isAverage, int oldTotalGames, int totalGames)
+		{
+			if (totalGames == 0)
+				return;
 
-			this->bumps = ((this->bumps * static_cast<float>(numSummarizedStats - 1)) + other.bumps) / static_cast<float>(numSummarizedStats);
-			this->teamBumps = ((this->teamBumps * static_cast<float>(numSummarizedStats - 1)) + other.teamBumps) / static_cast<float>(numSummarizedStats);
-			this->demos = ((this->demos * static_cast<float>(numSummarizedStats - 1)) + other.demos) / static_cast<float>(numSummarizedStats);
-			this->ballHits = ((this->ballHits * static_cast<float>(numSummarizedStats - 1)) + other.ballHits) / static_cast<float>(numSummarizedStats);
-			this->totalBoostUsed = ((this->totalBoostUsed * static_cast<float>(numSummarizedStats - 1)) + other.totalBoostUsed) / static_cast<float>(numSummarizedStats);
-			this->boostPMinute = ((this->boostPMinute * static_cast<float>(numSummarizedStats - 1)) + other.boostPMinute) / static_cast<float>(numSummarizedStats);
-			this->inAirPercentage = ((this->inAirPercentage * static_cast<float>(numSummarizedStats - 1)) + other.inAirPercentage) / static_cast<float>(numSummarizedStats);
-			
+			float otherAddsNOfGames = static_cast<float>(totalGames - oldTotalGames);
+
+			this->bumps = (this->bumps * static_cast<float>(oldTotalGames)) + (other.bumps * otherAddsNOfGames);
+			this->teamBumps = (this->teamBumps * static_cast<float>(oldTotalGames)) + (other.teamBumps * otherAddsNOfGames);
+			this->demos = (this->demos * static_cast<float>(oldTotalGames)) + (other.demos * otherAddsNOfGames);
+			this->ballHits = (this->ballHits * static_cast<float>(oldTotalGames)) + (other.ballHits * otherAddsNOfGames);
+			this->totalBoostUsed = (this->totalBoostUsed * static_cast<float>(oldTotalGames)) + (other.totalBoostUsed * otherAddsNOfGames);
+			this->boostPMinute = (this->boostPMinute * static_cast<float>(oldTotalGames)) + (other.boostPMinute * otherAddsNOfGames);
+			this->inAirPercentage = (this->inAirPercentage * static_cast<float>(oldTotalGames)) + (other.inAirPercentage * otherAddsNOfGames);
+
+			if (isAverage)
+			{
+				this->bumps = this->bumps / static_cast<float>(totalGames);
+				this->teamBumps = this->teamBumps / static_cast<float>(totalGames);
+				this->demos = this->demos / static_cast<float>(totalGames);
+				this->ballHits = this->ballHits / static_cast<float>(totalGames);
+				this->totalBoostUsed = this->totalBoostUsed / static_cast<float>(totalGames);
+			}
+			// These are always averages
+			this->boostPMinute = this->boostPMinute / static_cast<float>(totalGames);
+			this->inAirPercentage = this->inAirPercentage / static_cast<float>(totalGames);
 		}
 	};
 

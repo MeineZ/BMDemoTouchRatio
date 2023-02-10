@@ -13,6 +13,7 @@ std::shared_ptr<CVarManagerWrapper> _globalCvarManager;
 
 DemoTouchRatio::DemoTouchRatio() :
 	renderer(),
+	forcePlaylist(PlaylistType::PLAYLIST_UNKNOWN),
 	lastPlaylist(PlaylistType::PLAYLIST_RANKEDSTANDARD),
 	playlistStats(nullptr),
 	scoreboardOpened(false),
@@ -111,6 +112,21 @@ void DemoTouchRatio::onLoad()
 	cvarManager->registerNotifier(CVAR_NOT_RESET_STATS, [this](std::vector<std::string> params) {
 		Reset();
 	}, "Trigger a reset for your session stats", PERMISSION_ALL);
+
+	cvarManager->registerCvar(CVAR_NOT_RESET_FORCE_PLAYLIST, "0", "Cvar notifier to reset forced playlist", true, true, 0, true, 1, false);
+	cvarManager->registerNotifier(CVAR_NOT_RESET_FORCE_PLAYLIST, [this](std::vector<std::string> params) {
+		ResetForcePlaylist();
+	}, "Trigger a reset the forced playlist (show last played mode)", PERMISSION_ALL);
+
+	cvarManager->registerCvar(CVAR_NOT_FORCE_NEXT_PLAYLIST, "0", "Cvar notifier to show next forced playlist", true, true, 0, true, 1, false);
+	cvarManager->registerNotifier(CVAR_NOT_FORCE_NEXT_PLAYLIST, [this](std::vector<std::string> params) {
+		ForceNextPlaylist();
+	}, "Show next forced playlist", PERMISSION_ALL);
+
+	cvarManager->registerCvar(CVAR_NOT_FORCE_PREV_PLAYLIST, "0", "Cvar notifier to show previous forced playlist", true, true, 0, true, 1, false);
+	cvarManager->registerNotifier(CVAR_NOT_FORCE_PREV_PLAYLIST, [this](std::vector<std::string> params) {
+		ForcePrevPlaylist();
+	}, "Show previous forced playlist", PERMISSION_ALL);
 
 
 	// Hook binding
@@ -263,12 +279,39 @@ PlaylistStats* DemoTouchRatio::GetCurrentStats()
 			return &playlistStats[i];
 		}
 	}
+}
 
+void DemoTouchRatio::ResetForcePlaylist()
+{
+	forcePlaylist = PlaylistType::PLAYLIST_UNKNOWN;
+}
+
+void DemoTouchRatio::ForceNextPlaylist()
+{
+	forcePlaylist = PlaylistHelpers::GetNextPlaylist(
+		IsPlaylistForced()
+		?  forcePlaylist
+		: lastPlaylist);
+}
+
+void DemoTouchRatio::ForcePrevPlaylist()
+{
+	forcePlaylist = PlaylistHelpers::GetPrevPlaylist(
+		IsPlaylistForced()
+		? forcePlaylist
+		: lastPlaylist);
+}
+
+bool DemoTouchRatio::IsPlaylistForced()
+{
+	return forcePlaylist != PlaylistType::PLAYLIST_UNKNOWN;
 }
 
 PlaylistType DemoTouchRatio::GetCurrentShownPlaylist()
 {
-	return lastPlaylist;
+	return IsPlaylistForced()
+		? forcePlaylist
+		: lastPlaylist;
 }
 
 bool DemoTouchRatio::CanRenderInMatches() {
