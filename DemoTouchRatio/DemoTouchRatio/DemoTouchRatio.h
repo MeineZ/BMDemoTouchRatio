@@ -13,7 +13,7 @@
 #include "version.h"
 constexpr auto plugin_version = stringify(VERSION_MAJOR) "." stringify(VERSION_MINOR) "." stringify(VERSION_PATCH) "." stringify(VERSION_BUILD);
 
-#define NUMBER_OF_TRACKED_PLAYLISTS 8
+#define NUMBER_OF_TRACKED_PLAYLISTS 10
 
 class DemoTouchRatio: public BakkesMod::Plugin::BakkesModPlugin
 	, public BakkesMod::Plugin::PluginSettingsWindow

@@ -14,6 +14,7 @@
 #define CVAR_NAME_DISPLAY_SCALE "cl_demotouch_plugin_display_scale"
 #define CVAR_NAME_COLOR_BACKGROUND "cl_demotouch_plugin_background_color"
 #define CVAR_NAME_COLOR_TEXT "cl_demotouch_plugin_text_color"
+#define CVAR_NAME_RENDER_TITLE "cl_demotouch_plugin_render_title"
 #define CVAR_NAME_RENDER_HORIZONTAL "cl_demotouch_plugin_render_horizontal"
 #define CVAR_NAME_CUSTOM_DESC_SIZE "cl_demotouch_plugin_custom_desc_size"
 #define CVAR_NAME_ROW_SIZE "cl_demotouch_plugin_row_size"
@@ -52,6 +53,7 @@
 
 // Global plugin hooks
 #define HOOK_COUNTDOWN_BEGINSTATE "Function GameEvent_TA.Countdown.BeginState"
+#define HOOK_MATCH_STARTED "Function TAGame.GameEvent_TA.EventMatchStarted"
 #define HOOK_ON_WINNER_SET "Function TAGame.GameEvent_Soccar_TA.EventMatchWinnerSet"
 #define HOOK_ON_LEAVE_MATCH "Function TAGame.GFxShell_TA.LeaveMatch"
 #define HOOK_ON_MAIN_MENU "Function TAGame.GFxData_MainMenu_TA.MainMenuAdded"

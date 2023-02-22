@@ -43,6 +43,7 @@ Renderer::Renderer() :
 	displayPersistentAverage(std::make_shared<bool>(false)),
 	displayPlaylistsPersistentTotal(std::make_shared<bool>(false)),
 	displayPlaylistsPersistentAverage(std::make_shared<bool>(false)),
+	renderTitle(std::make_shared<bool>(true)),
 	renderHorizontal(std::make_shared<bool>(true)),
 	customDescSize(std::make_shared<bool>(false))
 { }
@@ -92,11 +93,12 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, P
 	// DRAW BOX
 	canvas->SetColor(*colorBackground);
 	canvas->SetPosition(position);
-	canvas->FillBox(GetBox());
+	Vector2 size = GetBox();
+	canvas->FillBox(size);
 
 	canvas->SetColor(*colorText);
 
-	RenderTitle(canvas);
+	RenderTitle(canvas, size.X);
 	RenderHeader(canvas, gameStats.GetNumberOfGames(), playlistsStats.GetNumberOfGames(), persistentStats.GetNumberOfGames(), playlistsPersistent.GetNumberOfGames());
 
 	int nth = 1;

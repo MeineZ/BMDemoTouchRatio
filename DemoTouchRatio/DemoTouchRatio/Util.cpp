@@ -28,10 +28,17 @@ bool Util::CanTrack()
 	if (gameWrapper == nullptr)
 		return false;
 
-	if (gameWrapper->IsInOnlineGame() && !gameWrapper->IsInReplay() && !gameWrapper->IsInFreeplay())
+	if (gameWrapper->IsInReplay() || gameWrapper->IsInFreeplay())
+		return false;
+
+	if (gameWrapper->IsInOnlineGame())
 	{
 		ServerWrapper serverWrapper = gameWrapper->GetOnlineGame();
 		return serverWrapper.IsOnlineMultiplayer();
+	}
+	else if(gameWrapper->IsInGame())
+	{
+		return true;
 	}
 	return false;
 }
@@ -78,6 +85,8 @@ PlaylistType Util::CurrentPlaylist()
 
 	MMRWrapper mmrWrapper = gameWrapper->GetMMRWrapper();
 	int id = mmrWrapper.GetCurrentPlaylist();
+
+	DEBUGLOG("CURRENT PLAYLISTSSSTSTTSTSST: {}", id);
 
 	return PlaylistHelpers::ConvertToPluginPlaylist(PlaylistHelpers::GetPlaylistFromInt(id));
 }
