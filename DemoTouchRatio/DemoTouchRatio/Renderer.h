@@ -11,6 +11,7 @@ class PersistentStats;
 #define DEFAULT_ROW_SIZE 16.f
 #define DEFAULT_COLUMN_SIZE 100.f
 #define TITLE_SIZE 1.2f
+#define NAME_SIZE 1.0f
 
 #define X_OFFSET 10
 #define Y_OFFSET 5
@@ -27,7 +28,7 @@ private:
 
 	Vector2 GetBox();
 
-	void RenderTitle(CanvasWrapper* canvas); // Renders title for table
+	void RenderTitle(CanvasWrapper* canvas, int width); // Renders title for table
 	void RenderHeader(CanvasWrapper* canvas, int nOfGames, int playlistsNOfGames, int persistentNOfGames, int playlistsPersistentNOfGames); // Renders header for table
 	void RenderData(CanvasWrapper* canvas, int nth, std::string label, STATS_RENDER_ARGUMENTS); // Renders header for table
 

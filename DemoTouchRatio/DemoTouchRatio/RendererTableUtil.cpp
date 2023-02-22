@@ -9,7 +9,7 @@
 
 #include <PlaylistEnum.h>
 
-void Renderer::RenderTitle(CanvasWrapper* canvas)
+void Renderer::RenderTitle(CanvasWrapper* canvas, int width)
 {
 	if (!*renderTitle)
 		return;
@@ -19,6 +19,10 @@ void Renderer::RenderTitle(CanvasWrapper* canvas)
 	std::stringstream sstream;
 	sstream << PlaylistHelpers::GetPlaylistName(DemoTouchRatio::Instance().GetCurrentShownPlaylist()) << (DemoTouchRatio::Instance().IsPlaylistForced() ? " (manual selection)" : "");
 	canvas->DrawString(sstream.str(), TITLE_SIZE * *scale, TITLE_SIZE * *scale);
+
+	// Plug my name into it
+	canvas->SetPosition(Vector2{ *posX + X_OFFSET + (width - static_cast<int>(150.f * *scale)), *posY + 1});
+	canvas->DrawString("Discord: Meine#8883", NAME_SIZE * *scale, NAME_SIZE * *scale);
 }
 
 void Renderer::RenderHeader(CanvasWrapper *canvas, int nOfGames, int playlistsNOfGames, int persistentNOfGames, int playlistsPersistentNOfGames)

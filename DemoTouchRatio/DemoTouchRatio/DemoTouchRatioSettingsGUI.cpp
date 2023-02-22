@@ -10,6 +10,8 @@
 
 void DemoTouchRatio::RenderSettings()
 {
+	ImGui::TextUnformatted("Contact me via Discord: Meine#8883.");
+
 	// Plugin settings
 	RenderDisplayMoments();
 	RenderColumnVisibility();
