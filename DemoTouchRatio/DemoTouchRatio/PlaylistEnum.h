@@ -10,6 +10,8 @@ enum class PlaylistType
 	PLAYLIST_DOUBLES = 2,
 	PLAYLIST_STANDARD = 3,
 	PLAYLIST_CHAOS = 4,
+	PLAYLIST_PRIVATEMATCH = 6,
+	PLAYLIST_EXHIBITION = 8,
 	PLAYLIST_RANKEDDUEL = 10,
 	PLAYLIST_RANKEDDOUBLES = 11,
 	PLAYLIST_RANKEDSOLOSTANDARD = 12,
@@ -40,6 +42,8 @@ inline PlaylistType PlaylistHelpers::GetPlaylistFromInt(int playlistType)
 {
 	switch (playlistType)
 	{
+		case int(PlaylistType::PLAYLIST_EXHIBITION) : return PlaylistType::PLAYLIST_EXHIBITION;
+		case int(PlaylistType::PLAYLIST_PRIVATEMATCH) : return PlaylistType::PLAYLIST_PRIVATEMATCH;
 		case int(PlaylistType::PLAYLIST_DUEL) : return PlaylistType::PLAYLIST_DUEL;
 		case int(PlaylistType::PLAYLIST_DOUBLES) : return PlaylistType::PLAYLIST_DOUBLES;
 		case int(PlaylistType::PLAYLIST_STANDARD) : return PlaylistType::PLAYLIST_STANDARD;
@@ -60,6 +64,8 @@ inline PlaylistType PlaylistHelpers::ConvertToPluginPlaylist(PlaylistType playli
 {
 	switch (playlistType)
 	{
+		case PlaylistType::PLAYLIST_EXHIBITION: return PlaylistType::PLAYLIST_EXHIBITION;
+		case PlaylistType::PLAYLIST_PRIVATEMATCH: return PlaylistType::PLAYLIST_PRIVATEMATCH;
 		case PlaylistType::PLAYLIST_CASUAL:
 		case PlaylistType::PLAYLIST_DUEL :
 		case PlaylistType::PLAYLIST_DOUBLES :
@@ -80,6 +86,8 @@ inline std::string PlaylistHelpers::GetPlaylistName(PlaylistType playlist)
 {
 	switch (playlist)
 	{
+		case PlaylistType::PLAYLIST_EXHIBITION: return "Exhibition";
+		case PlaylistType::PLAYLIST_PRIVATEMATCH: return "Private match";
 		case PlaylistType::PLAYLIST_CASUAL: return "Casual";
 		case PlaylistType::PLAYLIST_RANKEDDUEL: return "Ranked Duel";
 		case PlaylistType::PLAYLIST_RANKEDDOUBLES: return "Ranked Duos";
@@ -96,6 +104,8 @@ inline std::string PlaylistHelpers::GetPlaylistFileSuffix(PlaylistType playlist)
 {
 	switch (playlist)
 	{
+		case PlaylistType::PLAYLIST_EXHIBITION: return "_exhibition";
+		case PlaylistType::PLAYLIST_PRIVATEMATCH: return "_privatematch";
 		case PlaylistType::PLAYLIST_CASUAL: return "_casual";
 		case PlaylistType::PLAYLIST_RANKEDDUEL: return "_comp_duel";
 		case PlaylistType::PLAYLIST_RANKEDDOUBLES: return "_comp_duos";
@@ -112,7 +122,9 @@ inline PlaylistType PlaylistHelpers::GetNextPlaylist(PlaylistType currentPlaylis
 {
 	switch (currentPlaylist)
 	{
-		case PlaylistType::PLAYLIST_UNKNOWN: return PlaylistType::PLAYLIST_CASUAL;
+		case PlaylistType::PLAYLIST_UNKNOWN: return PlaylistType::PLAYLIST_EXHIBITION;
+		case PlaylistType::PLAYLIST_EXHIBITION: return PlaylistType::PLAYLIST_PRIVATEMATCH;
+		case PlaylistType::PLAYLIST_PRIVATEMATCH: return PlaylistType::PLAYLIST_CASUAL;
 		case PlaylistType::PLAYLIST_CASUAL: return PlaylistType::PLAYLIST_RANKEDDUEL;
 		case PlaylistType::PLAYLIST_RANKEDDUEL: return PlaylistType::PLAYLIST_RANKEDDOUBLES;
 		case PlaylistType::PLAYLIST_RANKEDDOUBLES: return PlaylistType::PLAYLIST_RANKEDSTANDARD;
@@ -130,7 +142,9 @@ inline PlaylistType PlaylistHelpers::GetPrevPlaylist(PlaylistType currentPlaylis
 	switch (currentPlaylist)
 	{
 		case PlaylistType::PLAYLIST_UNKNOWN: return PlaylistType::PLAYLIST_RANKEDSNOWDAY;
-		case PlaylistType::PLAYLIST_CASUAL: return PlaylistType::PLAYLIST_RANKEDSNOWDAY;
+		case PlaylistType::PLAYLIST_EXHIBITION: return PlaylistType::PLAYLIST_RANKEDSNOWDAY;
+		case PlaylistType::PLAYLIST_PRIVATEMATCH: return PlaylistType::PLAYLIST_EXHIBITION;
+		case PlaylistType::PLAYLIST_CASUAL: return PlaylistType::PLAYLIST_PRIVATEMATCH;
 		case PlaylistType::PLAYLIST_RANKEDDUEL: return PlaylistType::PLAYLIST_CASUAL;
 		case PlaylistType::PLAYLIST_RANKEDDOUBLES: return PlaylistType::PLAYLIST_RANKEDDUEL;
 		case PlaylistType::PLAYLIST_RANKEDSTANDARD: return PlaylistType::PLAYLIST_RANKEDDOUBLES;

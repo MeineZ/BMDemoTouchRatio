@@ -41,6 +41,8 @@ void DemoTouchRatio::onLoad()
 
 	// Initialize playlist stats
 	playlistStats = new PlaylistStats[NUMBER_OF_TRACKED_PLAYLISTS] {
+		PlaylistStats(PlaylistType::PLAYLIST_PRIVATEMATCH),
+		PlaylistStats(PlaylistType::PLAYLIST_EXHIBITION),
 		PlaylistStats(PlaylistType::PLAYLIST_CASUAL),
 		PlaylistStats(PlaylistType::PLAYLIST_RANKEDDUEL),
 		PlaylistStats(PlaylistType::PLAYLIST_RANKEDDOUBLES),
@@ -131,9 +133,10 @@ void DemoTouchRatio::onLoad()
 
 	// Hook binding
 	gameWrapper->HookEvent(HOOK_COUNTDOWN_BEGINSTATE, [this](std::string eventName) {
-		if (!Util::CanTrack())
-			return;
+		CreateNewGame();
+	});
 
+	gameWrapper->HookEvent(HOOK_MATCH_STARTED, [this](std::string eventName) {
 		CreateNewGame();
 	});
 	
@@ -188,6 +191,9 @@ GameWrapper* DemoTouchRatio::GetGameWrapper()
 
 void DemoTouchRatio::CreateNewGame()
 {
+	if (!Util::CanTrack())
+		return;
+
 	scoreboardOpened = false;
 
 	if (playlistStats == nullptr)
