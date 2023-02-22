@@ -70,6 +70,12 @@ void DemoTouchRatio::RenderColumnVisibility()
 
 	ImGui::Indent();
 
+	DrawCheckbox("Display current playlist", &*renderer.renderTitle, CVAR_NAME_RENDER_TITLE);
+
+	// =======================
+	ImGui::NewLine();
+	// =======================
+
 	DrawCheckbox("Bumps", &*renderer.displayBumps, CVAR_NAME_SHOW_BUMPS);
 	ImGui::SameLine(150); DrawCheckbox("Team bumps", &*renderer.displayTeamBumps, CVAR_NAME_SHOW_TEAMBUMPS);
 	ImGui::SameLine(300); DrawCheckbox("Demolitions", &*renderer.displayDemos, CVAR_NAME_SHOW_DEMOS);
@@ -78,21 +84,28 @@ void DemoTouchRatio::RenderColumnVisibility()
 	ImGui::SameLine(150); DrawCheckbox("Boost/minute", &*renderer.displayBoostPMinute, CVAR_NAME_SHOW_BOOSTPMINUTE);
 	ImGui::SameLine(300); DrawCheckbox("In air %", &*renderer.displayInAirPercentage, CVAR_NAME_SHOW_INAIRPERCENTAGE);
 
+	// =======================
 	ImGui::NewLine();
+	// =======================
 
 	// Total / average
 	ImGui::TextUnformatted("Current session stats.");
 	DrawCheckbox("Show total##normal", &*renderer.displayTotal, CVAR_NAME_SHOW_TOTAL);
 	ImGui::SameLine(200); DrawCheckbox("Show average##normal", &*renderer.displayAverage, CVAR_NAME_SHOW_AVERAGE);
 
+	// =======================
 	ImGui::NewLine();
+	// =======================
 
 	// Playlists total / average
 	ImGui::TextUnformatted("Current session stats, but from all playlists combined. Its label is surrounded with '<...>'.");
 	DrawCheckbox("Show total##playlists", &*renderer.displayPlaylistsTotal, CVAR_NAME_SHOW_PLAYLISTS_TOTAL);
 	ImGui::SameLine(200); DrawCheckbox("Show average##playlists", &*renderer.displayPlaylistsAverage, CVAR_NAME_SHOW_PLAYLISTS_AVERAGE);
 
+	// =======================
 	ImGui::NewLine();
+	// =======================
+
 	if (!*usePersistentStats)
 	{
 		ImGui::TextUnformatted("Tracking total stats is disabled.");
@@ -107,7 +120,9 @@ void DemoTouchRatio::RenderColumnVisibility()
 	ImGui::SameLine(200); DrawCheckbox("Show average##persistent", &*renderer.displayPersistentAverage, CVAR_NAME_SHOW_PERSISTENT_AVERAGE);
 	ImGuiPopDisable(!*usePersistentStats);
 
+	// =======================
 	ImGui::NewLine();
+	// =======================
 
 	// All-time playlists stats
 	ImGui::TextUnformatted("All-time stats, but from all playlists combined. Its label is surrounded with '[[...]]'.");

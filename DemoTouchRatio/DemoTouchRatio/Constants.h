@@ -14,6 +14,7 @@
 #define CVAR_NAME_DISPLAY_SCALE "cl_demotouch_plugin_display_scale"
 #define CVAR_NAME_COLOR_BACKGROUND "cl_demotouch_plugin_background_color"
 #define CVAR_NAME_COLOR_TEXT "cl_demotouch_plugin_text_color"
+#define CVAR_NAME_RENDER_TITLE "cl_demotouch_plugin_render_title"
 #define CVAR_NAME_RENDER_HORIZONTAL "cl_demotouch_plugin_render_horizontal"
 #define CVAR_NAME_CUSTOM_DESC_SIZE "cl_demotouch_plugin_custom_desc_size"
 #define CVAR_NAME_ROW_SIZE "cl_demotouch_plugin_row_size"

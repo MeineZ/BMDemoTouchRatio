@@ -72,7 +72,8 @@ void DemoTouchRatio::onLoad()
 	cvarManager->registerCvar(CVAR_NAME_COLOR_BACKGROUND, "(0, 0, 0, 75)", "Background color", false, false, 0, false, 255, true).bindTo(renderer.colorBackground);
 	cvarManager->registerCvar(CVAR_NAME_COLOR_TEXT, "(255, 255, 255, 127)", "Text color", false, false, 0, false, 255, true).bindTo(renderer.colorText);
 
-	cvarManager->registerCvar(CVAR_NAME_RENDER_HORIZONTAL, "1", "Whether to render the display horizontally", false, true, 12, true, 96, true).bindTo(renderer.renderHorizontal);
+	cvarManager->registerCvar(CVAR_NAME_RENDER_HORIZONTAL, "1", "Whether to render the display horizontally", false, true, 0, true, 1, true).bindTo(renderer.renderHorizontal);
+	cvarManager->registerCvar(CVAR_NAME_RENDER_TITLE, "1", "Whether to render the title (showing the current playlist)", false, true, 0, true, 1, true).bindTo(renderer.renderTitle);
 	cvarManager->registerCvar(CVAR_NAME_CUSTOM_DESC_SIZE, "0", "Whether to use custom cell size for desc. cells.", false, true, 0, true, 1, true).bindTo(renderer.customDescSize);
 	cvarManager->registerCvar(CVAR_NAME_ROW_SIZE, "16", "Height of the displayed rows", false, true, 12, true, 96, true).bindTo(renderer.rowSize);
 	cvarManager->registerCvar(CVAR_NAME_COLUMN_SIZE, "100", "Width of the displayed columns", false, true, 45, true, 250, true).bindTo(renderer.columnSize);

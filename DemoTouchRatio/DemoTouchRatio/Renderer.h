@@ -59,6 +59,7 @@ public:
 	std::shared_ptr<bool> displayPlaylistsPersistentTotal;
 	std::shared_ptr<bool> displayPlaylistsPersistentAverage;
 
+	std::shared_ptr<bool> renderTitle;
 	std::shared_ptr<bool> renderHorizontal;
 	std::shared_ptr<bool> customDescSize;
 

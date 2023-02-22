@@ -42,7 +42,10 @@ Vector2 Renderer::GetBox()
 		height += (!*customDescSize ? DEFAULT_ROW_SIZE : *rowSize) + (numberOfDataShown * *rowSize);
 	}
 	// Include title
-	height += *rowSize * TITLE_SIZE;
+	if (*renderTitle)
+	{
+		height += *rowSize * TITLE_SIZE;
+	}
 	// Calculate box size including the scale
 	return Vector2{ (int)((float)width * *scale), (int)((float)height * *scale) };
 }
@@ -64,7 +67,13 @@ void Renderer::RenderText(CanvasWrapper* canvas, std::string text, int columnId,
 		--rowId;
 	}
 
-	canvas->SetPosition(Vector2{ *posX + (int)((X_OFFSET + offsetColumn + (columnId * *columnSize)) * *scale), (int)(*rowSize * TITLE_SIZE) + *posY + (int)((Y_OFFSET + offsetRow + (rowId * *rowSize)) * *scale)});
+	int titleSize = 0;
+	if (*renderTitle)
+	{
+		titleSize = int(*rowSize * TITLE_SIZE);
+	}
+
+	canvas->SetPosition(Vector2{ *posX + (int)((X_OFFSET + offsetColumn + (columnId * *columnSize)) * *scale), titleSize + *posY + (int)((Y_OFFSET + offsetRow + (rowId * *rowSize)) * *scale)});
 	canvas->DrawString(text, *scale, *scale);
 }
 

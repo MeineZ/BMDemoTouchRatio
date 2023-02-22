@@ -43,6 +43,7 @@ Renderer::Renderer() :
 	displayPersistentAverage(std::make_shared<bool>(false)),
 	displayPlaylistsPersistentTotal(std::make_shared<bool>(false)),
 	displayPlaylistsPersistentAverage(std::make_shared<bool>(false)),
+	renderTitle(std::make_shared<bool>(true)),
 	renderHorizontal(std::make_shared<bool>(true)),
 	customDescSize(std::make_shared<bool>(false))
 { }

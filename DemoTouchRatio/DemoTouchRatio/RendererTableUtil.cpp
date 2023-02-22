@@ -11,6 +11,9 @@
 
 void Renderer::RenderTitle(CanvasWrapper* canvas)
 {
+	if (!*renderTitle)
+		return;
+
 	canvas->SetPosition(Vector2{ *posX + X_OFFSET, *posY + Y_OFFSET });
 
 	std::stringstream sstream;
