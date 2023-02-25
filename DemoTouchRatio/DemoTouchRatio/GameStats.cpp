@@ -16,10 +16,11 @@ GameStats::GameStats():
 	ballHitData(EventData()),
 	// [STAT_ADD] 8. Add constructor
 	boostData(EventBoost()),
-	inAirData(EventInAir())
+	inAirData(EventInAir()),
+	powerslideData(EventPowerslide())
 { }
 
-GameStats::GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes) :
+GameStats::GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes, int powerslideCount, float powerslideDuration) :
 	lastTimeStamp(0),
 	totalPlayedTime(totalTime),
 	bumpData(EventData(bumps)),
@@ -28,7 +29,8 @@ GameStats::GameStats(int bumps, int teamBumps, int demos, int ballHits, float to
 	ballHitData(EventData(ballHits)),
 	// [STAT_ADD] 9. Add constructor with params
 	boostData(EventBoost(totalBoost)),
-	inAirData(EventInAir(airTimeInMinutes))
+	inAirData(EventInAir(airTimeInMinutes)),
+	powerslideData(EventPowerslide(powerslideCount, powerslideDuration))
 { }
 
 void GameStats::BindEvents()
@@ -79,6 +81,7 @@ void GameStats::OnPhysicsTick(std::string eventName)
 
 	HandleBoost(dt);
 	HandleInAir(dt);
+	HandlePowerslide(dt);
 }
 
 float GameStats::GetTotalPlayedTime() const

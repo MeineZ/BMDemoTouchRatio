@@ -85,6 +85,8 @@ void DemoTouchRatio::RenderColumnVisibility()
 	DrawCheckbox("Boost usage", &*renderer.displayBoostUsage, CVAR_NAME_SHOW_BOOSTUSAGE);
 	ImGui::SameLine(150); DrawCheckbox("Boost/minute", &*renderer.displayBoostPMinute, CVAR_NAME_SHOW_BOOSTPMINUTE);
 	ImGui::SameLine(300); DrawCheckbox("In air %", &*renderer.displayInAirPercentage, CVAR_NAME_SHOW_INAIRPERCENTAGE);
+	DrawCheckbox("Powerslide uses", &*renderer.displayPowerslideCount, CVAR_NAME_SHOW_POWERSLIDE_COUNT);
+	ImGui::SameLine(150); DrawCheckbox("Powerslide time", &*renderer.displayPowerslideDuration, CVAR_NAME_SHOW_POWERSLIDE_DURATION);
 
 	// =======================
 	ImGui::NewLine();

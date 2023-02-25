@@ -97,7 +97,7 @@ void Renderer::RenderHeader(CanvasWrapper *canvas, int nOfGames, int playlistsNO
 	}
 }
 
-void Renderer::RenderData(CanvasWrapper* canvas, int nth, std::string label, STATS_RENDER_ARGUMENTS)
+void Renderer::RenderData(CanvasWrapper* canvas, int nth, std::string label, STATS_RENDER_ARGUMENTS, int decimals)
 {
 	std::stringstream stringStream;
 
@@ -105,32 +105,32 @@ void Renderer::RenderData(CanvasWrapper* canvas, int nth, std::string label, STA
 	std::function<void(std::string, int)> renderCellString = [this, canvas, nth](std::string label, int increment) {
 		RenderText(canvas, label, *renderHorizontal ? nth : increment, *renderHorizontal ? increment : nth, !*renderHorizontal, *renderHorizontal);
 	};
-	std::function<void(float, int, int, std::stringstream&)> renderCellFloat = [this, canvas, nth](float value, int increment, int decimals, std::stringstream & stringStream) {
-		RenderText(canvas, value, *renderHorizontal ? nth : increment, *renderHorizontal ? increment : nth, stringStream, decimals);
+	std::function<void(float, int, int, std::stringstream&)> renderCellFloat = [this, canvas, nth](float value, int increment, int dcmls, std::stringstream & stringStream) {
+		RenderText(canvas, value, *renderHorizontal ? nth : increment, *renderHorizontal ? increment : nth, stringStream, dcmls);
 	};
 
 	renderCellString(label, increment++);
 
 	if (DemoTouchRatio::Instance().CanRenderInMatches())
-		renderCellFloat(current, increment++, 0, stringStream);
+		renderCellFloat(current, increment++, decimals, stringStream);
 
-	renderCellFloat(last, increment++, 0, stringStream);
+	renderCellFloat(last, increment++, decimals, stringStream);
 
 	if (ShouldShowTotal())
-		renderCellFloat(total, increment++, 0, stringStream);
+		renderCellFloat(total, increment++, decimals, stringStream);
 	if (ShouldShowAverage())
 		renderCellFloat(average, increment++, 2, stringStream);
 	if (ShouldShowPlaylistsTotal())
-		renderCellFloat(playlistsTotal, increment++, 0, stringStream);
+		renderCellFloat(playlistsTotal, increment++, decimals, stringStream);
 	if (ShouldShowPlaylistsAverage())
 		renderCellFloat(playlistsAverage, increment++, 2, stringStream);
 
 	if (ShouldShowPersistentTotal())
-		renderCellFloat(persistentTotal, increment++, 0, stringStream);
+		renderCellFloat(persistentTotal, increment++, decimals, stringStream);
 	if (ShouldShowPersistentAverage())
 		renderCellFloat(persistentAverage, increment++, 2, stringStream);
 	if (ShouldShowPlaylistsPersistentTotal())
-		renderCellFloat(persistentPlaylistsTotal, increment++, 0, stringStream);
+		renderCellFloat(persistentPlaylistsTotal, increment++, decimals, stringStream);
 	if (ShouldShowPlaylistsPersistentAverage())
 		renderCellFloat(persistentPlaylistsAverage, increment++, 2, stringStream);
 }

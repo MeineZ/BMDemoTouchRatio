@@ -17,4 +17,6 @@ public:
 
 	float GetInAirPercentage(float totalTimeInMinutes) const;
 	float GetTimeInAir() const;
+
+	bool InAir() const;
 };

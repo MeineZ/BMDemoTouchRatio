@@ -3,6 +3,7 @@
 #include <EventData.h>
 #include <EventBoost.h>
 #include <EventInAir.h>
+#include <EventPowerslide.h>
 
 class GameStats
 {
@@ -18,6 +19,7 @@ private:
 	EventData ballHitData;
 	EventBoost boostData;
 	EventInAir inAirData;
+	EventPowerslide powerslideData;
 
 	// [STAT_ADD] 6. Add data tracking method
 	void OnBump(CarWrapper carWrapper, void* args, std::string eventName);
@@ -28,10 +30,11 @@ private:
 	void OnPhysicsTick(std::string eventName);
 	void HandleBoost(uint64_t deltaTime);
 	void HandleInAir(uint64_t deltaTime);
+	void HandlePowerslide(uint64_t deltaTime);
 
 public:
 	GameStats();
-	const GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes);
+	const GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes, int powerslideCount, float powerslideDuration);
 
 	void BindEvents();
 	void UnbindEvents();
@@ -47,4 +50,7 @@ public:
 	float GetBoostPMinute() const;
 	float GetTimeInAir() const;
 	float GetInAirPercentage() const;
+	int GetPowerslideCount() const;
+	float GetPowerslideTimeInMinutes() const;
+	float GetPowerslideTimeInSeconds() const;
 };

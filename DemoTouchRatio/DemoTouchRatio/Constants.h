@@ -34,6 +34,8 @@
 #define CVAR_NAME_SHOW_BOOSTUSAGE "cl_demotouch_plugin_show_boostusage"
 #define CVAR_NAME_SHOW_BOOSTPMINUTE "cl_demotouch_plugin_show_boostpminute"
 #define CVAR_NAME_SHOW_INAIRPERCENTAGE "cl_demotouch_plugin_show_inairpercentage"
+#define CVAR_NAME_SHOW_POWERSLIDE_COUNT "cl_demotouch_plugin_show_powerslide_count"
+#define CVAR_NAME_SHOW_POWERSLIDE_DURATION "cl_demotouch_plugin_show_powerslide_duration"
 
 #define CVAR_NAME_SHOW_TOTAL "cl_demotouch_plugin_show_total"
 #define CVAR_NAME_SHOW_AVERAGE "cl_demotouch_plugin_show_average"

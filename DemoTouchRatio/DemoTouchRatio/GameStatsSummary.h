@@ -6,7 +6,7 @@
 class GameStats;
 
 // [STAT_ADD] 18. Add arguments
-#define DEFAULT_SUMMARY_ARGS 0,0,0,0,0,0,0
+#define DEFAULT_SUMMARY_ARGS 0,0,0,0,0,0,0,0,0
 
 class GameStatsSummary {
 public:
@@ -20,9 +20,11 @@ public:
 		float boostPMinute = 0;
 		float totalBoostUsed = 0;
 		float inAirPercentage = 0;
+		float powerslideCount = 0;
+		float powerslideDuration = 0;
 
 		// [STAT_ADD] 15. Add arguments
-		SummarizedStats(int bumps, int teamBumps, int demos, int ballHits, float totalBoostUsed, float boostPMinute, float inAirPercentage)
+		SummarizedStats(int bumps, int teamBumps, int demos, int ballHits, float totalBoostUsed, float boostPMinute, float inAirPercentage, int powerslideCount, float powerslideDuration)
 		{
 
 			this->bumps = bumps;
@@ -32,10 +34,12 @@ public:
 			this->totalBoostUsed = totalBoostUsed;
 			this->boostPMinute = boostPMinute;
 			this->inAirPercentage = inAirPercentage;
+			this->powerslideCount = powerslideCount;
+			this->powerslideDuration = powerslideDuration;
 		}
 
 		// [STAT_ADD] 16. Add arguments
-		SummarizedStats(float bumps, float teamBumps, float demos, float ballHits, float totalBoostUsed, float boostPMinute, float inAirPercentage)
+		SummarizedStats(float bumps, float teamBumps, float demos, float ballHits, float totalBoostUsed, float boostPMinute, float inAirPercentage, float powerslideCount, float powerslideDuration)
 		{
 			this->bumps = bumps;
 			this->teamBumps = teamBumps;
@@ -44,6 +48,8 @@ public:
 			this->totalBoostUsed = totalBoostUsed;
 			this->boostPMinute = boostPMinute;
 			this->inAirPercentage = inAirPercentage;
+			this->powerslideCount = powerslideCount;
+			this->powerslideDuration = powerslideDuration;
 		}
 
 		void Add(SummarizedStats& other, bool isAverage, int oldTotalGames, int totalGames)
@@ -60,6 +66,8 @@ public:
 			this->totalBoostUsed = (this->totalBoostUsed * static_cast<float>(oldTotalGames)) + (other.totalBoostUsed * otherAddsNOfGames);
 			this->boostPMinute = (this->boostPMinute * static_cast<float>(oldTotalGames)) + (other.boostPMinute * otherAddsNOfGames);
 			this->inAirPercentage = (this->inAirPercentage * static_cast<float>(oldTotalGames)) + (other.inAirPercentage * otherAddsNOfGames);
+			this->powerslideCount = (this->powerslideCount * static_cast<float>(oldTotalGames)) + (other.powerslideCount * otherAddsNOfGames);
+			this->powerslideDuration = (this->powerslideDuration * static_cast<float>(oldTotalGames)) + (other.powerslideDuration * otherAddsNOfGames);
 
 			if (isAverage)
 			{
@@ -68,6 +76,8 @@ public:
 				this->demos = this->demos / static_cast<float>(totalGames);
 				this->ballHits = this->ballHits / static_cast<float>(totalGames);
 				this->totalBoostUsed = this->totalBoostUsed / static_cast<float>(totalGames);
+				this->powerslideCount = this->powerslideCount / static_cast<float>(totalGames);
+				this->powerslideDuration = this->powerslideDuration / static_cast<float>(totalGames);
 			}
 			// These are always averages
 			this->boostPMinute = this->boostPMinute / static_cast<float>(totalGames);

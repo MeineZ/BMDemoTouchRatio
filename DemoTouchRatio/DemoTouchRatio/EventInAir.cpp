@@ -62,3 +62,12 @@ float EventInAir::GetTimeInAir() const
 {
 	return minutesInAir;
 }
+
+bool EventInAir::InAir() const
+{
+	CarWrapper localCar = DemoTouchRatio::GetGameWrapper()->GetLocalCar();
+	if (!Util::IsLocalPlayer(localCar))
+		return false;
+
+	return !(localCar.GetNumWheelContacts() > 0 || carHitsWorld);
+}

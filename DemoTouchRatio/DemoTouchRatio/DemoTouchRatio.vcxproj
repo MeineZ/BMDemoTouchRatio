@@ -99,12 +99,14 @@
     <ClCompile Include="EventBoost.cpp" />
     <ClCompile Include="EventData.cpp" />
     <ClCompile Include="EventInAir.cpp" />
+    <ClCompile Include="EventPowerslide.cpp" />
     <ClCompile Include="GameStats.cpp" />
     <ClCompile Include="GameStatsBallHits.cpp" />
     <ClCompile Include="GameStatsBoost.cpp" />
     <ClCompile Include="GameStatsBumps.cpp" />
     <ClCompile Include="GameStatsDemos.cpp" />
     <ClCompile Include="GameStatsInAir.cpp" />
+    <ClCompile Include="GameStatsPowerslide.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imguivariouscontrols.cpp" />
     <ClCompile Include="imgui\imgui_additions.cpp" />
@@ -133,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="EventPowerslide.h" />
     <ClInclude Include="PlaylistEnum.h" />
     <ClInclude Include="EventData.h" />
     <ClInclude Include="EventInAir.h" />

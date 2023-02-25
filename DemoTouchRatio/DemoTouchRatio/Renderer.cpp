@@ -35,6 +35,8 @@ Renderer::Renderer() :
 	displayBoostUsage(std::make_shared<bool>(false)),
 	displayBoostPMinute(std::make_shared<bool>(false)),
 	displayInAirPercentage(std::make_shared<bool>(false)),
+	displayPowerslideCount(std::make_shared<bool>(false)),
+	displayPowerslideDuration(std::make_shared<bool>(false)),
 	displayTotal(std::make_shared<bool>(true)),
 	displayAverage(std::make_shared<bool>(true)),
 	displayPlaylistsTotal(std::make_shared<bool>(false)),
@@ -109,4 +111,6 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, P
 	if (*displayBoostUsage) RenderData(canvas, nth++, "Boost", STATS_RENDER_ARGUMENTS_SOURCE(totalBoostUsed, GetBoostUsed));
 	if (*displayBoostPMinute) RenderData(canvas, nth++, "Boost/min", STATS_RENDER_ARGUMENTS_SOURCE(boostPMinute, GetBoostPMinute));
 	if (*displayInAirPercentage) RenderData(canvas, nth++, "Air %", STATS_RENDER_ARGUMENTS_SOURCE(inAirPercentage, GetInAirPercentage));
+	if (*displayPowerslideCount) RenderData(canvas, nth++, "Pwrslide uses", STATS_RENDER_ARGUMENTS_SOURCE(powerslideCount, GetPowerslideCount));
+	if (*displayPowerslideDuration) RenderData(canvas, nth++, "Pwrslide time", STATS_RENDER_ARGUMENTS_SOURCE(powerslideDuration * 60.0f, GetPowerslideTimeInSeconds), 1);
 }

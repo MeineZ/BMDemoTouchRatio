@@ -30,7 +30,7 @@ private:
 
 	void RenderTitle(CanvasWrapper* canvas, int width); // Renders title for table
 	void RenderHeader(CanvasWrapper* canvas, int nOfGames, int playlistsNOfGames, int persistentNOfGames, int playlistsPersistentNOfGames); // Renders header for table
-	void RenderData(CanvasWrapper* canvas, int nth, std::string label, STATS_RENDER_ARGUMENTS); // Renders header for table
+	void RenderData(CanvasWrapper* canvas, int nth, std::string label, STATS_RENDER_ARGUMENTS, int decimals = 0); // Renders header for table
 
 public:
 	std::shared_ptr<int> posX;
@@ -50,6 +50,8 @@ public:
 	std::shared_ptr<bool> displayBoostUsage;
 	std::shared_ptr<bool> displayBoostPMinute;
 	std::shared_ptr<bool> displayInAirPercentage;
+	std::shared_ptr<bool> displayPowerslideCount;
+	std::shared_ptr<bool> displayPowerslideDuration;
 
 	std::shared_ptr<bool> displayTotal;
 	std::shared_ptr<bool> displayAverage;

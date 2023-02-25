@@ -35,6 +35,8 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 	totalStats.totalBoostUsed += currentStats.totalBoostUsed + lastStats.totalBoostUsed;
 	totalStats.boostPMinute += currentStats.boostPMinute + lastStats.boostPMinute;
 	totalStats.inAirPercentage += currentStats.inAirPercentage + lastStats.inAirPercentage;
+	totalStats.powerslideCount += currentStats.powerslideCount + lastStats.powerslideCount;
+	totalStats.powerslideDuration += currentStats.powerslideDuration + lastStats.powerslideDuration;
 
 	for (int i = 0; i < previousGameStats.size(); ++i) {
 		SummarizedStats newStats = CreateSummaryFrom(previousGameStats[i], totalTimePlayed, totalTimeInAir);
@@ -46,6 +48,8 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 		totalStats.totalBoostUsed += newStats.totalBoostUsed;
 		totalStats.boostPMinute += newStats.boostPMinute;
 		totalStats.inAirPercentage += newStats.inAirPercentage;
+		totalStats.powerslideCount += newStats.powerslideCount;
+		totalStats.powerslideDuration += newStats.powerslideDuration;
 	}
 
 	// Avarage
@@ -66,14 +70,15 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 			totalStats.ballHits / (float)numberOfGames,
 			totalStats.totalBoostUsed / (float)numberOfGames,
 			totalStats.boostPMinute / (float)numberOfGames,
-			totalStats.inAirPercentage / (float)numberOfGames
+			totalStats.inAirPercentage / (float)numberOfGames,
+			totalStats.powerslideCount / (float)numberOfGames,
+			totalStats.powerslideDuration / (float)numberOfGames
 		};
 	}
 
 	// Some stats can't have totals, so they'll just display the average.
 	totalStats.boostPMinute = averageStats.boostPMinute;
 	totalStats.inAirPercentage = averageStats.inAirPercentage;
-
 }
 
 GameStatsSummary::SummarizedStats GameStatsSummary::CreateSummaryFrom(GameStats* gameStats, float& totalTime, float& totalTimeInAir) {
@@ -89,7 +94,8 @@ GameStatsSummary::SummarizedStats GameStatsSummary::CreateSummaryFrom(GameStats*
 
 		return GameStatsSummary::SummarizedStats{
 			gameStats->GetBumps(), gameStats->GetTeamBumps(), gameStats->GetDemos(), gameStats->GetBallHits(),
-			gameStats->GetBoostUsed(), gameStats->GetBoostPMinute(), gameStats->GetInAirPercentage()
+			gameStats->GetBoostUsed(), gameStats->GetBoostPMinute(), gameStats->GetInAirPercentage(),
+			gameStats->GetPowerslideCount(), gameStats->GetPowerslideTimeInMinutes()
 		};
 	}
 }
