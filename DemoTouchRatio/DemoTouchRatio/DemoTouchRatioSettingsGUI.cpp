@@ -79,14 +79,15 @@ void DemoTouchRatio::RenderColumnVisibility()
 	// =======================
 
 	DrawCheckbox("Bumps", &*renderer.displayBumps, CVAR_NAME_SHOW_BUMPS);
-	ImGui::SameLine(150); DrawCheckbox("Team bumps", &*renderer.displayTeamBumps, CVAR_NAME_SHOW_TEAMBUMPS);
-	ImGui::SameLine(300); DrawCheckbox("Demolitions", &*renderer.displayDemos, CVAR_NAME_SHOW_DEMOS);
-	ImGui::SameLine(450); DrawCheckbox("Ball touches", &*renderer.displayBallHits, CVAR_NAME_SHOW_BALLHITS);
+	ImGui::SameLine(200); DrawCheckbox("Team bumps", &*renderer.displayTeamBumps, CVAR_NAME_SHOW_TEAMBUMPS);
+	ImGui::SameLine(400); DrawCheckbox("Demolitions", &*renderer.displayDemos, CVAR_NAME_SHOW_DEMOS);
+	ImGui::SameLine(600); DrawCheckbox("Ball touches", &*renderer.displayBallHits, CVAR_NAME_SHOW_BALLHITS);
 	DrawCheckbox("Boost usage", &*renderer.displayBoostUsage, CVAR_NAME_SHOW_BOOSTUSAGE);
-	ImGui::SameLine(150); DrawCheckbox("Boost/minute", &*renderer.displayBoostPMinute, CVAR_NAME_SHOW_BOOSTPMINUTE);
-	ImGui::SameLine(300); DrawCheckbox("In air %", &*renderer.displayInAirPercentage, CVAR_NAME_SHOW_INAIRPERCENTAGE);
+	ImGui::SameLine(200); DrawCheckbox("Boost/minute", &*renderer.displayBoostPMinute, CVAR_NAME_SHOW_BOOSTPMINUTE);
+	ImGui::SameLine(400); DrawCheckbox("In air %", &*renderer.displayInAirPercentage, CVAR_NAME_SHOW_INAIRPERCENTAGE);
 	DrawCheckbox("Powerslide uses", &*renderer.displayPowerslideCount, CVAR_NAME_SHOW_POWERSLIDE_COUNT);
-	ImGui::SameLine(150); DrawCheckbox("Powerslide time", &*renderer.displayPowerslideDuration, CVAR_NAME_SHOW_POWERSLIDE_DURATION);
+	ImGui::SameLine(200); DrawCheckbox("Powerslide time", &*renderer.displayPowerslideDuration, CVAR_NAME_SHOW_POWERSLIDE_DURATION);
+	ImGui::SameLine(400); DrawCheckbox("Powerslide time per use", &*renderer.displayPowerslideDurationPerUse, CVAR_NAME_SHOW_POWERSLIDE_DURATION_PER_USE);
 
 	// =======================
 	ImGui::NewLine();

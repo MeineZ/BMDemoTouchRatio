@@ -28,3 +28,11 @@ float GameStats::GetPowerslideTimeInSeconds() const
 {
 	return powerslideData.GetPowerslideDuration() * 60.f;
 }
+
+float GameStats::GetPowerslideTimePerUseInSeconds() const
+{
+	if (powerslideData.GetPowerslideCount() == 0.f)
+		return 0.f;
+
+	return (powerslideData.GetPowerslideDuration() * 60.f) / powerslideData.GetPowerslideCount();
+}

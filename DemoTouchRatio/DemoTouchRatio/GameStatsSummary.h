@@ -22,6 +22,7 @@ public:
 		float inAirPercentage = 0;
 		float powerslideCount = 0;
 		float powerslideDuration = 0;
+		float powerslideDurationPerUse = 0;
 
 		// [STAT_ADD] 15. Add arguments
 		SummarizedStats(int bumps, int teamBumps, int demos, int ballHits, float totalBoostUsed, float boostPMinute, float inAirPercentage, int powerslideCount, float powerslideDuration)
@@ -36,6 +37,9 @@ public:
 			this->inAirPercentage = inAirPercentage;
 			this->powerslideCount = powerslideCount;
 			this->powerslideDuration = powerslideDuration;
+			this->powerslideDurationPerUse = this->powerslideCount != 0.f
+				? (this->powerslideDuration / this->powerslideCount)
+				: 0.f;
 		}
 
 		// [STAT_ADD] 16. Add arguments
@@ -50,6 +54,9 @@ public:
 			this->inAirPercentage = inAirPercentage;
 			this->powerslideCount = powerslideCount;
 			this->powerslideDuration = powerslideDuration;
+			this->powerslideDurationPerUse = this->powerslideCount != 0.f
+				? (this->powerslideDuration / this->powerslideCount)
+				: 0.f;
 		}
 
 		void Add(SummarizedStats& other, bool isAverage, int oldTotalGames, int totalGames)
@@ -68,6 +75,7 @@ public:
 			this->inAirPercentage = (this->inAirPercentage * static_cast<float>(oldTotalGames)) + (other.inAirPercentage * otherAddsNOfGames);
 			this->powerslideCount = (this->powerslideCount * static_cast<float>(oldTotalGames)) + (other.powerslideCount * otherAddsNOfGames);
 			this->powerslideDuration = (this->powerslideDuration * static_cast<float>(oldTotalGames)) + (other.powerslideDuration * otherAddsNOfGames);
+			this->powerslideDurationPerUse = ( this->powerslideDurationPerUse * static_cast<float>( oldTotalGames ) ) + ( other.powerslideDurationPerUse * otherAddsNOfGames );
 
 			if (isAverage)
 			{
@@ -78,6 +86,7 @@ public:
 				this->totalBoostUsed = this->totalBoostUsed / static_cast<float>(totalGames);
 				this->powerslideCount = this->powerslideCount / static_cast<float>(totalGames);
 				this->powerslideDuration = this->powerslideDuration / static_cast<float>(totalGames);
+				this->powerslideDurationPerUse = this->powerslideDurationPerUse / static_cast<float>( totalGames );
 			}
 			// These are always averages
 			this->boostPMinute = this->boostPMinute / static_cast<float>(totalGames);

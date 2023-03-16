@@ -52,6 +52,7 @@ public:
 	std::shared_ptr<bool> displayInAirPercentage;
 	std::shared_ptr<bool> displayPowerslideCount;
 	std::shared_ptr<bool> displayPowerslideDuration;
+	std::shared_ptr<bool> displayPowerslideDurationPerUse;
 
 	std::shared_ptr<bool> displayTotal;
 	std::shared_ptr<bool> displayAverage;

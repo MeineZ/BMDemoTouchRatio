@@ -53,4 +53,5 @@ public:
 	int GetPowerslideCount() const;
 	float GetPowerslideTimeInMinutes() const;
 	float GetPowerslideTimeInSeconds() const;
+	float GetPowerslideTimePerUseInSeconds() const;
 };
