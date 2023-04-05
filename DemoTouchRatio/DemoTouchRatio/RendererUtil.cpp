@@ -32,7 +32,10 @@ Vector2 Renderer::GetBox()
 		(*displayInAirPercentage ? 1 : 0) +
 		(*displayPowerslideCount ? 1 : 0) +
 		(*displayPowerslideDuration ? 1 : 0) +
-		(*displayPowerslideDurationPerUse ? 1 : 0);
+		(*displayPowerslideDurationPerUse ? 1 : 0) +
+		(*displayShots ? 1 : 0) +
+		(*displayGoals ? 1 : 0) +
+		(*displaySaves ? 1 : 0);
 
 	if (*renderHorizontal)
 	{

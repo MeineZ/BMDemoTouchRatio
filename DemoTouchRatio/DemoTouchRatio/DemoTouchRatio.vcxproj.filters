@@ -153,6 +153,12 @@
     <ClCompile Include="GameStatsSummary.cpp">
       <Filter>Plugin\src\GameStatsTracking</Filter>
     </ClCompile>
+    <ClCompile Include="GameStatsStatEvent.cpp">
+      <Filter>Plugin\src\GameStatsTracking</Filter>
+    </ClCompile>
+    <ClCompile Include="EventStatEvent.cpp">
+      <Filter>Plugin\src\GameStatsTracking\Events</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imgui_rangeslider.h">
@@ -249,6 +255,9 @@
       <Filter>Plugin\header</Filter>
     </ClInclude>
     <ClInclude Include="EventPowerslide.h">
+      <Filter>Plugin\header\GameStatsTracking\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EventStatEvent.h">
       <Filter>Plugin\header\GameStatsTracking\Events</Filter>
     </ClInclude>
   </ItemGroup>

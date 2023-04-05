@@ -37,6 +37,9 @@
 #define CVAR_NAME_SHOW_POWERSLIDE_COUNT "cl_demotouch_plugin_show_powerslide_count"
 #define CVAR_NAME_SHOW_POWERSLIDE_DURATION "cl_demotouch_plugin_show_powerslide_duration"
 #define CVAR_NAME_SHOW_POWERSLIDE_DURATION_PER_USE "cl_demotouch_plugin_show_powerslide_duration_per_use"
+#define CVAR_NAME_SHOW_SHOTS "cl_demotouch_plugin_show_shots"
+#define CVAR_NAME_SHOW_GOALS "cl_demotouch_plugin_show_goals"
+#define CVAR_NAME_SHOW_SAVES "cl_demotouch_plugin_show_saves"
 
 #define CVAR_NAME_SHOW_TOTAL "cl_demotouch_plugin_show_total"
 #define CVAR_NAME_SHOW_AVERAGE "cl_demotouch_plugin_show_average"
@@ -70,3 +73,5 @@
 #define HOOK_BALL_HIT "Function TAGame.Car_TA.OnHitBall"
 #define HOOK_NUM_WHEEL_CONTACTS "Function TAGame.Vehicle_TA.GetNumWheelWorldContacts"
 #define HOOK_CAR_HIT_WORLD "Function TAGame.Car_TA.EventHitWorld"
+#define HOOK_STAT_TICKER_MESSAGE "Function TAGame.GFxHUD_TA.HandleStatTickerMessage"
+#define HOOK_HANDLE_STAT_EVENT "Function TAGame.GFxHUD_TA.HandleStatEvent"

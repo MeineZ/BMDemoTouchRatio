@@ -17,10 +17,11 @@ GameStats::GameStats():
 	// [STAT_ADD] 8. Add constructor
 	boostData(EventBoost()),
 	inAirData(EventInAir()),
-	powerslideData(EventPowerslide())
+	powerslideData(EventPowerslide()),
+	statEventData(EventStatEvent())
 { }
 
-GameStats::GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes, int powerslideCount, float powerslideDuration) :
+GameStats::GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes, int powerslideCount, float powerslideDuration, int shots, int goals, int saves) :
 	lastTimeStamp(0),
 	totalPlayedTime(totalTime),
 	bumpData(EventData(bumps)),
@@ -30,7 +31,8 @@ GameStats::GameStats(int bumps, int teamBumps, int demos, int ballHits, float to
 	// [STAT_ADD] 9. Add constructor with params
 	boostData(EventBoost(totalBoost)),
 	inAirData(EventInAir(airTimeInMinutes)),
-	powerslideData(EventPowerslide(powerslideCount, powerslideDuration))
+	powerslideData(EventPowerslide(powerslideCount, powerslideDuration)),
+	statEventData(EventStatEvent(shots, goals, saves))
 { }
 
 void GameStats::BindEvents()
@@ -45,6 +47,9 @@ void GameStats::BindEvents()
 	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_CAR_DEMO, std::bind(&GameStats::OnDemo, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_BALL_HIT, std::bind(&GameStats::OnBallHit, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_CAR_HIT_WORLD, std::bind(&GameStats::OnCarWorldHit, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+
+	gameWrapper->HookEventWithCaller<ServerWrapper>(HOOK_STAT_TICKER_MESSAGE, std::bind(&GameStats::OnStatTicker, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+	gameWrapper->HookEventWithCaller<ServerWrapper>(HOOK_HANDLE_STAT_EVENT, std::bind(&GameStats::OnStatEvent, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 }
 
 void GameStats::UnbindEvents()
@@ -58,6 +63,8 @@ void GameStats::UnbindEvents()
 	gameWrapper->UnhookEvent(HOOK_CAR_DEMO);
 	gameWrapper->UnhookEvent(HOOK_BALL_HIT);
 	gameWrapper->UnhookEvent(HOOK_CAR_HIT_WORLD);
+	gameWrapper->UnhookEvent(HOOK_STAT_TICKER_MESSAGE);
+	gameWrapper->UnhookEvent(HOOK_HANDLE_STAT_EVENT);
 }
 
 void GameStats::OnPhysicsTick(std::string eventName)

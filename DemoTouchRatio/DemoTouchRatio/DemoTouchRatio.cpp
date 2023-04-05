@@ -90,6 +90,9 @@ void DemoTouchRatio::onLoad()
 	cvarManager->registerCvar(CVAR_NAME_SHOW_POWERSLIDE_COUNT, "0", "Show powerslide count data column", false, true, 0, true, 1, true).bindTo(renderer.displayPowerslideCount);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_POWERSLIDE_DURATION, "0", "Show powerslide duration data column", false, true, 0, true, 1, true).bindTo(renderer.displayPowerslideDuration);
 	cvarManager->registerCvar( CVAR_NAME_SHOW_POWERSLIDE_DURATION_PER_USE, "0", "Show powerslide duration per use data column", false, true, 0, true, 1, true ).bindTo( renderer.displayPowerslideDurationPerUse );
+	cvarManager->registerCvar(CVAR_NAME_SHOW_SHOTS, "0", "Show goals data column", false, true, 0, true, 1, true).bindTo(renderer.displayShots);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_GOALS, "0", "Show goals data column", false, true, 0, true, 1, true).bindTo(renderer.displayGoals);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_SAVES, "0", "Show saves data column", false, true, 0, true, 1, true).bindTo(renderer.displaySaves);
 
 	cvarManager->registerCvar(CVAR_NAME_SHOW_TOTAL, "1", "Show session total stats", false, true, 0, true, 1, true).bindTo(renderer.displayTotal);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_AVERAGE, "1", "Show session average stats", false, true, 0, true, 1, true).bindTo(renderer.displayAverage);

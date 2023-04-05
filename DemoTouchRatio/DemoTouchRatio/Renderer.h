@@ -53,6 +53,9 @@ public:
 	std::shared_ptr<bool> displayPowerslideCount;
 	std::shared_ptr<bool> displayPowerslideDuration;
 	std::shared_ptr<bool> displayPowerslideDurationPerUse;
+	std::shared_ptr<bool> displayShots;
+	std::shared_ptr<bool> displayGoals;
+	std::shared_ptr<bool> displaySaves;
 
 	std::shared_ptr<bool> displayTotal;
 	std::shared_ptr<bool> displayAverage;

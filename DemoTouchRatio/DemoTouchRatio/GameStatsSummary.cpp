@@ -37,6 +37,9 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 	totalStats.inAirPercentage += currentStats.inAirPercentage + lastStats.inAirPercentage;
 	totalStats.powerslideCount += currentStats.powerslideCount + lastStats.powerslideCount;
 	totalStats.powerslideDuration += currentStats.powerslideDuration + lastStats.powerslideDuration;
+	totalStats.shots += currentStats.shots + lastStats.shots;
+	totalStats.goals += currentStats.goals + lastStats.goals;
+	totalStats.saves += currentStats.saves + lastStats.saves;
 
 	for (int i = 0; i < previousGameStats.size(); ++i) {
 		SummarizedStats newStats = CreateSummaryFrom(previousGameStats[i], totalTimePlayed, totalTimeInAir);
@@ -50,6 +53,9 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 		totalStats.inAirPercentage += newStats.inAirPercentage;
 		totalStats.powerslideCount += newStats.powerslideCount;
 		totalStats.powerslideDuration += newStats.powerslideDuration;
+		totalStats.shots += newStats.shots;
+		totalStats.goals += newStats.goals;
+		totalStats.saves += newStats.saves;
 	}
 
 	// Avarage
@@ -72,7 +78,10 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 			totalStats.boostPMinute / (float)numberOfGames,
 			totalStats.inAirPercentage / (float)numberOfGames,
 			totalStats.powerslideCount / (float)numberOfGames,
-			totalStats.powerslideDuration / (float)numberOfGames
+			totalStats.powerslideDuration / (float)numberOfGames,
+			totalStats.shots / (float)numberOfGames,
+			totalStats.goals / (float)numberOfGames,
+			totalStats.saves / (float)numberOfGames
 		};
 	}
 
@@ -95,7 +104,8 @@ GameStatsSummary::SummarizedStats GameStatsSummary::CreateSummaryFrom(GameStats*
 		return GameStatsSummary::SummarizedStats{
 			gameStats->GetBumps(), gameStats->GetTeamBumps(), gameStats->GetDemos(), gameStats->GetBallHits(),
 			gameStats->GetBoostUsed(), gameStats->GetBoostPMinute(), gameStats->GetInAirPercentage(),
-			gameStats->GetPowerslideCount(), gameStats->GetPowerslideTimeInMinutes()
+			gameStats->GetPowerslideCount(), gameStats->GetPowerslideTimeInMinutes(), gameStats->GetShots(),
+			gameStats->GetGoals(), gameStats->GetSaves()
 		};
 	}
 }

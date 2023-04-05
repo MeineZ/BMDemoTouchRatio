@@ -4,6 +4,7 @@
 #include <EventBoost.h>
 #include <EventInAir.h>
 #include <EventPowerslide.h>
+#include <EventStatEvent.h>
 
 class GameStats
 {
@@ -20,12 +21,15 @@ private:
 	EventBoost boostData;
 	EventInAir inAirData;
 	EventPowerslide powerslideData;
+	EventStatEvent statEventData;
 
 	// [STAT_ADD] 6. Add data tracking method
 	void OnBump(CarWrapper carWrapper, void* args, std::string eventName);
 	void OnDemo(CarWrapper carWrapper, void* args, std::string eventName);
 	void OnBallHit(CarWrapper carWrapper, void* args, std::string eventName);
 	void OnCarWorldHit(CarWrapper carWrapper, void* args, std::string eventName);
+	void OnStatTicker(ServerWrapper serverWrapper, void* args, std::string eventName);
+	void OnStatEvent(ServerWrapper serverWrapper, void* args, std::string eventName);
 
 	void OnPhysicsTick(std::string eventName);
 	void HandleBoost(uint64_t deltaTime);
@@ -34,7 +38,7 @@ private:
 
 public:
 	GameStats();
-	const GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes, int powerslideCount, float powerslideDuration);
+	const GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes, int powerslideCount, float powerslideDuration, int shots, int goals, int saves);
 
 	void BindEvents();
 	void UnbindEvents();
@@ -54,4 +58,7 @@ public:
 	float GetPowerslideTimeInMinutes() const;
 	float GetPowerslideTimeInSeconds() const;
 	float GetPowerslideTimePerUseInSeconds() const;
+	int GetShots() const;
+	int GetGoals() const;
+	int GetSaves() const;
 };
