@@ -46,6 +46,8 @@ public:
 	std::shared_ptr<bool> displayBumps;
 	std::shared_ptr<bool> displayTeamBumps;
 	std::shared_ptr<bool> displayDemos;
+	std::shared_ptr<bool> displayTeamDemos;
+	std::shared_ptr<bool> displayDeaths;
 	std::shared_ptr<bool> displayBallHits;
 	std::shared_ptr<bool> displayBoostUsage;
 	std::shared_ptr<bool> displayBoostPMinute;

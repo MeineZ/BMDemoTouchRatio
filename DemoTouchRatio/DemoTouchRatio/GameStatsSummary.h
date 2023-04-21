@@ -6,7 +6,7 @@
 class GameStats;
 
 // [STAT_ADD] 18. Add arguments
-#define DEFAULT_SUMMARY_ARGS 0,0,0,0,0,0,0,0,0,0,0,0
+#define DEFAULT_SUMMARY_ARGS 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 class GameStatsSummary {
 public:
@@ -23,12 +23,14 @@ public:
 		float powerslideCount = 0;
 		float powerslideDuration = 0;
 		float powerslideDurationPerUse = 0;
-		int shots = 0;
-		int goals = 0;
-		int saves = 0;
+		float shots = 0;
+		float goals = 0;
+		float saves = 0;
+		float teamDemos = 0;
+		float deaths = 0;
 
 		// [STAT_ADD] 15. Add arguments
-		SummarizedStats(int bumps, int teamBumps, int demos, int ballHits, float totalBoostUsed, float boostPMinute, float inAirPercentage, int powerslideCount, float powerslideDuration, int shots, int goals, int saves)
+		SummarizedStats(int bumps, int teamBumps, int demos, int ballHits, float totalBoostUsed, float boostPMinute, float inAirPercentage, int powerslideCount, float powerslideDuration, int shots, int goals, int saves, int teamDemos, int deaths )
 		{
 
 			this->bumps = bumps;
@@ -46,10 +48,12 @@ public:
 			this->shots = shots;
 			this->goals = goals;
 			this->saves = saves;
+			this->teamDemos = teamDemos;
+			this->deaths = deaths;
 		}
 
 		// [STAT_ADD] 16. Add arguments
-		SummarizedStats(float bumps, float teamBumps, float demos, float ballHits, float totalBoostUsed, float boostPMinute, float inAirPercentage, float powerslideCount, float powerslideDuration, float shots, float goals, float saves)
+		SummarizedStats(float bumps, float teamBumps, float demos, float ballHits, float totalBoostUsed, float boostPMinute, float inAirPercentage, float powerslideCount, float powerslideDuration, float shots, float goals, float saves, float teamDemos, float deaths )
 		{
 			this->bumps = bumps;
 			this->teamBumps = teamBumps;
@@ -66,6 +70,8 @@ public:
 			this->shots = shots;
 			this->goals = goals;
 			this->saves = saves;
+			this->teamDemos = teamDemos;
+			this->deaths = deaths;
 		}
 
 		void Add(SummarizedStats& other, bool isAverage, int oldTotalGames, int totalGames)
@@ -88,6 +94,8 @@ public:
 			this->shots = (this->shots * static_cast<float>(oldTotalGames)) + (other.shots * otherAddsNOfGames);
 			this->goals = (this->goals * static_cast<float>(oldTotalGames)) + (other.goals * otherAddsNOfGames);
 			this->saves = (this->saves * static_cast<float>(oldTotalGames)) + (other.saves * otherAddsNOfGames);
+			this->teamDemos = ( this->teamDemos * static_cast<float>( oldTotalGames ) ) + ( other.teamDemos * otherAddsNOfGames );
+			this->deaths = ( this->deaths * static_cast<float>( oldTotalGames ) ) + ( other.deaths * otherAddsNOfGames );
 
 			if (isAverage)
 			{
@@ -102,6 +110,8 @@ public:
 				this->shots = this->shots / static_cast<float>(totalGames);
 				this->goals = this->goals / static_cast<float>(totalGames);
 				this->saves = this->saves / static_cast<float>(totalGames);
+				this->teamDemos = this->teamDemos / static_cast<float>( totalGames );
+				this->deaths = this->deaths / static_cast<float>( totalGames );
 			}
 			// These are always averages
 			this->boostPMinute = this->boostPMinute / static_cast<float>(totalGames);

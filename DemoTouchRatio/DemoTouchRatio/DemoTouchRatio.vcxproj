@@ -98,6 +98,7 @@
     <ClCompile Include="DemoTouchRatioSettingsGUI.cpp" />
     <ClCompile Include="EventBoost.cpp" />
     <ClCompile Include="EventData.cpp" />
+    <ClCompile Include="EventDemo.cpp" />
     <ClCompile Include="EventInAir.cpp" />
     <ClCompile Include="EventPowerslide.cpp" />
     <ClCompile Include="EventStatEvent.cpp" />

@@ -83,6 +83,8 @@ void DemoTouchRatio::onLoad()
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BUMPS, "1", "Show bumps data column", false, true, 0, true, 1, true).bindTo(renderer.displayBumps);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_TEAMBUMPS, "0", "Show team bumps data column", false, true, 0, true, 1, true).bindTo(renderer.displayTeamBumps);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_DEMOS, "1", "Show demos data column", false, true, 0, true, 1, true).bindTo(renderer.displayDemos);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_TEAMDEMOS, "0", "Show team demos data column", false, true, 0, true, 1, true).bindTo(renderer.displayTeamDemos);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_DEATHS, "0", "Show deaths data column", false, true, 0, true, 1, true).bindTo(renderer.displayDeaths);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BALLHITS, "1", "Show ball touches data column", false, true, 0, true, 1, true).bindTo(renderer.displayBallHits);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BOOSTUSAGE, "0", "Show boost usage data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostUsage);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BOOSTPMINUTE, "0", "Show boost per minute data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostPMinute);

@@ -12,7 +12,6 @@ GameStats::GameStats():
 	totalPlayedTime(0),
 	bumpData(EventData()),
 	teamBumpData(EventData()),
-	demoData(EventData()),
 	ballHitData(EventData()),
 	// [STAT_ADD] 8. Add constructor
 	boostData(EventBoost()),
@@ -21,18 +20,17 @@ GameStats::GameStats():
 	statEventData(EventStatEvent())
 { }
 
-GameStats::GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes, int powerslideCount, float powerslideDuration, int shots, int goals, int saves) :
+GameStats::GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes, int powerslideCount, float powerslideDuration, int shots, int goals, int saves, int teamDemos, int deaths) :
 	lastTimeStamp(0),
 	totalPlayedTime(totalTime),
 	bumpData(EventData(bumps)),
 	teamBumpData(EventData(teamBumps)),
-	demoData(EventData(demos)),
 	ballHitData(EventData(ballHits)),
 	// [STAT_ADD] 9. Add constructor with params
 	boostData(EventBoost(totalBoost)),
 	inAirData(EventInAir(airTimeInMinutes)),
 	powerslideData(EventPowerslide(powerslideCount, powerslideDuration)),
-	statEventData(EventStatEvent(shots, goals, saves))
+	statEventData(EventStatEvent(demos, teamDemos, deaths, shots, goals, saves))
 { }
 
 void GameStats::BindEvents()
@@ -44,7 +42,6 @@ void GameStats::BindEvents()
 	// [STAT_ADD] 10. Bind function or add to physics tick
 	gameWrapper->HookEvent(HOOK_SET_VEHICLE_INPUT, std::bind(&GameStats::OnPhysicsTick, this, std::placeholders::_1));
 	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_CAR_BUMPED, std::bind(&GameStats::OnBump, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_CAR_DEMO, std::bind(&GameStats::OnDemo, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_BALL_HIT, std::bind(&GameStats::OnBallHit, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 	gameWrapper->HookEventWithCaller<CarWrapper>(HOOK_CAR_HIT_WORLD, std::bind(&GameStats::OnCarWorldHit, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 

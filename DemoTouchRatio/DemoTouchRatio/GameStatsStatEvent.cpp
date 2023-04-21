@@ -13,6 +13,7 @@ void GameStats::OnStatTicker(ServerWrapper serverWrapper, void* args, std::strin
 
 	AGFxHUD_TA_execStatTicker_Params* castedParams = (AGFxHUD_TA_execStatTicker_Params*)args;
 	PriWrapper statReceiver = PriWrapper(castedParams->Receiver);
+	PriWrapper statVictim = PriWrapper(castedParams->Victim);
 	if (statReceiver.IsNull())
 		return;
 
@@ -20,15 +21,12 @@ void GameStats::OnStatTicker(ServerWrapper serverWrapper, void* args, std::strin
 	if (receiverCar.IsNull())
 		return;
 
-	// We only register demos from the player
-	if (!Util::IsLocalPlayer(receiverCar))
-		return;
-
+	// We allow any stat to be processed. Each stat should check if its the local player on their own.
 	StatEventWrapper statEvent = StatEventWrapper(castedParams->StatEvent);
-	if (statEvent.IsNull())
+	if( statEvent.IsNull() )
 		return;
 
-	statEventData.RegisterStatTicker(statEvent.GetEventName());
+	statEventData.RegisterStatTicker(statEvent.GetEventName(), receiverCar, statVictim);
 }
 
 void GameStats::OnStatEvent(ServerWrapper serverWrapper, void* args, std::string eventName)

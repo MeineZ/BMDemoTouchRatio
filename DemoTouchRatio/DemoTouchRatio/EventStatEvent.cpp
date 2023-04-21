@@ -3,48 +3,61 @@
 
 #include <Util.h>
 
+// https://github.com/ubelhj/OBSCounter/blob/main/OBSCounter/Maps.h#L341
+
 EventStatEvent::EventStatEvent() :
+	demos(0),
+	teamDemos(0),
+	deaths(0),
 	totalShots(0),
 	totalGoals(0),
 	totalSaves(0)
 {}
 
-EventStatEvent::EventStatEvent(int totalShots, int totalGoals, int totalSaves) :
+EventStatEvent::EventStatEvent(int demos, int teamDemos, int deaths, int totalShots, int totalGoals, int totalSaves) :
+	demos(demos),
+	teamDemos(teamDemos),
+	deaths(deaths),
 	totalShots(totalShots),
 	totalGoals(totalGoals),
 	totalSaves(totalSaves)
 {}
 
-void EventStatEvent::RegisterStatTicker(std::string eventName)
-{ /* Stat ticker contains the receiver and victim. May be useful for demos or other stats. */ }
+void EventStatEvent::RegisterStatTicker(std::string eventName, CarWrapper receiver, PriWrapper victim)
+{
+	if (eventName == "Demolish")
+	{
+		HandleDemolition(receiver, victim);
+	}
+}
 
 void EventStatEvent::RegisterStatEvent(std::string eventName)
 {
 	if (eventName.compare("Shot") == 0)
 	{
-		IncreaseShots();
+		HandleShots();
 	}
 	else if (eventName.compare("Goal") == 0)
 	{
-		IncreaseGoals();
+		HandleGoals();
 	}
 	else if (eventName.compare("Save") == 0 || eventName.compare("EpicSave") == 0)
 	{
-		IncreaseSaves();
+		HandleSaves();
 	}
 }
 
-void EventStatEvent::IncreaseShots()
+void EventStatEvent::HandleShots()
 {
 	++totalShots;
 }
 
-void EventStatEvent::IncreaseGoals()
+void EventStatEvent::HandleGoals()
 {
 	++totalGoals;
 }
 
-void EventStatEvent::IncreaseSaves()
+void EventStatEvent::HandleSaves()
 {
 	++totalSaves;
 }

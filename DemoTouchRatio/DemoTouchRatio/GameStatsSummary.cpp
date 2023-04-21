@@ -31,6 +31,8 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 	totalStats.bumps += currentStats.bumps + lastStats.bumps;
 	totalStats.teamBumps += currentStats.teamBumps + lastStats.teamBumps;
 	totalStats.demos += currentStats.demos + lastStats.demos;
+	totalStats.teamDemos += currentStats.teamDemos + lastStats.teamDemos;
+	totalStats.deaths += currentStats.deaths + lastStats.deaths;
 	totalStats.ballHits += currentStats.ballHits + lastStats.ballHits;
 	totalStats.totalBoostUsed += currentStats.totalBoostUsed + lastStats.totalBoostUsed;
 	totalStats.boostPMinute += currentStats.boostPMinute + lastStats.boostPMinute;
@@ -47,6 +49,8 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 		totalStats.bumps += newStats.bumps;
 		totalStats.teamBumps += newStats.teamBumps;
 		totalStats.demos += newStats.demos;
+		totalStats.teamDemos += newStats.teamDemos;
+		totalStats.deaths += newStats.deaths;
 		totalStats.ballHits += newStats.ballHits;
 		totalStats.totalBoostUsed += newStats.totalBoostUsed;
 		totalStats.boostPMinute += newStats.boostPMinute;
@@ -81,7 +85,9 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 			totalStats.powerslideDuration / (float)numberOfGames,
 			totalStats.shots / (float)numberOfGames,
 			totalStats.goals / (float)numberOfGames,
-			totalStats.saves / (float)numberOfGames
+			totalStats.saves / (float)numberOfGames,
+			totalStats.teamDemos / (float) numberOfGames,
+			totalStats.deaths / (float) numberOfGames
 		};
 	}
 
@@ -102,10 +108,10 @@ GameStatsSummary::SummarizedStats GameStatsSummary::CreateSummaryFrom(GameStats*
 		totalTimeInAir += gameStats->GetTimeInAir();
 
 		return GameStatsSummary::SummarizedStats{
-			gameStats->GetBumps(), gameStats->GetTeamBumps(), gameStats->GetDemos(), gameStats->GetBallHits(),
-			gameStats->GetBoostUsed(), gameStats->GetBoostPMinute(), gameStats->GetInAirPercentage(),
+			gameStats->GetBumps(), gameStats->GetTeamBumps(), gameStats->GetDemos(), 
+			gameStats->GetBallHits(), gameStats->GetBoostUsed(), gameStats->GetBoostPMinute(), gameStats->GetInAirPercentage(),
 			gameStats->GetPowerslideCount(), gameStats->GetPowerslideTimeInMinutes(), gameStats->GetShots(),
-			gameStats->GetGoals(), gameStats->GetSaves()
+			gameStats->GetGoals(), gameStats->GetSaves(), gameStats->GetTeamDemos(), gameStats->GetDeaths()
 		};
 	}
 }

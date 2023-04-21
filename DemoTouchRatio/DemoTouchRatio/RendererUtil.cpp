@@ -26,6 +26,8 @@ Vector2 Renderer::GetBox()
 		(*displayBumps ? 1 : 0) +
 		(*displayTeamBumps ? 1 : 0) +
 		(*displayDemos ? 1 : 0) +
+		(*displayTeamDemos ? 1 : 0) +
+		(*displayDeaths ? 1 : 0) +
 		(*displayBallHits ? 1 : 0) +
 		(*displayBoostUsage ? 1 : 0) +
 		(*displayBoostPMinute ? 1 : 0) +

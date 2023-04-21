@@ -159,6 +159,9 @@
     <ClCompile Include="EventStatEvent.cpp">
       <Filter>Plugin\src\GameStatsTracking\Events</Filter>
     </ClCompile>
+    <ClCompile Include="EventDemo.cpp">
+      <Filter>Plugin\src\GameStatsTracking\Events</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imgui_rangeslider.h">

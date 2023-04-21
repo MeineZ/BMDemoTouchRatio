@@ -30,6 +30,8 @@
 #define CVAR_NAME_SHOW_BUMPS "cl_demotouch_plugin_show_bumps"
 #define CVAR_NAME_SHOW_TEAMBUMPS "cl_demotouch_plugin_show_teambumps"
 #define CVAR_NAME_SHOW_DEMOS "cl_demotouch_plugin_show_demos"
+#define CVAR_NAME_SHOW_TEAMDEMOS "cl_demotouch_plugin_show_teamdemos"
+#define CVAR_NAME_SHOW_DEATHS "cl_demotouch_plugin_show_deaths"
 #define CVAR_NAME_SHOW_BALLHITS "cl_demotouch_plugin_show_ballhits"
 #define CVAR_NAME_SHOW_BOOSTUSAGE "cl_demotouch_plugin_show_boostusage"
 #define CVAR_NAME_SHOW_BOOSTPMINUTE "cl_demotouch_plugin_show_boostpminute"

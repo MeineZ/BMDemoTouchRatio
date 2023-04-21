@@ -81,8 +81,10 @@ void DemoTouchRatio::RenderColumnVisibility()
 
 	DrawCheckbox("Bumps", &*renderer.displayBumps, CVAR_NAME_SHOW_BUMPS);
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Team bumps", &*renderer.displayTeamBumps, CVAR_NAME_SHOW_TEAMBUMPS);
-	ImGui::SameLine(DISPLAY_OPTION_SPACING(2)); DrawCheckbox("Demolitions", &*renderer.displayDemos, CVAR_NAME_SHOW_DEMOS);
-	ImGui::SameLine(DISPLAY_OPTION_SPACING(3)); DrawCheckbox("Ball touches", &*renderer.displayBallHits, CVAR_NAME_SHOW_BALLHITS);
+	ImGui::SameLine(DISPLAY_OPTION_SPACING(2)); DrawCheckbox("Ball touches", &*renderer.displayBallHits, CVAR_NAME_SHOW_BALLHITS);
+	DrawCheckbox("Demolitions", &*renderer.displayDemos, CVAR_NAME_SHOW_DEMOS);
+	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Team demolitions", &*renderer.displayTeamDemos, CVAR_NAME_SHOW_TEAMDEMOS);
+	ImGui::SameLine(DISPLAY_OPTION_SPACING(2)); DrawCheckbox("Deaths", &*renderer.displayDeaths, CVAR_NAME_SHOW_DEATHS);
 	DrawCheckbox("Boost usage", &*renderer.displayBoostUsage, CVAR_NAME_SHOW_BOOSTUSAGE);
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Boost/minute", &*renderer.displayBoostPMinute, CVAR_NAME_SHOW_BOOSTPMINUTE);
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(2)); DrawCheckbox("In air %", &*renderer.displayInAirPercentage, CVAR_NAME_SHOW_INAIRPERCENTAGE);

@@ -31,6 +31,8 @@ Renderer::Renderer() :
 	displayBumps(std::make_shared<bool>(true)),
 	displayTeamBumps(std::make_shared<bool>(false)),
 	displayDemos(std::make_shared<bool>(true)),
+	displayTeamDemos(std::make_shared<bool>(false)),
+	displayDeaths(std::make_shared<bool>(false)),
 	displayBallHits(std::make_shared<bool>(true)),
 	displayBoostUsage(std::make_shared<bool>(false)),
 	displayBoostPMinute(std::make_shared<bool>(false)),
@@ -109,8 +111,10 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, P
 
 	int nth = 1;
 	if(*displayBumps) RenderData(canvas, nth++, "Bumps", STATS_RENDER_ARGUMENTS_SOURCE(bumps, GetBumps));
-	if (*displayTeamBumps) RenderData(canvas, nth++, "Team bumps", STATS_RENDER_ARGUMENTS_SOURCE(teamBumps, GetTeamBumps));
+	if (*displayTeamBumps) RenderData(canvas, nth++, "T.Bumps", STATS_RENDER_ARGUMENTS_SOURCE(teamBumps, GetTeamBumps));
 	if (*displayDemos) RenderData(canvas, nth++, "Demos", STATS_RENDER_ARGUMENTS_SOURCE(demos, GetDemos));
+	if (*displayTeamDemos) RenderData(canvas, nth++, "T.Demos", STATS_RENDER_ARGUMENTS_SOURCE(teamDemos, GetTeamDemos));
+	if (*displayDeaths) RenderData(canvas, nth++, "Deaths", STATS_RENDER_ARGUMENTS_SOURCE(deaths, GetDeaths));
 	if (*displayBallHits) RenderData(canvas, nth++, "Ball hits", STATS_RENDER_ARGUMENTS_SOURCE(ballHits, GetBallHits));
 	if (*displayBoostUsage) RenderData(canvas, nth++, "Boost", STATS_RENDER_ARGUMENTS_SOURCE(totalBoostUsed, GetBoostUsed));
 	if (*displayBoostPMinute) RenderData(canvas, nth++, "Boost/min", STATS_RENDER_ARGUMENTS_SOURCE(boostPMinute, GetBoostPMinute));
