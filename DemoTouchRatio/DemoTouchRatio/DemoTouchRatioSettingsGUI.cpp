@@ -236,12 +236,12 @@ void DemoTouchRatio::RenderCustomBehaviour()
 		gameWrapper->Execute([this](GameWrapper* gw) { cvarManager->getCvar(CVAR_NAME_CUSTOM_DELAY_BUMP).setValue(*customDelayBump); });
 	}
 
-	DrawSlider("Demo delay", &*customDelayDemo, 0.f, 10.f, CVAR_NAME_CUSTOM_DELAY_DEMO); ImGui::SameLine();
+	/*DrawSlider("Demo delay", &*customDelayDemo, 0.f, 10.f, CVAR_NAME_CUSTOM_DELAY_DEMO); ImGui::SameLine();
 	if (ImGui::Button("Reset##delaydemo"))
 	{
 		*customDelayDemo = 0.f;
 		gameWrapper->Execute([this](GameWrapper* gw) { cvarManager->getCvar(CVAR_NAME_CUSTOM_DELAY_DEMO).setValue(*customDelayDemo); });
-	}
+	}*/
 
 	DrawSlider("Ball hit delay", &*customDelayBallHit, 0.f, 10.f, CVAR_NAME_CUSTOM_DELAY_BALLHIT); ImGui::SameLine();
 	if (ImGui::Button("Reset##delayballhit"))
