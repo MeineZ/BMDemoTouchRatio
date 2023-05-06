@@ -31,6 +31,8 @@ Vector2 Renderer::GetBox()
 		(*displayBallHits ? 1 : 0) +
 		(*displayBoostUsage ? 1 : 0) +
 		(*displayBoostPMinute ? 1 : 0) +
+		(*displayBoostCollected ? 1 : 0) +
+		(*displayBoostCollectedPMinute ? 1 : 0) +
 		(*displayInAirPercentage ? 1 : 0) +
 		(*displayPowerslideCount ? 1 : 0) +
 		(*displayPowerslideDuration ? 1 : 0) +

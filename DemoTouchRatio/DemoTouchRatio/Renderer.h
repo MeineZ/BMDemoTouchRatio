@@ -51,6 +51,8 @@ public:
 	std::shared_ptr<bool> displayBallHits;
 	std::shared_ptr<bool> displayBoostUsage;
 	std::shared_ptr<bool> displayBoostPMinute;
+	std::shared_ptr<bool> displayBoostCollected;
+	std::shared_ptr<bool> displayBoostCollectedPMinute;
 	std::shared_ptr<bool> displayInAirPercentage;
 	std::shared_ptr<bool> displayPowerslideCount;
 	std::shared_ptr<bool> displayPowerslideDuration;

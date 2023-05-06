@@ -36,6 +36,8 @@ Renderer::Renderer() :
 	displayBallHits(std::make_shared<bool>(true)),
 	displayBoostUsage(std::make_shared<bool>(false)),
 	displayBoostPMinute(std::make_shared<bool>(false)),
+	displayBoostCollected(std::make_shared<bool>(false)),
+	displayBoostCollectedPMinute(std::make_shared<bool>(false)),
 	displayInAirPercentage(std::make_shared<bool>(false)),
 	displayPowerslideCount(std::make_shared<bool>(false)),
 	displayPowerslideDuration(std::make_shared<bool>(false)),
@@ -118,6 +120,8 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, P
 	if (*displayBallHits) RenderData(canvas, nth++, "Ball hits", STATS_RENDER_ARGUMENTS_SOURCE(ballHits, GetBallHits));
 	if (*displayBoostUsage) RenderData(canvas, nth++, "Boost", STATS_RENDER_ARGUMENTS_SOURCE(totalBoostUsed, GetBoostUsed));
 	if (*displayBoostPMinute) RenderData(canvas, nth++, "Boost/min", STATS_RENDER_ARGUMENTS_SOURCE(boostPMinute, GetBoostPMinute));
+	if (*displayBoostCollected) RenderData(canvas, nth++, "Boost col", STATS_RENDER_ARGUMENTS_SOURCE(totalBoostCollected, GetBoostCollected));
+	if (*displayBoostCollectedPMinute) RenderData(canvas, nth++, "Boost col/min", STATS_RENDER_ARGUMENTS_SOURCE(boostCollectedPMinute, GetBoostCollectedPMinute));
 	if (*displayInAirPercentage) RenderData(canvas, nth++, "Air %", STATS_RENDER_ARGUMENTS_SOURCE(inAirPercentage, GetInAirPercentage));
 	if (*displayPowerslideCount) RenderData(canvas, nth++, "Pwrslide uses", STATS_RENDER_ARGUMENTS_SOURCE(powerslideCount, GetPowerslideCount));
 	if (*displayPowerslideDuration) RenderData(canvas, nth++, "Pwrslide time", STATS_RENDER_ARGUMENTS_SOURCE(powerslideDuration * 60.0f, GetPowerslideTimeInSeconds), 1);

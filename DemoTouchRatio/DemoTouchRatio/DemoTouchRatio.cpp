@@ -88,6 +88,8 @@ void DemoTouchRatio::onLoad()
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BALLHITS, "1", "Show ball touches data column", false, true, 0, true, 1, true).bindTo(renderer.displayBallHits);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BOOSTUSAGE, "0", "Show boost usage data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostUsage);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BOOSTPMINUTE, "0", "Show boost per minute data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostPMinute);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_BOOSTCOLLECTED, "0", "Show boost collected data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostCollected);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE, "0", "Show boost collected per minute data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostCollectedPMinute);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_INAIRPERCENTAGE, "0", "Show in air percentage data column", false, true, 0, true, 1, true).bindTo(renderer.displayInAirPercentage);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_POWERSLIDE_COUNT, "0", "Show powerslide count data column", false, true, 0, true, 1, true).bindTo(renderer.displayPowerslideCount);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_POWERSLIDE_DURATION, "0", "Show powerslide duration data column", false, true, 0, true, 1, true).bindTo(renderer.displayPowerslideDuration);

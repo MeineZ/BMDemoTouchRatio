@@ -25,7 +25,7 @@ EventStatEvent::EventStatEvent(int demos, int teamDemos, int deaths, int totalSh
 
 void EventStatEvent::RegisterStatTicker(std::string eventName, CarWrapper receiver, PriWrapper victim)
 {
-	if (eventName == "Demolish")
+	if (eventName.compare("Demolish") == 0)
 	{
 		HandleDemolition(receiver, victim);
 	}

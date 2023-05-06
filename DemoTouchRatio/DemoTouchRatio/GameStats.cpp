@@ -20,14 +20,14 @@ GameStats::GameStats():
 	statEventData(EventStatEvent())
 { }
 
-GameStats::GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes, int powerslideCount, float powerslideDuration, int shots, int goals, int saves, int teamDemos, int deaths) :
+GameStats::GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes, int powerslideCount, float powerslideDuration, int shots, int goals, int saves, int teamDemos, int deaths, float totalBoostCollected) :
 	lastTimeStamp(0),
 	totalPlayedTime(totalTime),
 	bumpData(EventData(bumps)),
 	teamBumpData(EventData(teamBumps)),
 	ballHitData(EventData(ballHits)),
 	// [STAT_ADD] 9. Add constructor with params
-	boostData(EventBoost(totalBoost)),
+	boostData(EventBoost(totalBoost, totalBoostCollected)),
 	inAirData(EventInAir(airTimeInMinutes)),
 	powerslideData(EventPowerslide(powerslideCount, powerslideDuration)),
 	statEventData(EventStatEvent(demos, teamDemos, deaths, shots, goals, saves))

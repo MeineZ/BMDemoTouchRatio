@@ -87,7 +87,9 @@ void DemoTouchRatio::RenderColumnVisibility()
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(2)); DrawCheckbox("Deaths", &*renderer.displayDeaths, CVAR_NAME_SHOW_DEATHS);
 	DrawCheckbox("Boost usage", &*renderer.displayBoostUsage, CVAR_NAME_SHOW_BOOSTUSAGE);
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Boost/minute", &*renderer.displayBoostPMinute, CVAR_NAME_SHOW_BOOSTPMINUTE);
-	ImGui::SameLine(DISPLAY_OPTION_SPACING(2)); DrawCheckbox("In air %", &*renderer.displayInAirPercentage, CVAR_NAME_SHOW_INAIRPERCENTAGE);
+	DrawCheckbox("Boost Collected", &*renderer.displayBoostCollected, CVAR_NAME_SHOW_BOOSTCOLLECTED);
+	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Boost Collected/minute", &*renderer.displayBoostCollectedPMinute, CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE);
+	DrawCheckbox("In air %", &*renderer.displayInAirPercentage, CVAR_NAME_SHOW_INAIRPERCENTAGE);
 	DrawCheckbox("Powerslide uses", &*renderer.displayPowerslideCount, CVAR_NAME_SHOW_POWERSLIDE_COUNT);
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Powerslide time", &*renderer.displayPowerslideDuration, CVAR_NAME_SHOW_POWERSLIDE_DURATION);
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(2)); DrawCheckbox("Powerslide time per use", &*renderer.displayPowerslideDurationPerUse, CVAR_NAME_SHOW_POWERSLIDE_DURATION_PER_USE);

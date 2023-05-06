@@ -34,3 +34,13 @@ float GameStats::GetBoostPMinute() const
 {
 	return boostData.GetBoostPMinute(totalPlayedTime);
 }
+
+float GameStats::GetBoostCollected() const
+{
+	return boostData.GetTotalBoostCollected();
+}
+
+float GameStats::GetBoostCollectedPMinute() const
+{
+	return boostData.GetBoostCollectedPMinute(totalPlayedTime);
+}
