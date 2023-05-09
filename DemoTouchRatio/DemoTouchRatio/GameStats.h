@@ -28,6 +28,7 @@ private:
 	void OnCarWorldHit(CarWrapper carWrapper, void* args, std::string eventName);
 	void OnStatTicker(ServerWrapper serverWrapper, void* args, std::string eventName);
 	void OnStatEvent(ServerWrapper serverWrapper, void* args, std::string eventName);
+	void OnEventPickedUp(ActorWrapper actorWrapper, void* args, std::string eventName);
 
 	void OnPhysicsTick(std::string eventName);
 	void HandleBoost(uint64_t deltaTime);
@@ -36,7 +37,7 @@ private:
 
 public:
 	GameStats();
-	const GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes, int powerslideCount, float powerslideDuration, int shots, int goals, int saves, int teamDemos, int deaths, float totalBoostCollected);
+	const GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes, int powerslideCount, float powerslideDuration, int shots, int goals, int saves, int teamDemos, int deaths, float totalBoostCollected, int assists, float totalBoostOverfill);
 
 	void BindEvents();
 	void UnbindEvents();
@@ -54,6 +55,8 @@ public:
 	float GetBoostPMinute() const;
 	float GetBoostCollected() const;
 	float GetBoostCollectedPMinute() const;
+	float GetBoostOverfill() const;
+	float GetBoostOverfillPMinute() const;
 	float GetTimeInAir() const;
 	float GetInAirPercentage() const;
 	int GetPowerslideCount() const;
@@ -63,4 +66,5 @@ public:
 	int GetShots() const;
 	int GetGoals() const;
 	int GetSaves() const;
+	int GetAssists() const;
 };

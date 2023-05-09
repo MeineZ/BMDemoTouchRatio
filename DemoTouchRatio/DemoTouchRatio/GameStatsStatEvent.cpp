@@ -68,3 +68,8 @@ int GameStats::GetSaves() const
 {
 	return statEventData.GetSaves();
 }
+
+int GameStats::GetAssists() const
+{
+	return statEventData.GetAssists();
+}

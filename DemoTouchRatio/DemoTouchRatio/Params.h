@@ -43,3 +43,8 @@ struct AGFxHUD_TA_execStatEvent_Params
 	// Count always is int_max. No idea why
 	uintptr_t Count;
 };
+
+struct AVehiclePickup_Boost_TA_execPickup_Params
+{
+	uintptr_t car;
+};

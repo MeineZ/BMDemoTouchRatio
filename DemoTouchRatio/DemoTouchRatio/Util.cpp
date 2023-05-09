@@ -22,6 +22,23 @@ bool Util::IsLocalPlayer(CarWrapper& carWrapper)
 	return carWrapper.memory_address == gameWrapper->GetLocalCar().memory_address;
 }
 
+float Util::GetLocalBoost()
+{
+	GameWrapper* gameWrapper = DemoTouchRatio::GetGameWrapper();
+	if (gameWrapper == nullptr)
+		return 0.0f;
+
+	CarWrapper carWrapper = gameWrapper->GetLocalCar();
+	if (carWrapper.IsNull())
+		return 0.0f;
+
+	BoostWrapper boostWrapper = carWrapper.GetBoostComponent();
+	if (boostWrapper.IsNull())
+		return 0.0f;
+
+	return boostWrapper.GetCurrentBoostAmount();
+}
+
 bool Util::CanTrack()
 {
 	GameWrapper* gameWrapper = DemoTouchRatio::GetGameWrapper();

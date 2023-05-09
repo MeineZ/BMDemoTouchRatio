@@ -87,8 +87,10 @@ void DemoTouchRatio::RenderColumnVisibility()
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(2)); DrawCheckbox("Deaths", &*renderer.displayDeaths, CVAR_NAME_SHOW_DEATHS);
 	DrawCheckbox("Boost usage", &*renderer.displayBoostUsage, CVAR_NAME_SHOW_BOOSTUSAGE);
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Boost/minute", &*renderer.displayBoostPMinute, CVAR_NAME_SHOW_BOOSTPMINUTE);
-	DrawCheckbox("Boost Collected", &*renderer.displayBoostCollected, CVAR_NAME_SHOW_BOOSTCOLLECTED);
-	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Boost Collected/minute", &*renderer.displayBoostCollectedPMinute, CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE);
+	DrawCheckbox("Boost collected", &*renderer.displayBoostCollected, CVAR_NAME_SHOW_BOOSTCOLLECTED);
+	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Boost collected/minute", &*renderer.displayBoostCollectedPMinute, CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE);
+	DrawCheckbox( "Boost overfill", &*renderer.displayBoostOverfill, CVAR_NAME_SHOW_BOOSTCOLLECTED );
+	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox( "Boost overfill/minute", &*renderer.displayBoostOverfillPMinute, CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE);
 	DrawCheckbox("In air %", &*renderer.displayInAirPercentage, CVAR_NAME_SHOW_INAIRPERCENTAGE);
 	DrawCheckbox("Powerslide uses", &*renderer.displayPowerslideCount, CVAR_NAME_SHOW_POWERSLIDE_COUNT);
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Powerslide time", &*renderer.displayPowerslideDuration, CVAR_NAME_SHOW_POWERSLIDE_DURATION);
@@ -96,6 +98,7 @@ void DemoTouchRatio::RenderColumnVisibility()
 	DrawCheckbox("Shots", &*renderer.displayShots, CVAR_NAME_SHOW_SHOTS);
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Goals", &*renderer.displayGoals, CVAR_NAME_SHOW_GOALS);
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(2)); DrawCheckbox("Saves", &*renderer.displaySaves, CVAR_NAME_SHOW_SAVES);
+	ImGui::SameLine(DISPLAY_OPTION_SPACING(3)); DrawCheckbox("Assists", &*renderer.displayAssists, CVAR_NAME_SHOW_ASSISTS);
 
 	// =======================
 	ImGui::NewLine();

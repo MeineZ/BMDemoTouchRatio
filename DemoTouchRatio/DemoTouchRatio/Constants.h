@@ -37,6 +37,8 @@
 #define CVAR_NAME_SHOW_BOOSTPMINUTE "cl_demotouch_plugin_show_boostpminute"
 #define CVAR_NAME_SHOW_BOOSTCOLLECTED "cl_demotouch_plugin_show_boostcollected"
 #define CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE "cl_demotouch_plugin_show_boostcollectedpminute"
+#define CVAR_NAME_SHOW_BOOSTOVERFILL "cl_demotouch_plugin_show_boostoverfill"
+#define CVAR_NAME_SHOW_BOOSTOVERFILLPMINUTE "cl_demotouch_plugin_show_boostoverfillpminute"
 #define CVAR_NAME_SHOW_INAIRPERCENTAGE "cl_demotouch_plugin_show_inairpercentage"
 #define CVAR_NAME_SHOW_POWERSLIDE_COUNT "cl_demotouch_plugin_show_powerslide_count"
 #define CVAR_NAME_SHOW_POWERSLIDE_DURATION "cl_demotouch_plugin_show_powerslide_duration"
@@ -44,6 +46,7 @@
 #define CVAR_NAME_SHOW_SHOTS "cl_demotouch_plugin_show_shots"
 #define CVAR_NAME_SHOW_GOALS "cl_demotouch_plugin_show_goals"
 #define CVAR_NAME_SHOW_SAVES "cl_demotouch_plugin_show_saves"
+#define CVAR_NAME_SHOW_ASSISTS "cl_demotouch_plugin_show_assists"
 
 #define CVAR_NAME_SHOW_TOTAL "cl_demotouch_plugin_show_total"
 #define CVAR_NAME_SHOW_AVERAGE "cl_demotouch_plugin_show_average"
@@ -79,3 +82,6 @@
 #define HOOK_CAR_HIT_WORLD "Function TAGame.Car_TA.EventHitWorld"
 #define HOOK_STAT_TICKER_MESSAGE "Function TAGame.GFxHUD_TA.HandleStatTickerMessage"
 #define HOOK_HANDLE_STAT_EVENT "Function TAGame.GFxHUD_TA.HandleStatEvent"
+#define HOOK_EVENT_PICKED_UP "Function TAGame.VehiclePickup_TA.EventPickedUp"
+#define HOOK_EVENT_ON_PICK_UP "Function TAGame.VehiclePickup_TA.OnPickUp"
+#define HOOK_BOOST_PICKUP "Function TAGame.VehiclePickup_Boost_TA.Pickup"

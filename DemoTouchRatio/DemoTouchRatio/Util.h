@@ -7,6 +7,8 @@ static class Util
 public:
 	static bool IsLocalPlayer(CarWrapper& carWrapper);
 
+	static float GetLocalBoost();
+
 	static bool CanTrack();
 
 	static int GetCurrentPing();

@@ -6,6 +6,12 @@
 #include "Util.h"
 #include "Params.h"
 
+void GameStats::OnEventPickedUp(ActorWrapper actorWrapper, void* args, std::string eventName)
+{
+	BoostPickupWrapper boostPickupWrapper(actorWrapper.memory_address);
+	boostData.RegisterBoostPickup(boostPickupWrapper);
+}
+
 void GameStats::HandleBoost(uint64_t deltaTime)
 {
 	// Do not track boost if delta time is over 200ms (5fps). This means there is some kind of gap between the tracking,
@@ -43,4 +49,14 @@ float GameStats::GetBoostCollected() const
 float GameStats::GetBoostCollectedPMinute() const
 {
 	return boostData.GetBoostCollectedPMinute(totalPlayedTime);
+}
+
+float GameStats::GetBoostOverfill() const
+{
+	return boostData.GetTotalBoostOverfill();
+}
+
+float GameStats::GetBoostOverfillPMinute() const
+{
+	return boostData.GetBoostOverfillPMinute(totalPlayedTime);
 }

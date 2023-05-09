@@ -10,7 +10,7 @@
 #define STATS_FILEEXTENSION ".csv"
 
 // [STAT_ADD] 17. Add arguments
-#define STATS_COUNT 16
+#define STATS_COUNT 18
 
 PersistentStats::PersistentStats() :
 	suffix(""),
@@ -51,7 +51,9 @@ const GameStats& PersistentStats::Update(GameStats* stats)
 		total.GetSaves() + stats->GetSaves(),
 		total.GetTeamDemos() + stats->GetTeamDemos(),
 		total.GetDeaths() + stats->GetDeaths(),
-		total.GetBoostCollected() + stats->GetBoostCollected()
+		total.GetBoostCollected() + stats->GetBoostCollected(),
+		total.GetAssists() + stats->GetAssists(),
+		total.GetBoostOverfill() + stats->GetBoostOverfill()
 	);
 
 	// Revert if file update failed
@@ -74,7 +76,9 @@ const GameStats& PersistentStats::Update(GameStats* stats)
 			total.GetSaves() - stats->GetSaves(),
 			total.GetTeamDemos() - stats->GetTeamDemos(),
 			total.GetDeaths() - stats->GetDeaths(),
-			total.GetBoostCollected() - stats->GetBoostCollected()
+			total.GetBoostCollected() - stats->GetBoostCollected(),
+			total.GetAssists() - stats->GetAssists(),
+			total.GetBoostOverfill() - stats->GetBoostOverfill()
 		);
 	}
 
@@ -108,14 +112,17 @@ void PersistentStats::UpdateAverageStats()
 		(float) total.GetTeamDemos() / (float) nOfGames,
 		(float) total.GetDeaths() / (float) nOfGames,
 		total.GetBoostCollected() / (float)nOfGames,
-		total.GetBoostCollectedPMinute() );
+		total.GetBoostCollectedPMinute(),
+		(float) total.GetAssists() / (float) nOfGames,
+		total.GetBoostOverfill() / (float) nOfGames,
+		total.GetBoostOverfillPMinute() );
 }
 
 void PersistentStats::Clear()
 {
 	nOfGames = 0;
 	// [STAT_ADD] 14. Add arguments
-	total = GameStats(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	total = GameStats(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	average = GameStatsSummary::SummarizedStats(DEFAULT_SUMMARY_ARGS);
 	// Update file
 	UpdateFile();
@@ -141,7 +148,9 @@ void PersistentStats::Add(PersistentStats& other)
 		total.GetSaves() + other.total.GetSaves(),
 		total.GetTeamDemos() + other.total.GetTeamDemos(),
 		total.GetDeaths() + other.total.GetDeaths(),
-		total.GetBoostCollected() + other.total.GetBoostCollected()
+		total.GetBoostCollected() + other.total.GetBoostCollected(),
+		total.GetAssists() + other.total.GetAssists(),
+		total.GetBoostOverfill() + other.total.GetBoostOverfill()
 	);
 
 	int oldGames = nOfGames;
@@ -179,7 +188,7 @@ void PersistentStats::LoadFile()
 	try {
 		// Load content of file
 		std::ifstream in(GetFullPath());
-		int stats[STATS_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		int stats[STATS_COUNT] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		if (in) {
 			char comma;
 			int count = 0;
@@ -212,7 +221,9 @@ void PersistentStats::LoadFile()
 			stats[12],
 			stats[13],
 			stats[14],
-			reinterpret_cast<float&>(stats[15])
+			reinterpret_cast<float&>(stats[15]),
+			stats[16],
+			reinterpret_cast<float &>(stats[17])
 		);
 		UpdateAverageStats();
 	}
@@ -231,6 +242,7 @@ bool PersistentStats::UpdateFile()
 			float totalPlayedTime = total.GetTotalPlayedTime();
 			float totalBoostUsed = total.GetBoostUsed();
 			float totalBoostCollected = total.GetBoostCollected();
+			float totalBoostOverfill = total.GetBoostOverfill();
 			float totalTimeInAir = total.GetTimeInAir();
 			float totalTimeInPowerslide = total.GetPowerslideTimeInMinutes();
 			out << nOfGames << ","
@@ -248,7 +260,9 @@ bool PersistentStats::UpdateFile()
 				<< total.GetSaves() << ','
 				<< total.GetTeamDemos() << ','
 				<< total.GetDeaths() << ','
-				<< reinterpret_cast<int&>(totalBoostCollected);
+				<< reinterpret_cast<int&>(totalBoostCollected) << ','
+				<< total.GetAssists() << ','
+				<< reinterpret_cast<int &>(totalBoostOverfill);
 
 			out.close();
 		}

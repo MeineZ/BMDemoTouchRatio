@@ -53,6 +53,8 @@ public:
 	std::shared_ptr<bool> displayBoostPMinute;
 	std::shared_ptr<bool> displayBoostCollected;
 	std::shared_ptr<bool> displayBoostCollectedPMinute;
+	std::shared_ptr<bool> displayBoostOverfill;
+	std::shared_ptr<bool> displayBoostOverfillPMinute;
 	std::shared_ptr<bool> displayInAirPercentage;
 	std::shared_ptr<bool> displayPowerslideCount;
 	std::shared_ptr<bool> displayPowerslideDuration;
@@ -60,6 +62,7 @@ public:
 	std::shared_ptr<bool> displayShots;
 	std::shared_ptr<bool> displayGoals;
 	std::shared_ptr<bool> displaySaves;
+	std::shared_ptr<bool> displayAssists;
 
 	std::shared_ptr<bool> displayTotal;
 	std::shared_ptr<bool> displayAverage;

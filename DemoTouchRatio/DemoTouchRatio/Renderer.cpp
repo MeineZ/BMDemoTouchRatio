@@ -38,13 +38,16 @@ Renderer::Renderer() :
 	displayBoostPMinute(std::make_shared<bool>(false)),
 	displayBoostCollected(std::make_shared<bool>(false)),
 	displayBoostCollectedPMinute(std::make_shared<bool>(false)),
+	displayBoostOverfill(std::make_shared<bool>(false)),
+	displayBoostOverfillPMinute(std::make_shared<bool>(false)),
 	displayInAirPercentage(std::make_shared<bool>(false)),
 	displayPowerslideCount(std::make_shared<bool>(false)),
 	displayPowerslideDuration(std::make_shared<bool>(false)),
 	displayPowerslideDurationPerUse(std::make_shared<bool>(false)),
 	displayShots(std::make_shared<bool>(false)),
 	displayGoals(std::make_shared<bool>(false)),
-	displaySaves(std::make_shared<bool>(false)),
+	displaySaves( std::make_shared<bool>(false)),
+	displayAssists(std::make_shared<bool>(false)),
 	displayTotal(std::make_shared<bool>(true)),
 	displayAverage(std::make_shared<bool>(true)),
 	displayPlaylistsTotal(std::make_shared<bool>(false)),
@@ -122,11 +125,14 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, P
 	if (*displayBoostPMinute) RenderData(canvas, nth++, "Boost/min", STATS_RENDER_ARGUMENTS_SOURCE(boostPMinute, GetBoostPMinute));
 	if (*displayBoostCollected) RenderData(canvas, nth++, "Boost col", STATS_RENDER_ARGUMENTS_SOURCE(totalBoostCollected, GetBoostCollected));
 	if (*displayBoostCollectedPMinute) RenderData(canvas, nth++, "Boost col/min", STATS_RENDER_ARGUMENTS_SOURCE(boostCollectedPMinute, GetBoostCollectedPMinute));
+	if (*displayBoostOverfill) RenderData(canvas, nth++, "Overfill", STATS_RENDER_ARGUMENTS_SOURCE(totalBoostOverfill, GetBoostOverfill));
+	if (*displayBoostOverfillPMinute) RenderData(canvas, nth++, "Overfill/min", STATS_RENDER_ARGUMENTS_SOURCE(boostOverfillPMinute, GetBoostOverfillPMinute));
 	if (*displayInAirPercentage) RenderData(canvas, nth++, "Air %", STATS_RENDER_ARGUMENTS_SOURCE(inAirPercentage, GetInAirPercentage));
 	if (*displayPowerslideCount) RenderData(canvas, nth++, "Pwrslide uses", STATS_RENDER_ARGUMENTS_SOURCE(powerslideCount, GetPowerslideCount));
 	if (*displayPowerslideDuration) RenderData(canvas, nth++, "Pwrslide time", STATS_RENDER_ARGUMENTS_SOURCE(powerslideDuration * 60.0f, GetPowerslideTimeInSeconds), 1);
 	if (*displayPowerslideDurationPerUse) RenderData(canvas, nth++, "Pwrslide t/use", STATS_RENDER_ARGUMENTS_SOURCE(powerslideDurationPerUse * 60.0f, GetPowerslideTimePerUseInSeconds), 2);
 	if (*displayShots) RenderData(canvas, nth++, "Shots", STATS_RENDER_ARGUMENTS_SOURCE(shots, GetShots));
 	if (*displayGoals) RenderData(canvas, nth++, "Goals", STATS_RENDER_ARGUMENTS_SOURCE(goals, GetGoals));
+	if( *displayAssists) RenderData( canvas, nth++, "Assists", STATS_RENDER_ARGUMENTS_SOURCE(assists, GetAssists));
 	if( *displaySaves) RenderData( canvas, nth++, "Saves", STATS_RENDER_ARGUMENTS_SOURCE(saves, GetSaves));
 }

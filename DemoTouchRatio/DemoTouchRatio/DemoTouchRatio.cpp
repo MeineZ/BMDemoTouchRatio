@@ -90,6 +90,8 @@ void DemoTouchRatio::onLoad()
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BOOSTPMINUTE, "0", "Show boost per minute data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostPMinute);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BOOSTCOLLECTED, "0", "Show boost collected data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostCollected);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE, "0", "Show boost collected per minute data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostCollectedPMinute);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_BOOSTOVERFILL, "0", "Show boost overfill data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostOverfill);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_BOOSTOVERFILLPMINUTE, "0", "Show boost overfill per minute data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostOverfillPMinute);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_INAIRPERCENTAGE, "0", "Show in air percentage data column", false, true, 0, true, 1, true).bindTo(renderer.displayInAirPercentage);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_POWERSLIDE_COUNT, "0", "Show powerslide count data column", false, true, 0, true, 1, true).bindTo(renderer.displayPowerslideCount);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_POWERSLIDE_DURATION, "0", "Show powerslide duration data column", false, true, 0, true, 1, true).bindTo(renderer.displayPowerslideDuration);
@@ -97,6 +99,7 @@ void DemoTouchRatio::onLoad()
 	cvarManager->registerCvar(CVAR_NAME_SHOW_SHOTS, "0", "Show goals data column", false, true, 0, true, 1, true).bindTo(renderer.displayShots);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_GOALS, "0", "Show goals data column", false, true, 0, true, 1, true).bindTo(renderer.displayGoals);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_SAVES, "0", "Show saves data column", false, true, 0, true, 1, true).bindTo(renderer.displaySaves);
+	cvarManager->registerCvar(CVAR_NAME_SHOW_ASSISTS, "0", "Show assists data column", false, true, 0, true, 1, true).bindTo(renderer.displayAssists);
 
 	cvarManager->registerCvar(CVAR_NAME_SHOW_TOTAL, "1", "Show session total stats", false, true, 0, true, 1, true).bindTo(renderer.displayTotal);
 	cvarManager->registerCvar(CVAR_NAME_SHOW_AVERAGE, "1", "Show session average stats", false, true, 0, true, 1, true).bindTo(renderer.displayAverage);

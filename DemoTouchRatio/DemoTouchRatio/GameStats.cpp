@@ -20,17 +20,17 @@ GameStats::GameStats():
 	statEventData(EventStatEvent())
 { }
 
-GameStats::GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes, int powerslideCount, float powerslideDuration, int shots, int goals, int saves, int teamDemos, int deaths, float totalBoostCollected) :
+GameStats::GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes, int powerslideCount, float powerslideDuration, int shots, int goals, int saves, int teamDemos, int deaths, float totalBoostCollected, int assists, float totalBoostOverfill) :
 	lastTimeStamp(0),
 	totalPlayedTime(totalTime),
 	bumpData(EventData(bumps)),
 	teamBumpData(EventData(teamBumps)),
 	ballHitData(EventData(ballHits)),
 	// [STAT_ADD] 9. Add constructor with params
-	boostData(EventBoost(totalBoost, totalBoostCollected)),
+	boostData(EventBoost(totalBoost, totalBoostCollected, totalBoostOverfill)),
 	inAirData(EventInAir(airTimeInMinutes)),
 	powerslideData(EventPowerslide(powerslideCount, powerslideDuration)),
-	statEventData(EventStatEvent(demos, teamDemos, deaths, shots, goals, saves))
+	statEventData(EventStatEvent(demos, teamDemos, deaths, shots, goals, saves, assists))
 { }
 
 void GameStats::BindEvents()
@@ -47,6 +47,8 @@ void GameStats::BindEvents()
 
 	gameWrapper->HookEventWithCaller<ServerWrapper>(HOOK_STAT_TICKER_MESSAGE, std::bind(&GameStats::OnStatTicker, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 	gameWrapper->HookEventWithCaller<ServerWrapper>(HOOK_HANDLE_STAT_EVENT, std::bind(&GameStats::OnStatEvent, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+
+	gameWrapper->HookEventWithCaller<ActorWrapper>(HOOK_EVENT_ON_PICK_UP, std::bind(&GameStats::OnEventPickedUp, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 }
 
 void GameStats::UnbindEvents()
@@ -62,6 +64,7 @@ void GameStats::UnbindEvents()
 	gameWrapper->UnhookEvent(HOOK_CAR_HIT_WORLD);
 	gameWrapper->UnhookEvent(HOOK_STAT_TICKER_MESSAGE);
 	gameWrapper->UnhookEvent(HOOK_HANDLE_STAT_EVENT);
+	gameWrapper->UnhookEvent(HOOK_EVENT_ON_PICK_UP);
 }
 
 void GameStats::OnPhysicsTick(std::string eventName)

@@ -5,22 +5,32 @@
 
 // https://github.com/ubelhj/OBSCounter/blob/main/OBSCounter/Maps.h#L341
 
+// Found Events:
+//  - Center
+//  - Clear
+//  - HatTrick
+//  - AerialHit
+//  - LongGoal
+//  - FirstTouch
+
 EventStatEvent::EventStatEvent() :
 	demos(0),
 	teamDemos(0),
 	deaths(0),
 	totalShots(0),
 	totalGoals(0),
-	totalSaves(0)
+	totalSaves(0),
+	totalAssists(0)
 {}
 
-EventStatEvent::EventStatEvent(int demos, int teamDemos, int deaths, int totalShots, int totalGoals, int totalSaves) :
+EventStatEvent::EventStatEvent(int demos, int teamDemos, int deaths, int totalShots, int totalGoals, int totalSaves, int totalAssists) :
 	demos(demos),
 	teamDemos(teamDemos),
 	deaths(deaths),
 	totalShots(totalShots),
 	totalGoals(totalGoals),
-	totalSaves(totalSaves)
+	totalSaves(totalSaves),
+	totalAssists(totalAssists)
 {}
 
 void EventStatEvent::RegisterStatTicker(std::string eventName, CarWrapper receiver, PriWrapper victim)
@@ -45,6 +55,10 @@ void EventStatEvent::RegisterStatEvent(std::string eventName)
 	{
 		HandleSaves();
 	}
+	else if( eventName.compare( "Assist" ) == 0 )
+	{
+		HandleAssists();
+	}
 }
 
 void EventStatEvent::HandleShots()
@@ -62,6 +76,11 @@ void EventStatEvent::HandleSaves()
 	++totalSaves;
 }
 
+void EventStatEvent::HandleAssists()
+{
+	++totalAssists;
+}
+
 int EventStatEvent::GetShots() const
 {
 	return totalShots;
@@ -75,4 +94,9 @@ int EventStatEvent::GetGoals() const
 int EventStatEvent::GetSaves() const
 {
 	return totalSaves;
+}
+
+int EventStatEvent::GetAssists() const
+{
+	return totalAssists;
 }
