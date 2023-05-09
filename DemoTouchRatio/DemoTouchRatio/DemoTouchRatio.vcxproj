@@ -129,6 +129,7 @@
     <ClCompile Include="DemoTouchRatio.cpp" />
     <ClCompile Include="GuiBase.cpp" />
     <ClCompile Include="PersistentStats.cpp" />
+    <ClCompile Include="PersistentStorage.cpp" />
     <ClCompile Include="PlaylistStats.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="GameStatsSummary.cpp" />
@@ -140,6 +141,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="EventPowerslide.h" />
     <ClInclude Include="EventStatEvent.h" />
+    <ClInclude Include="PersistentStorage.h" />
     <ClInclude Include="PlaylistEnum.h" />
     <ClInclude Include="EventData.h" />
     <ClInclude Include="EventInAir.h" />

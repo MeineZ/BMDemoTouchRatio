@@ -162,6 +162,9 @@
     <ClCompile Include="EventDemo.cpp">
       <Filter>Plugin\src\GameStatsTracking\Events</Filter>
     </ClCompile>
+    <ClCompile Include="PersistentStorage.cpp">
+      <Filter>Plugin\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imgui_rangeslider.h">
@@ -262,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="EventStatEvent.h">
       <Filter>Plugin\header\GameStatsTracking\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="PersistentStorage.h">
+      <Filter>Plugin\header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

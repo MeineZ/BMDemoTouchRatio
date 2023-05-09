@@ -19,8 +19,6 @@ EventBoost::EventBoost(float totalBoostUsed, float totalBoostCollected, float to
 
 void EventBoost::RegisterBoost(float currentBoostAmount)
 {
-	DEBUGLOG("BOOST: {}", currentBoostAmount);
-
 	// Register last known boost after getting the difference
 	float boostDiff = currentBoostAmount - lastBoostRegistered;
 	lastBoostRegistered = currentBoostAmount;

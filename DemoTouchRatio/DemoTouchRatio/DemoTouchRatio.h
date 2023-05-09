@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 #include "bakkesmod/plugin/bakkesmodplugin.h"
 #include "bakkesmod/plugin/pluginwindow.h"
@@ -9,6 +10,7 @@
 #include "Renderer.h"
 #include "PlaylistStats.h"
 #include "PlaylistEnum.h"
+#include "PersistentStorage.h"
 
 #include "version.h"
 constexpr auto plugin_version = stringify(VERSION_MAJOR) "." stringify(VERSION_MINOR) "." stringify(VERSION_PATCH) "." stringify(VERSION_BUILD);
@@ -20,6 +22,7 @@ class DemoTouchRatio: public BakkesMod::Plugin::BakkesModPlugin
 {
 private:
 	static DemoTouchRatio* instance_;
+	std::shared_ptr<PersistentStorage> persistentCVarStorage;
 
 	PlaylistType forcePlaylist;
 	PlaylistType lastPlaylist;
