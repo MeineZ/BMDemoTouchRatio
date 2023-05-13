@@ -92,10 +92,31 @@ void DemoTouchRatio::onLoad()
 	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BALLHITS, "1", "Show ball touches data column", false, true, 0, true, 1, true).bindTo(renderer.displayBallHits);
 	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTUSAGE, "0", "Show boost usage data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostUsage);
 	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTPMINUTE, "0", "Show boost per minute data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostPMinute);
+	// Collected
 	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTCOLLECTED, "0", "Show boost collected data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostCollected);
+	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTCOLLECTED_SUM, "0", "Show boost collected sum data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostCollectedSum);
+	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTCOLLECTED_OWN, "0", "Show boost collected on your field data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostCollectedOwn);
+	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTCOLLECTED_OPPONENT, "0", "Show boost collected on your opponents field data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostCollectedOpponent);
+	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTCOLLECTED_NEUTRAL, "0", "Show boost collected on mid-field data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostCollectedNeutral);
+	// Collected p minute
 	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE, "0", "Show boost collected per minute data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostCollectedPMinute);
+	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE_SUM, "0", "Show boost collected per minute sum data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostCollectedPMinuteSum );
+	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE_OWN, "0", "Show boost collected per minute on your field data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostCollectedPMinuteOwn);
+	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE_OPPONENT, "0", "Show boost collected per minute on your opponents field data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostCollectedPMinuteOpponent);
+	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE_NEUTRAL, "0", "Show boost collected per minute on mid-field data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostCollectedPMinuteNeutral);
+	// Overfill
 	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTOVERFILL, "0", "Show boost overfill data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostOverfill);
+	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTOVERFILL_SUM, "0", "Show boost overfill sum column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostOverfillSum );
+	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTOVERFILL_OWN, "0", "Show boost overfill on your field data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostOverfillOwn );
+	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTOVERFILL_OPPONENT, "0", "Show boost overfill on your opponents field data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostOverfillOpponent );
+	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTOVERFILL_NEUTRAL, "0", "Show boost overfill on mid-field data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostOverfillNeutral );
+	// Overfill p minute
 	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTOVERFILLPMINUTE, "0", "Show boost overfill per minute data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostOverfillPMinute);
+	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTOVERFILLPMINUTE_SUM, "0", "Show boost overfill per minute sum column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostOverfillPMinuteSum );
+	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTOVERFILLPMINUTE_OWN, "0", "Show boost overfill per minute on your field data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostOverfillPMinuteOwn );
+	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTOVERFILLPMINUTE_OPPONENT, "0", "Show boost overfill per minute on your opponents field data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostOverfillPMinuteOpponent );
+	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_BOOSTOVERFILLPMINUTE_NEUTRAL, "0", "Show boost overfill per minute on mid-field data column", false, true, 0, true, 1, true).bindTo(renderer.displayBoostOverfillPMinuteNeutral );
+	// Continue normal stats
 	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_INAIRPERCENTAGE, "0", "Show in air percentage data column", false, true, 0, true, 1, true).bindTo(renderer.displayInAirPercentage);
 	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_POWERSLIDE_COUNT, "0", "Show powerslide count data column", false, true, 0, true, 1, true).bindTo(renderer.displayPowerslideCount);
 	persistentCVarStorage->RegisterPersistentCvar(CVAR_NAME_SHOW_POWERSLIDE_DURATION, "0", "Show powerslide duration data column", false, true, 0, true, 1, true).bindTo(renderer.displayPowerslideDuration);

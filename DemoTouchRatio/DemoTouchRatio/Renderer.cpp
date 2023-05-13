@@ -19,6 +19,32 @@ persistentStats.GetAverageStats().propName, \
 playlistsPersistent.GetTotalStats().propFunc(), \
 playlistsPersistent.GetAverageStats().propName
 
+#define FIELDSIDESSTATS_RENDER_ARGUMENTS_SOURCE(propName, propFunc, displayBoost) \
+gameStats.GetCurrent().propName, \
+gameStats.GetLast().propName, \
+gameStats.GetTotal().propName, \
+gameStats.GetAverage().propName, \
+playlistsStats.GetTotal().propName, \
+playlistsStats.GetAverage().propName, \
+persistentStats.GetTotalStats().propFunc(), \
+persistentStats.GetAverageStats().propName, \
+playlistsPersistent.GetTotalStats().propFunc(), \
+playlistsPersistent.GetAverageStats().propName, \
+*displayBoost, *displayBoost##Sum, *displayBoost##Own, \
+*displayBoost##Opponent, *displayBoost##Neutral
+
+#define FIELDSIDESSTATS_RENDER_DATA_PARAMS(propFunc) \
+	current.propFunc(), last.propFunc(), total.propFunc(), average.propFunc(), \
+	playlistsTotal.propFunc(), playlistsAverage.propFunc(), \
+	persistentTotal.propFunc(), persistentAverage.propFunc(), \
+	persistentPlaylistsTotal.propFunc(), persistentPlaylistsAverage.propFunc()
+
+
+#define CALCULATE_FIELDSIDESDATA(total, displayBoost, stats) \
+total += displayOwn ? stats##.GetOwn() : 0.f; \
+total += displayOpponent ? stats##.GetOpponent() : 0.f; \
+total += displayNeutral ? stats##.GetNeutral() : 0.f;
+
 Renderer::Renderer() :
 	posX(std::make_shared<int>(0)),
 	posY(std::make_shared<int>(500)),
@@ -37,9 +63,25 @@ Renderer::Renderer() :
 	displayBoostUsage(std::make_shared<bool>(false)),
 	displayBoostPMinute(std::make_shared<bool>(false)),
 	displayBoostCollected(std::make_shared<bool>(false)),
+	displayBoostCollectedSum(std::make_shared<bool>(false)),
+	displayBoostCollectedOwn(std::make_shared<bool>(false)),
+	displayBoostCollectedOpponent(std::make_shared<bool>(false)),
+	displayBoostCollectedNeutral(std::make_shared<bool>(false)),
 	displayBoostCollectedPMinute(std::make_shared<bool>(false)),
+	displayBoostCollectedPMinuteSum(std::make_shared<bool>(false)),
+	displayBoostCollectedPMinuteOwn(std::make_shared<bool>(false)),
+	displayBoostCollectedPMinuteOpponent(std::make_shared<bool>(false)),
+	displayBoostCollectedPMinuteNeutral(std::make_shared<bool>(false)),
 	displayBoostOverfill(std::make_shared<bool>(false)),
+	displayBoostOverfillSum(std::make_shared<bool>(false)),
+	displayBoostOverfillOwn(std::make_shared<bool>(false)),
+	displayBoostOverfillOpponent(std::make_shared<bool>(false)),
+	displayBoostOverfillNeutral(std::make_shared<bool>(false)),
 	displayBoostOverfillPMinute(std::make_shared<bool>(false)),
+	displayBoostOverfillPMinuteSum(std::make_shared<bool>(false)),
+	displayBoostOverfillPMinuteOwn(std::make_shared<bool>(false)),
+	displayBoostOverfillPMinuteOpponent(std::make_shared<bool>(false)),
+	displayBoostOverfillPMinuteNeutral(std::make_shared<bool>(false)),
 	displayInAirPercentage(std::make_shared<bool>(false)),
 	displayPowerslideCount(std::make_shared<bool>(false)),
 	displayPowerslideDuration(std::make_shared<bool>(false)),
@@ -123,10 +165,12 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, P
 	if (*displayBallHits) RenderData(canvas, nth++, "Ball hits", STATS_RENDER_ARGUMENTS_SOURCE(ballHits, GetBallHits));
 	if (*displayBoostUsage) RenderData(canvas, nth++, "Boost", STATS_RENDER_ARGUMENTS_SOURCE(totalBoostUsed, GetBoostUsed));
 	if (*displayBoostPMinute) RenderData(canvas, nth++, "Boost/min", STATS_RENDER_ARGUMENTS_SOURCE(boostPMinute, GetBoostPMinute));
-	if (*displayBoostCollected) RenderData(canvas, nth++, "Boost col", STATS_RENDER_ARGUMENTS_SOURCE(totalBoostCollected, GetBoostCollected));
-	if (*displayBoostCollectedPMinute) RenderData(canvas, nth++, "Boost col/min", STATS_RENDER_ARGUMENTS_SOURCE(boostCollectedPMinute, GetBoostCollectedPMinute));
-	if (*displayBoostOverfill) RenderData(canvas, nth++, "Overfill", STATS_RENDER_ARGUMENTS_SOURCE(totalBoostOverfill, GetBoostOverfill));
-	if (*displayBoostOverfillPMinute) RenderData(canvas, nth++, "Overfill/min", STATS_RENDER_ARGUMENTS_SOURCE(boostOverfillPMinute, GetBoostOverfillPMinute));
+	
+	RenderFieldsSidesData(canvas, nth, " col", FIELDSIDESSTATS_RENDER_ARGUMENTS_SOURCE(boostCollected, GetBoostCollected, displayBoostCollected));
+	RenderFieldsSidesData(canvas, nth, " col/min", FIELDSIDESSTATS_RENDER_ARGUMENTS_SOURCE(boostCollectedPMinute, GetBoostCollectedPMinute, displayBoostCollectedPMinute));
+	RenderFieldsSidesData(canvas, nth, " overfill", FIELDSIDESSTATS_RENDER_ARGUMENTS_SOURCE(boostOverfill, GetBoostOverfill, displayBoostOverfill));
+	RenderFieldsSidesData(canvas, nth, " overfill/min", FIELDSIDESSTATS_RENDER_ARGUMENTS_SOURCE(boostOverfillPMinute, GetBoostOverfillPMinute, displayBoostOverfillPMinute));
+
 	if (*displayInAirPercentage) RenderData(canvas, nth++, "Air %", STATS_RENDER_ARGUMENTS_SOURCE(inAirPercentage, GetInAirPercentage));
 	if (*displayPowerslideCount) RenderData(canvas, nth++, "Pwrslide uses", STATS_RENDER_ARGUMENTS_SOURCE(powerslideCount, GetPowerslideCount));
 	if (*displayPowerslideDuration) RenderData(canvas, nth++, "Pwrslide time", STATS_RENDER_ARGUMENTS_SOURCE(powerslideDuration * 60.0f, GetPowerslideTimeInSeconds), 1);
@@ -135,4 +179,36 @@ void Renderer::RenderStats(CanvasWrapper* canvas, GameStatsSummary& gameStats, P
 	if (*displayGoals) RenderData(canvas, nth++, "Goals", STATS_RENDER_ARGUMENTS_SOURCE(goals, GetGoals));
 	if( *displayAssists) RenderData( canvas, nth++, "Assists", STATS_RENDER_ARGUMENTS_SOURCE(assists, GetAssists));
 	if( *displaySaves) RenderData( canvas, nth++, "Saves", STATS_RENDER_ARGUMENTS_SOURCE(saves, GetSaves));
+}
+
+void Renderer::RenderFieldsSidesData(CanvasWrapper* canvas, int& nth, std::string postLabel, FIELDSIDESSTATS_RENDER_ARGUMENTS)
+{
+	if (displayTotal || (displaySum && displayOwn && displayOpponent && displayNeutral))
+	{
+		RenderData(canvas, nth++, "Boost" + postLabel, FIELDSIDESSTATS_RENDER_DATA_PARAMS(GetTotal));
+	}
+	
+	if (displaySum && (!displayOwn || !displayOpponent || !displayNeutral))
+	{
+		float currentTotal = 0.f;	CALCULATE_FIELDSIDESDATA(currentTotal, displayBoostCollected, current);
+		float lastTotal = 0.f;		CALCULATE_FIELDSIDESDATA(lastTotal, displayBoostCollected, last);
+		float averageTotal = 0.f;		CALCULATE_FIELDSIDESDATA(averageTotal, displayBoostCollected, average);
+		float totalTotal = 0.f;			CALCULATE_FIELDSIDESDATA(totalTotal, displayBoostCollected, total);
+		float playlistsTotalTotal = 0.f;		CALCULATE_FIELDSIDESDATA(playlistsTotalTotal, displayBoostCollected, playlistsTotal);
+		float playlistsAverageTotal = 0.f;	CALCULATE_FIELDSIDESDATA(playlistsAverageTotal, displayBoostCollected, playlistsAverage);
+		float persistentTotalTotal = 0.f;	CALCULATE_FIELDSIDESDATA(persistentTotalTotal, displayBoostCollected, persistentTotal);
+		float persistentAverageTotal = 0.f;	CALCULATE_FIELDSIDESDATA(persistentAverageTotal, displayBoostCollected, persistentAverage);
+		float persPlaylistTotalTotal = 0.f; CALCULATE_FIELDSIDESDATA(persPlaylistTotalTotal, displayBoostCollected, persistentPlaylistsTotal);
+		float persPlaylistAverageTotal = 0.f; CALCULATE_FIELDSIDESDATA(persPlaylistAverageTotal, displayBoostCollected, persistentPlaylistsAverage);
+
+		RenderData(canvas, nth++, "Sum boost"+ postLabel, currentTotal, lastTotal, averageTotal, totalTotal, playlistsTotalTotal, playlistsAverageTotal, persistentTotalTotal, persistentAverageTotal, persPlaylistTotalTotal, persPlaylistAverageTotal, 0);
+	}
+
+	// render individual boosts
+	if (!displaySum)
+	{
+		if (displayOwn) { RenderData(canvas, nth++, "Own boost" + postLabel, FIELDSIDESSTATS_RENDER_DATA_PARAMS(GetOwn)); }
+		if (displayNeutral) { RenderData(canvas, nth++, "Mid boost" + postLabel, FIELDSIDESSTATS_RENDER_DATA_PARAMS(GetNeutral)); }
+		if (displayOpponent) { RenderData(canvas, nth++, "Stolen boost" + postLabel, FIELDSIDESSTATS_RENDER_DATA_PARAMS(GetOpponent)); }
+	}
 }

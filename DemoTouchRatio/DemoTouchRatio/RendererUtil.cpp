@@ -3,6 +3,13 @@
 
 #include <DemoTouchRatio.h>
 
+#define COUNTDATA_BOOSTFIELDSIDE(boostType) \
+(*boostType ? ((*boostType##Sum && !(*boostType##Own && *boostType##Opponent && *boostType##Neutral))? 2 : 1) : 0) + \
+((!*boostType && *boostType##Sum) ? 1 : 0) + \
+((!*boostType##Sum && *boostType##Own) ? 1 : 0) + \
+((!*boostType##Sum && *boostType##Opponent) ? 1 : 0) + \
+((!*boostType##Sum && *boostType##Neutral) ? 1 : 0) 
+
 Vector2 Renderer::GetBox()
 {
 	int width = X_OFFSET,
@@ -31,10 +38,10 @@ Vector2 Renderer::GetBox()
 		(*displayBallHits ? 1 : 0) +
 		(*displayBoostUsage ? 1 : 0) +
 		(*displayBoostPMinute ? 1 : 0) +
-		(*displayBoostCollected ? 1 : 0) +
-		(*displayBoostCollectedPMinute ? 1 : 0) +
-		(*displayBoostOverfill ? 1 : 0) +
-		(*displayBoostOverfillPMinute ? 1 : 0) +
+		COUNTDATA_BOOSTFIELDSIDE(displayBoostCollected) +
+		COUNTDATA_BOOSTFIELDSIDE(displayBoostCollectedPMinute) +
+		COUNTDATA_BOOSTFIELDSIDE(displayBoostOverfill) +
+		COUNTDATA_BOOSTFIELDSIDE(displayBoostOverfillPMinute) +
 		(*displayInAirPercentage ? 1 : 0) +
 		(*displayPowerslideCount ? 1 : 0) +
 		(*displayPowerslideDuration ? 1 : 0) +

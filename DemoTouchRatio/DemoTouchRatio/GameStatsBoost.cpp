@@ -41,22 +41,22 @@ float GameStats::GetBoostPMinute() const
 	return boostData.GetBoostPMinute(totalPlayedTime);
 }
 
-float GameStats::GetBoostCollected() const
+FieldSidesData GameStats::GetBoostCollected() const
 {
 	return boostData.GetTotalBoostCollected();
 }
 
-float GameStats::GetBoostCollectedPMinute() const
+FieldSidesData GameStats::GetBoostCollectedPMinute() const
 {
 	return boostData.GetBoostCollectedPMinute(totalPlayedTime);
 }
 
-float GameStats::GetBoostOverfill() const
+FieldSidesData GameStats::GetBoostOverfill() const
 {
 	return boostData.GetTotalBoostOverfill();
 }
 
-float GameStats::GetBoostOverfillPMinute() const
+FieldSidesData GameStats::GetBoostOverfillPMinute() const
 {
 	return boostData.GetBoostOverfillPMinute(totalPlayedTime);
 }

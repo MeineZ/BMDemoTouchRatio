@@ -1,12 +1,14 @@
 #pragma once
 
+#include "FieldSidesData.h"
+
 #include <vector>
 #include <sstream>
 
 class GameStats;
 
 // [STAT_ADD] 18. Add arguments
-#define DEFAULT_SUMMARY_ARGS 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+#define DEFAULT_SUMMARY_ARGS 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,FieldSidesData(0,0,0),FieldSidesData(0,0,0),FieldSidesData(0,0,0),FieldSidesData(0,0,0)
 
 class GameStatsSummary {
 public:
@@ -28,14 +30,14 @@ public:
 		float saves = 0;
 		float teamDemos = 0;
 		float deaths = 0;
-		float boostCollectedPMinute = 0;
-		float totalBoostCollected = 0;
 		float assists = 0;
-		float totalBoostOverfill = 0;
-		float boostOverfillPMinute = 0;
+		FieldSidesData boostCollected = FieldSidesData( 0, 0, 0 );
+		FieldSidesData boostCollectedPMinute = FieldSidesData( 0, 0, 0 );
+		FieldSidesData boostOverfill = FieldSidesData( 0, 0, 0 );
+		FieldSidesData boostOverfillPMinute = FieldSidesData( 0, 0, 0 );
 
 		// [STAT_ADD] 15. Add arguments
-		SummarizedStats(int bumps, int teamBumps, int demos, int ballHits, float totalBoostUsed, float boostPMinute, float inAirPercentage, int powerslideCount, float powerslideDuration, int shots, int goals, int saves, int teamDemos, int deaths, float totalBoostCollected, float boostCollectedPMinute, int assists, float totalBoostOverfill, float boostOverfillPMinute )
+		SummarizedStats(int bumps, int teamBumps, int demos, int ballHits, float totalBoostUsed, float boostPMinute, float inAirPercentage, int powerslideCount, float powerslideDuration, int shots, int goals, int saves, int teamDemos, int deaths, int assists, FieldSidesData boostCollected, FieldSidesData boostCollectedPMinute, FieldSidesData boostOverfill, FieldSidesData boostOverfillPMinute)
 		{
 
 			this->bumps = bumps;
@@ -55,15 +57,15 @@ public:
 			this->saves = saves;
 			this->teamDemos = teamDemos;
 			this->deaths = deaths;
-			this->totalBoostCollected = totalBoostCollected;
-			this->boostCollectedPMinute = boostCollectedPMinute;
 			this->assists = assists;
-			this->totalBoostOverfill = totalBoostOverfill;
+			this->boostCollected = boostCollected;
+			this->boostCollectedPMinute = boostCollectedPMinute;
+			this->boostOverfill = boostOverfill;
 			this->boostOverfillPMinute = boostOverfillPMinute;
 		}
 
 		// [STAT_ADD] 16. Add arguments
-		SummarizedStats(float bumps, float teamBumps, float demos, float ballHits, float totalBoostUsed, float boostPMinute, float inAirPercentage, float powerslideCount, float powerslideDuration, float shots, float goals, float saves, float teamDemos, float deaths, float totalBoostCollected, float boostCollectedPMinute, float assists, float totalBoostOverfill, float boostOverfillPMinute )
+		SummarizedStats(float bumps, float teamBumps, float demos, float ballHits, float totalBoostUsed, float boostPMinute, float inAirPercentage, float powerslideCount, float powerslideDuration, float shots, float goals, float saves, float teamDemos, float deaths, float assists, FieldSidesData boostCollected, FieldSidesData boostCollectedPMinute, FieldSidesData boostOverfill, FieldSidesData boostOverfillPMinute )
 		{
 			this->bumps = bumps;
 			this->teamBumps = teamBumps;
@@ -82,10 +84,10 @@ public:
 			this->saves = saves;
 			this->teamDemos = teamDemos;
 			this->deaths = deaths;
-			this->totalBoostCollected = totalBoostCollected;
-			this->boostCollectedPMinute = boostCollectedPMinute;
 			this->assists = assists;
-			this->totalBoostOverfill = totalBoostOverfill;
+			this->boostCollected = boostCollected;
+			this->boostCollectedPMinute = boostCollectedPMinute;
+			this->boostOverfill = boostOverfill;
 			this->boostOverfillPMinute = boostOverfillPMinute;
 		}
 
@@ -111,10 +113,10 @@ public:
 			this->saves = (this->saves * static_cast<float>(oldTotalGames)) + (other.saves * otherAddsNOfGames);
 			this->teamDemos = ( this->teamDemos * static_cast<float>( oldTotalGames ) ) + ( other.teamDemos * otherAddsNOfGames );
 			this->deaths = ( this->deaths * static_cast<float>( oldTotalGames ) ) + ( other.deaths * otherAddsNOfGames );
-			this->totalBoostCollected = (this->totalBoostCollected * static_cast<float>(oldTotalGames)) + (other.totalBoostCollected * otherAddsNOfGames);
-			this->boostCollectedPMinute = ( this->boostCollectedPMinute * static_cast<float>( oldTotalGames ) ) + ( other.boostCollectedPMinute * otherAddsNOfGames );
 			this->assists = (this->assists * static_cast<float>(oldTotalGames)) + (other.assists * otherAddsNOfGames);
-			this->totalBoostOverfill = (this->totalBoostOverfill * static_cast<float>(oldTotalGames)) + (other.totalBoostOverfill * otherAddsNOfGames);
+			this->boostCollected = ( this->boostCollected * static_cast<float>( oldTotalGames ) ) + ( other.boostCollected * otherAddsNOfGames );
+			this->boostCollectedPMinute = ( this->boostCollectedPMinute * static_cast<float>( oldTotalGames ) ) + ( other.boostCollectedPMinute * otherAddsNOfGames );
+			this->boostOverfill = ( this->boostOverfill * static_cast<float>( oldTotalGames ) ) + ( other.boostOverfill * otherAddsNOfGames );
 			this->boostOverfillPMinute = ( this->boostOverfillPMinute * static_cast<float>( oldTotalGames ) ) + ( other.boostOverfillPMinute * otherAddsNOfGames );
 
 			if (isAverage)
@@ -132,14 +134,14 @@ public:
 				this->saves = this->saves / static_cast<float>(totalGames);
 				this->teamDemos = this->teamDemos / static_cast<float>( totalGames );
 				this->deaths = this->deaths / static_cast<float>( totalGames );
-				this->totalBoostCollected = this->totalBoostCollected / static_cast<float>(totalGames);
 				this->assists = this->assists / static_cast<float>(totalGames);
-				this->totalBoostOverfill = this->totalBoostOverfill / static_cast<float>(totalGames);
+				this->boostCollected = this->boostCollected / static_cast<float>(totalGames);
+				this->boostOverfill = this->boostOverfill / static_cast<float>(totalGames);
 			}
 			// These are always averages
 			this->boostPMinute = this->boostPMinute / static_cast<float>(totalGames);
 			this->inAirPercentage = this->inAirPercentage / static_cast<float>(totalGames);
-			this->boostCollectedPMinute = this->boostCollectedPMinute / static_cast<float>(totalGames);
+			this->boostCollectedPMinute = this->boostCollectedPMinute / static_cast<float>( totalGames );
 			this->boostOverfillPMinute = this->boostOverfillPMinute / static_cast<float>( totalGames );
 		}
 	};

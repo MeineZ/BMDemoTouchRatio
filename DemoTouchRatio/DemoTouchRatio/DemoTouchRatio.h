@@ -89,6 +89,7 @@ private:
 	void RenderDisplayLayout();
 	void RenderCustomBehaviour();
 	void RenderPersistentStats();
+	void DrawFieldSideSettings( const char *sumLabel, bool *sum, const char *sumCvar, bool *own, const char *ownCvar, bool *opponent, const char *opponentCvar, bool *neutral, const char *neutralCvar );
 
 	// ImGui Helpers
 	void ImGuiPushDisable(bool isDisabled);

@@ -42,10 +42,10 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 	totalStats.shots += currentStats.shots + lastStats.shots;
 	totalStats.goals += currentStats.goals + lastStats.goals;
 	totalStats.saves += currentStats.saves + lastStats.saves;
-	totalStats.totalBoostCollected += currentStats.totalBoostCollected + lastStats.totalBoostCollected;
-	totalStats.boostCollectedPMinute += currentStats.boostCollectedPMinute + lastStats.boostCollectedPMinute;
 	totalStats.assists += currentStats.assists + lastStats.assists;
-	totalStats.totalBoostOverfill += currentStats.totalBoostOverfill + lastStats.totalBoostOverfill;
+	totalStats.boostCollected += currentStats.boostCollected + lastStats.boostCollected;
+	totalStats.boostCollectedPMinute += currentStats.boostCollectedPMinute + lastStats.boostCollectedPMinute;
+	totalStats.boostOverfill += currentStats.boostOverfill + lastStats.boostOverfill;
 	totalStats.boostOverfillPMinute += currentStats.boostOverfillPMinute + lastStats.boostOverfillPMinute;
 
 	for (int i = 0; i < previousGameStats.size(); ++i) {
@@ -65,10 +65,10 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 		totalStats.shots += newStats.shots;
 		totalStats.goals += newStats.goals;
 		totalStats.saves += newStats.saves;
-		totalStats.totalBoostCollected += newStats.totalBoostCollected;
-		totalStats.boostCollectedPMinute += newStats.boostCollectedPMinute;
 		totalStats.assists += newStats.assists;
-		totalStats.totalBoostOverfill += newStats.totalBoostOverfill;
+		totalStats.boostCollected += newStats.boostCollected;
+		totalStats.boostCollectedPMinute += newStats.boostCollectedPMinute;
+		totalStats.boostOverfill += newStats.boostOverfill;
 		totalStats.boostOverfillPMinute += newStats.boostOverfillPMinute;
 	}
 
@@ -98,10 +98,10 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 			totalStats.saves / (float)numberOfGames,
 			totalStats.teamDemos / (float) numberOfGames,
 			totalStats.deaths / (float) numberOfGames,
-			totalStats.totalBoostCollected / (float)numberOfGames,
-			totalStats.boostCollectedPMinute / (float)numberOfGames,
 			totalStats.assists / (float)numberOfGames,
-			totalStats.totalBoostOverfill / (float)numberOfGames,
+			totalStats.boostCollected / (float) numberOfGames,
+			totalStats.boostCollectedPMinute / (float) numberOfGames,
+			totalStats.boostOverfill / (float)numberOfGames,
 			totalStats.boostOverfillPMinute / (float)numberOfGames,
 		};
 	}
@@ -110,6 +110,7 @@ GameStatsSummary::GameStatsSummary(GameStats* currentGameStats, GameStats* lastG
 	totalStats.boostPMinute = averageStats.boostPMinute;
 	totalStats.inAirPercentage = averageStats.inAirPercentage;
 	totalStats.boostCollectedPMinute = averageStats.boostCollectedPMinute;
+	totalStats.boostOverfillPMinute = averageStats.boostOverfillPMinute;
 }
 
 GameStatsSummary::SummarizedStats GameStatsSummary::CreateSummaryFrom(GameStats* gameStats, float& totalTime, float& totalTimeInAir) {
@@ -127,9 +128,8 @@ GameStatsSummary::SummarizedStats GameStatsSummary::CreateSummaryFrom(GameStats*
 			gameStats->GetBumps(), gameStats->GetTeamBumps(), gameStats->GetDemos(), 
 			gameStats->GetBallHits(), gameStats->GetBoostUsed(), gameStats->GetBoostPMinute(), gameStats->GetInAirPercentage(),
 			gameStats->GetPowerslideCount(), gameStats->GetPowerslideTimeInMinutes(), gameStats->GetShots(),
-			gameStats->GetGoals(), gameStats->GetSaves(), gameStats->GetTeamDemos(), gameStats->GetDeaths(),
-			gameStats->GetBoostCollected(), gameStats->GetBoostCollectedPMinute(), gameStats->GetAssists(),
-			gameStats->GetBoostOverfill(), gameStats->GetBoostOverfillPMinute()
+			gameStats->GetGoals(), gameStats->GetSaves(), gameStats->GetTeamDemos(), gameStats->GetDeaths(), gameStats->GetAssists(),
+			gameStats->GetBoostCollected(), gameStats->GetBoostCollectedPMinute(), gameStats->GetBoostOverfill(), gameStats->GetBoostOverfillPMinute()
 		};
 	}
 }

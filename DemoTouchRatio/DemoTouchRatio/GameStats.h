@@ -37,7 +37,7 @@ private:
 
 public:
 	GameStats();
-	const GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes, int powerslideCount, float powerslideDuration, int shots, int goals, int saves, int teamDemos, int deaths, float totalBoostCollected, int assists, float totalBoostOverfill);
+	const GameStats(int bumps, int teamBumps, int demos, int ballHits, float totalTime, float totalBoost, float airTimeInMinutes, int powerslideCount, float powerslideDuration, int shots, int goals, int saves, int teamDemos, int deaths, int assists, FieldSidesData boostCollected, FieldSidesData boostOverfill );
 
 	void BindEvents();
 	void UnbindEvents();
@@ -53,10 +53,10 @@ public:
 	int GetBallHits() const;
 	float GetBoostUsed() const;
 	float GetBoostPMinute() const;
-	float GetBoostCollected() const;
-	float GetBoostCollectedPMinute() const;
-	float GetBoostOverfill() const;
-	float GetBoostOverfillPMinute() const;
+	FieldSidesData GetBoostCollected() const;
+	FieldSidesData GetBoostCollectedPMinute() const;
+	FieldSidesData GetBoostOverfill() const;
+	FieldSidesData GetBoostOverfillPMinute() const;
 	float GetTimeInAir() const;
 	float GetInAirPercentage() const;
 	int GetPowerslideCount() const;

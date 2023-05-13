@@ -6,15 +6,15 @@
 EventBoost::EventBoost() :
 	lastBoostRegistered(0.333f), // You always start the match with 33.3 boost
 	totalBoostUsed(0),
-	totalBoostCollected(0),
-	totalOverfill(0)
+	boostCollected(FieldSidesData(0, 0, 0)),
+	boostOverfill(FieldSidesData(0, 0, 0))
 {}
 
-EventBoost::EventBoost(float totalBoostUsed, float totalBoostCollected, float totalBoostOverfill) :
+EventBoost::EventBoost( float totalBoostUsed, FieldSidesData boostCollected, FieldSidesData boostOverfill ) :
 	lastBoostRegistered(0),
 	totalBoostUsed(totalBoostUsed),
-	totalBoostCollected(totalBoostCollected),
-	totalOverfill(totalBoostOverfill)
+	boostCollected(boostCollected),
+	boostOverfill(boostOverfill)
 {}
 
 void EventBoost::RegisterBoost(float currentBoostAmount)
@@ -24,16 +24,11 @@ void EventBoost::RegisterBoost(float currentBoostAmount)
 	lastBoostRegistered = currentBoostAmount;
 
 	// We don't care about stationary or gained boost
-	if (boostDiff >= 0)
-	{
-		// Boost difference is always positive here
-		totalBoostCollected += boostDiff * 100.f;
-	}
-	else
-	{
-		// Boost difference is always negative here, so subtraction actually adds it
-		totalBoostUsed -= boostDiff * 100.f;
-	}
+	if( boostDiff >= 0 )
+		return;
+
+	// Boost difference is always negative here, so subtraction actually adds it
+	totalBoostUsed -= boostDiff * 100.f;
 }
 
 void EventBoost::RegisterBoostPickup(BoostPickupWrapper boostPickupWrapper)
@@ -45,6 +40,40 @@ void EventBoost::RegisterBoostPickup(BoostPickupWrapper boostPickupWrapper)
 	if (Util::GetLocalBoost() <= lastBoostRegistered)
 		return;
 
+	HandleBoostCollected(boostPickupWrapper);
+
+	// Register boost amount to make sure we only handle one boost pick up event per frame.
+	RegisterBoost(Util::GetLocalBoost());
+}
+
+FieldSide EventBoost::FindBoostPadSide(BoostPickupWrapper& boostPickupWrapper)
+{
+	// Own <= -2302
+	// Opponent >= 2302
+	// Mid >= -2302 && <= 2302
+	// 
+	// 1663 is between the furthest out defensive boost and the furthest out mid boost
+
+	float boostYPos = boostPickupWrapper.GetLocation().Y;
+	if (boostYPos <= -1663)
+	{
+		// Team1 side
+		return FieldSide::Blue;
+	}
+	else if(boostYPos >= 1663)
+	{
+		// Team2 side
+		return FieldSide::Orange;
+	}
+	else
+	{
+		// The rest is mid
+		return FieldSide::Mid;
+	}
+}
+
+float EventBoost::FindBoostPadSize(BoostPickupWrapper& boostPickupWrapper)
+{
 	float boostSize = 0.0f;
 	if (boostPickupWrapper.GetBoostType() == '1' || boostPickupWrapper.GetBoostType() == 1)
 	{
@@ -52,21 +81,61 @@ void EventBoost::RegisterBoostPickup(BoostPickupWrapper boostPickupWrapper)
 		// Boost amount is 9999. So we limit to 100 as the overfill would be insanely big otherwise.
 		boostSize = 100.0f;
 	}
-	else 
+	else
 	{
-		// SMOLL PAD!
+		// SMOLL PAD! (0.12 boost)
 		boostSize = boostPickupWrapper.GetBoostAmount() * 100.0f;
 	}
+	return boostSize;
+}
 
-	float overfill = (lastBoostRegistered * 100.0f) + boostSize - 100.f;
-	if (overfill < 0)
-		return; // no overfill
+BoostPadType EventBoost::FindBoostPadType(BoostPickupWrapper& boostPickupWrapper)
+{
+	if (boostPickupWrapper.GetBoostType() == '1' || boostPickupWrapper.GetBoostType() == 1)
+	{
+		return BoostPadType::BigPad;
+	}
+	return BoostPadType::SmallPad;
+}
 
-	// Boost overfill is always negative here, so subtraction actually adds it
-	totalOverfill += overfill;
+void EventBoost::HandleBoostCollected(BoostPickupWrapper& boostPickupWrapper)
+{
+	CarWrapper localPlayer = Util::GetLocalPlayer();
+	if (localPlayer.IsNull())
+		return;
 
-	// Register boost amount to make sure we only handle one boost pick up event per frame.
-	RegisterBoost(Util::GetLocalBoost());
+	float lastBoost = (lastBoostRegistered * 100.0f);
+
+	FieldSide fieldSide = FindBoostPadSide(boostPickupWrapper);
+	float boostSize = FindBoostPadSize(boostPickupWrapper);
+	float boostCollected = lastBoost + boostSize > 100.f ? (100.f - lastBoost) : boostSize;
+	float overfill = lastBoost + boostSize > 100.f ? (lastBoost + boostSize - 100.f) : 0.f;
+	Team team = (Team)localPlayer.GetTeamNum2();
+
+	DEBUGLOG( "{} -- {} -- {} -- {} -- {} -- {}", (int) team, (int) fieldSide, lastBoost, boostSize, boostCollected, overfill );
+
+	// For now just always update same stats
+	UpdateCollectedOverfillStat(fieldSide, team, boostCollected, overfill);
+
+}
+
+void EventBoost::UpdateCollectedOverfillStat(FieldSide side, Team team, float collected, float overfill)
+{
+	if( ( team == Team::Blue && side == FieldSide::Blue ) || ( team == Team::Orange && side == FieldSide::Orange ) )
+	{
+		boostCollected.AddOwn(collected);
+		boostOverfill.AddOwn(overfill);
+	}
+	else if( ( team == Team::Blue && side == FieldSide::Orange ) || ( team == Team::Orange && side == FieldSide::Blue ) )
+	{
+		boostCollected.AddOpponent(collected);
+		boostOverfill.AddOpponent(overfill);
+	}
+	else
+	{
+		boostCollected.AddNeutral(collected);
+		boostOverfill.AddNeutral(overfill);
+	}
 }
 
 float EventBoost::GetTotalBoostUsed() const
@@ -82,28 +151,28 @@ float EventBoost::GetBoostPMinute(float totalTimeInMinutes) const
 	return static_cast<float>(((1.0 / static_cast<double>(totalTimeInMinutes * 60.0)) * static_cast<double>(totalBoostUsed)) * 60.0);
 }
 
-float EventBoost::GetTotalBoostCollected() const
+FieldSidesData EventBoost::GetTotalBoostCollected() const
 {
-	return totalBoostCollected;
+	return boostCollected;
 }
 
-float EventBoost::GetBoostCollectedPMinute(float totalTimeInMinutes) const
+FieldSidesData EventBoost::GetBoostCollectedPMinute(float totalTimeInMinutes) const
 {
 	if (totalTimeInMinutes == 0)
-		return 0.f;
+		return FieldSidesData(0,0,0);
 
-	return static_cast<float>(((1.0 / static_cast<double>(totalTimeInMinutes * 60.0)) * static_cast<double>(totalBoostCollected)) * 60.0);
+	return (boostCollected * (1.0 / static_cast<double>(totalTimeInMinutes * 60.0))) * 60.0;
 }
 
-float EventBoost::GetTotalBoostOverfill() const
+FieldSidesData EventBoost::GetTotalBoostOverfill() const
 {
-	return totalOverfill;
+	return boostOverfill;
 }
 
-float EventBoost::GetBoostOverfillPMinute( float totalTimeInMinutes ) const
+FieldSidesData EventBoost::GetBoostOverfillPMinute( float totalTimeInMinutes ) const
 {
 	if( totalTimeInMinutes == 0 )
-		return 0.f;
+		return FieldSidesData(0, 0, 0);
 
-	return static_cast<float>( ( ( 1.0 / static_cast<double>( totalTimeInMinutes * 60.0 ) ) * static_cast<double>(totalOverfill) ) * 60.0 );
+	return (boostOverfill * (1.0 / static_cast<double>(totalTimeInMinutes * 60.0))) * 60.0;
 }

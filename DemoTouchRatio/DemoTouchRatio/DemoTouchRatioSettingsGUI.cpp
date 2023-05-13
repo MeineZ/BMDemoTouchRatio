@@ -79,18 +79,13 @@ void DemoTouchRatio::RenderColumnVisibility()
 	ImGui::NewLine();
 	// =======================
 
+
 	DrawCheckbox("Bumps", &*renderer.displayBumps, CVAR_NAME_SHOW_BUMPS);
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Team bumps", &*renderer.displayTeamBumps, CVAR_NAME_SHOW_TEAMBUMPS);
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(2)); DrawCheckbox("Ball touches", &*renderer.displayBallHits, CVAR_NAME_SHOW_BALLHITS);
 	DrawCheckbox("Demolitions", &*renderer.displayDemos, CVAR_NAME_SHOW_DEMOS);
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Team demolitions", &*renderer.displayTeamDemos, CVAR_NAME_SHOW_TEAMDEMOS);
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(2)); DrawCheckbox("Deaths", &*renderer.displayDeaths, CVAR_NAME_SHOW_DEATHS);
-	DrawCheckbox("Boost usage", &*renderer.displayBoostUsage, CVAR_NAME_SHOW_BOOSTUSAGE);
-	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Boost/minute", &*renderer.displayBoostPMinute, CVAR_NAME_SHOW_BOOSTPMINUTE);
-	DrawCheckbox("Boost collected", &*renderer.displayBoostCollected, CVAR_NAME_SHOW_BOOSTCOLLECTED);
-	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Boost collected/minute", &*renderer.displayBoostCollectedPMinute, CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE);
-	DrawCheckbox( "Boost overfill", &*renderer.displayBoostOverfill, CVAR_NAME_SHOW_BOOSTCOLLECTED );
-	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox( "Boost overfill/minute", &*renderer.displayBoostOverfillPMinute, CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE);
 	DrawCheckbox("In air %", &*renderer.displayInAirPercentage, CVAR_NAME_SHOW_INAIRPERCENTAGE);
 	DrawCheckbox("Powerslide uses", &*renderer.displayPowerslideCount, CVAR_NAME_SHOW_POWERSLIDE_COUNT);
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Powerslide time", &*renderer.displayPowerslideDuration, CVAR_NAME_SHOW_POWERSLIDE_DURATION);
@@ -99,6 +94,37 @@ void DemoTouchRatio::RenderColumnVisibility()
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Goals", &*renderer.displayGoals, CVAR_NAME_SHOW_GOALS);
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(2)); DrawCheckbox("Saves", &*renderer.displaySaves, CVAR_NAME_SHOW_SAVES);
 	ImGui::SameLine(DISPLAY_OPTION_SPACING(3)); DrawCheckbox("Assists", &*renderer.displayAssists, CVAR_NAME_SHOW_ASSISTS);
+
+	if (ImGui::TreeNode("Boost stats"))
+	{
+		DrawCheckbox("Boost usage", &*renderer.displayBoostUsage, CVAR_NAME_SHOW_BOOSTUSAGE);
+		ImGui::SameLine(DISPLAY_OPTION_SPACING(1)); DrawCheckbox("Boost/minute", &*renderer.displayBoostPMinute, CVAR_NAME_SHOW_BOOSTPMINUTE);
+		DrawCheckbox("Boost collected", &*renderer.displayBoostCollected, CVAR_NAME_SHOW_BOOSTCOLLECTED);
+		DrawFieldSideSettings("Sum individual boost collection stats", &*renderer.displayBoostCollectedSum, CVAR_NAME_SHOW_BOOSTCOLLECTED_SUM,
+			&*renderer.displayBoostCollectedOwn, CVAR_NAME_SHOW_BOOSTCOLLECTED_OWN,
+			&*renderer.displayBoostCollectedOpponent, CVAR_NAME_SHOW_BOOSTCOLLECTED_OPPONENT,
+			&*renderer.displayBoostCollectedNeutral, CVAR_NAME_SHOW_BOOSTCOLLECTED_NEUTRAL
+		);
+		DrawCheckbox("Boost collected/minute", &*renderer.displayBoostCollectedPMinute, CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE);
+		DrawFieldSideSettings("Sum individual boost collection per minute stats", &*renderer.displayBoostCollectedPMinuteSum, CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE_SUM,
+			&*renderer.displayBoostCollectedPMinuteOwn, CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE_OWN,
+			&*renderer.displayBoostCollectedPMinuteOpponent, CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE_OPPONENT,
+			&*renderer.displayBoostCollectedPMinuteNeutral, CVAR_NAME_SHOW_BOOSTCOLLECTEDPMINUTE_NEUTRAL
+		);
+		DrawCheckbox("Boost overfill", &*renderer.displayBoostOverfill, CVAR_NAME_SHOW_BOOSTOVERFILL);
+		DrawFieldSideSettings("Sum individual boost overfill stats", &*renderer.displayBoostOverfillSum, CVAR_NAME_SHOW_BOOSTOVERFILL_SUM,
+			&*renderer.displayBoostOverfillOwn, CVAR_NAME_SHOW_BOOSTOVERFILL_OWN,
+			&*renderer.displayBoostOverfillOpponent, CVAR_NAME_SHOW_BOOSTOVERFILL_OPPONENT,
+			&*renderer.displayBoostOverfillNeutral, CVAR_NAME_SHOW_BOOSTOVERFILL_NEUTRAL
+		);
+		DrawCheckbox("Boost overfill/minute", &*renderer.displayBoostOverfillPMinute, CVAR_NAME_SHOW_BOOSTOVERFILLPMINUTE);
+		DrawFieldSideSettings("Sum individual boost overfill per minute stats", &*renderer.displayBoostOverfillPMinuteSum, CVAR_NAME_SHOW_BOOSTOVERFILLPMINUTE_SUM,
+			&*renderer.displayBoostOverfillPMinuteOwn, CVAR_NAME_SHOW_BOOSTOVERFILLPMINUTE_OWN,
+			&*renderer.displayBoostOverfillPMinuteOpponent, CVAR_NAME_SHOW_BOOSTOVERFILLPMINUTE_OPPONENT,
+			&*renderer.displayBoostOverfillPMinuteNeutral, CVAR_NAME_SHOW_BOOSTOVERFILLPMINUTE_NEUTRAL
+		);
+		ImGui::TreePop();
+	}
 
 	// =======================
 	ImGui::NewLine();
@@ -311,6 +337,20 @@ void DemoTouchRatio::RenderPersistentStats() {
 			}
 		}
 	}
+
+	ImGui::Unindent();
+}
+
+void DemoTouchRatio::DrawFieldSideSettings( const char *sumLabel, bool *sum, const char *sumCvar, bool *own, const char *ownCvar, bool *opponent, const char *opponentCvar, bool *neutral, const char *neutralCvar )
+{
+	ImGui::Indent();
+
+	std::string chckbx_id(std::string("##") + sumCvar);
+
+	DrawCheckbox((sumLabel + chckbx_id).c_str(), sum, sumCvar);
+	DrawCheckbox(("Defensive/Own##" + chckbx_id).c_str(), own, ownCvar);
+	ImGui::SameLine( DISPLAY_OPTION_SPACING( 1 ) ); DrawCheckbox(("Mid/Neutral" + chckbx_id).c_str(), opponent, opponentCvar );
+	ImGui::SameLine( DISPLAY_OPTION_SPACING( 2 ) ); DrawCheckbox(("Opponent/Stolen" + chckbx_id).c_str(), neutral, neutralCvar );
 
 	ImGui::Unindent();
 }

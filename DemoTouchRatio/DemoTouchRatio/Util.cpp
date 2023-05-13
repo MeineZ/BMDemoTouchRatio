@@ -7,6 +7,15 @@
 #include "Constants.h"
 #include "DemoTouchRatio.h"
 
+CarWrapper Util::GetLocalPlayer()
+{
+	GameWrapper* gameWrapper = DemoTouchRatio::GetGameWrapper();
+	if (gameWrapper == nullptr)
+		return CarWrapper(0);
+
+	return gameWrapper->GetLocalCar();
+}
+
 bool Util::IsLocalPlayer(CarWrapper& carWrapper)
 {
 	GameWrapper* gameWrapper = DemoTouchRatio::GetGameWrapper();

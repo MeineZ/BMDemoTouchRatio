@@ -1,5 +1,7 @@
 #pragma once
 
+#include "FieldSidesData.h"
+
 #include <memory>
 #include <sstream>
 
@@ -17,6 +19,7 @@ class PersistentStats;
 #define Y_OFFSET 5
 
 #define STATS_RENDER_ARGUMENTS float current, float last, float total, float average, float playlistsTotal, float playlistsAverage, float persistentTotal, float persistentAverage, float persistentPlaylistsTotal, float persistentPlaylistsAverage
+#define FIELDSIDESSTATS_RENDER_ARGUMENTS FieldSidesData current, FieldSidesData last, FieldSidesData total, FieldSidesData average, FieldSidesData playlistsTotal, FieldSidesData playlistsAverage, FieldSidesData persistentTotal, FieldSidesData persistentAverage, FieldSidesData persistentPlaylistsTotal, FieldSidesData persistentPlaylistsAverage, bool displayTotal, bool displaySum, bool displayOwn, bool displayOpponent, bool displayNeutral 
 
 class Renderer {
 private:
@@ -30,7 +33,8 @@ private:
 
 	void RenderTitle(CanvasWrapper* canvas, int width); // Renders title for table
 	void RenderHeader(CanvasWrapper* canvas, int nOfGames, int playlistsNOfGames, int persistentNOfGames, int playlistsPersistentNOfGames); // Renders header for table
-	void RenderData(CanvasWrapper* canvas, int nth, std::string label, STATS_RENDER_ARGUMENTS, int decimals = 0); // Renders header for table
+	void RenderData(CanvasWrapper* canvas, int nth, std::string label, STATS_RENDER_ARGUMENTS, int decimals = 0); // Renders data row/column for table
+	void RenderFieldsSidesData(CanvasWrapper* canvas, int& nth, std::string postLabel, FIELDSIDESSTATS_RENDER_ARGUMENTS); // Renders fieldsidesdata row/column for table
 
 public:
 	std::shared_ptr<int> posX;
@@ -52,9 +56,25 @@ public:
 	std::shared_ptr<bool> displayBoostUsage;
 	std::shared_ptr<bool> displayBoostPMinute;
 	std::shared_ptr<bool> displayBoostCollected;
+	std::shared_ptr<bool> displayBoostCollectedSum;
+	std::shared_ptr<bool> displayBoostCollectedOwn;
+	std::shared_ptr<bool> displayBoostCollectedOpponent;
+	std::shared_ptr<bool> displayBoostCollectedNeutral;
 	std::shared_ptr<bool> displayBoostCollectedPMinute;
+	std::shared_ptr<bool> displayBoostCollectedPMinuteSum;
+	std::shared_ptr<bool> displayBoostCollectedPMinuteOwn;
+	std::shared_ptr<bool> displayBoostCollectedPMinuteOpponent;
+	std::shared_ptr<bool> displayBoostCollectedPMinuteNeutral;
 	std::shared_ptr<bool> displayBoostOverfill;
+	std::shared_ptr<bool> displayBoostOverfillSum;
+	std::shared_ptr<bool> displayBoostOverfillOwn;
+	std::shared_ptr<bool> displayBoostOverfillOpponent;
+	std::shared_ptr<bool> displayBoostOverfillNeutral;
 	std::shared_ptr<bool> displayBoostOverfillPMinute;
+	std::shared_ptr<bool> displayBoostOverfillPMinuteSum;
+	std::shared_ptr<bool> displayBoostOverfillPMinuteOwn;
+	std::shared_ptr<bool> displayBoostOverfillPMinuteOpponent;
+	std::shared_ptr<bool> displayBoostOverfillPMinuteNeutral;
 	std::shared_ptr<bool> displayInAirPercentage;
 	std::shared_ptr<bool> displayPowerslideCount;
 	std::shared_ptr<bool> displayPowerslideDuration;

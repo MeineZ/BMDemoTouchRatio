@@ -102,6 +102,7 @@
     <ClCompile Include="EventInAir.cpp" />
     <ClCompile Include="EventPowerslide.cpp" />
     <ClCompile Include="EventStatEvent.cpp" />
+    <ClCompile Include="FieldSideData.cpp" />
     <ClCompile Include="GameStats.cpp" />
     <ClCompile Include="GameStatsBallHits.cpp" />
     <ClCompile Include="GameStatsBoost.cpp" />
@@ -138,9 +139,12 @@
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BoostEnum.h" />
+    <ClInclude Include="FieldSidesData.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="EventPowerslide.h" />
     <ClInclude Include="EventStatEvent.h" />
+    <ClInclude Include="FieldSideEnum.h" />
     <ClInclude Include="PersistentStorage.h" />
     <ClInclude Include="PlaylistEnum.h" />
     <ClInclude Include="EventData.h" />
@@ -170,6 +174,7 @@
     <ClInclude Include="PlaylistStats.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="PersistentStats.h" />
+    <ClInclude Include="TeamEnum.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="version.h" />
   </ItemGroup>

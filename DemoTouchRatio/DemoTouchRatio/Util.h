@@ -5,6 +5,8 @@
 static class Util
 {
 public:
+	static CarWrapper GetLocalPlayer();
+
 	static bool IsLocalPlayer(CarWrapper& carWrapper);
 
 	static float GetLocalBoost();

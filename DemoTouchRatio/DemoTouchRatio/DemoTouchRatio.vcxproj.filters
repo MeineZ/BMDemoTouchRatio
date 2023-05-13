@@ -165,6 +165,9 @@
     <ClCompile Include="PersistentStorage.cpp">
       <Filter>Plugin\src</Filter>
     </ClCompile>
+    <ClCompile Include="FieldSideData.cpp">
+      <Filter>Plugin\src\GameStatsTracking</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imgui_rangeslider.h">
@@ -268,6 +271,18 @@
     </ClInclude>
     <ClInclude Include="PersistentStorage.h">
       <Filter>Plugin\header</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldSideEnum.h">
+      <Filter>Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="TeamEnum.h">
+      <Filter>Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="BoostEnum.h">
+      <Filter>Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldSidesData.h">
+      <Filter>Plugin\header\GameStatsTracking</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
