@@ -349,8 +349,8 @@ void DemoTouchRatio::DrawFieldSideSettings( const char *sumLabel, bool *sum, con
 
 	DrawCheckbox((sumLabel + chckbx_id).c_str(), sum, sumCvar);
 	DrawCheckbox(("Defensive/Own##" + chckbx_id).c_str(), own, ownCvar);
-	ImGui::SameLine( DISPLAY_OPTION_SPACING( 1 ) ); DrawCheckbox(("Mid/Neutral" + chckbx_id).c_str(), opponent, opponentCvar );
-	ImGui::SameLine( DISPLAY_OPTION_SPACING( 2 ) ); DrawCheckbox(("Opponent/Stolen" + chckbx_id).c_str(), neutral, neutralCvar );
+	ImGui::SameLine( DISPLAY_OPTION_SPACING( 1 ) ); DrawCheckbox(("Mid/Neutral" + chckbx_id).c_str(), neutral, neutralCvar );
+	ImGui::SameLine( DISPLAY_OPTION_SPACING( 2 ) ); DrawCheckbox(("Opponent/Stolen" + chckbx_id).c_str(), opponent, opponentCvar );
 
 	ImGui::Unindent();
 }
