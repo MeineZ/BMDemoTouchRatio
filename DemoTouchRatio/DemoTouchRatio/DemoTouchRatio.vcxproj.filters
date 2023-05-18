@@ -272,17 +272,17 @@
     <ClInclude Include="PersistentStorage.h">
       <Filter>Plugin\header</Filter>
     </ClInclude>
-    <ClInclude Include="FieldSideEnum.h">
-      <Filter>Plugin</Filter>
-    </ClInclude>
-    <ClInclude Include="TeamEnum.h">
-      <Filter>Plugin</Filter>
-    </ClInclude>
-    <ClInclude Include="BoostEnum.h">
-      <Filter>Plugin</Filter>
-    </ClInclude>
     <ClInclude Include="FieldSidesData.h">
       <Filter>Plugin\header\GameStatsTracking</Filter>
+    </ClInclude>
+    <ClInclude Include="TeamEnum.h">
+      <Filter>Plugin\header</Filter>
+    </ClInclude>
+    <ClInclude Include="BoostEnum.h">
+      <Filter>Plugin\header</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldSideEnum.h">
+      <Filter>Plugin\header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
